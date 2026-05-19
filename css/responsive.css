@@ -1,0 +1,195 @@
+/* ============================================
+   SWIFTTGLOBAL LOGISTICS — RESPONSIVE STYLES
+   ============================================ */
+
+/* ---------- BREAKPOINTS REFERENCE ----------
+   xl:  1200px and above  → Large desktops
+   lg:  992px  — 1199px   → Desktops / laptops
+   md:  768px  — 991px    → Tablets
+   sm:  576px  — 767px    → Large phones
+   xs:  below  576px      → Small phones
+   ----------------------------------------- */
+
+/* ---- LARGE DESKTOPS (1200px+) ---- */
+@media (min-width: 1200px) {
+  .container { max-width: 1200px; }
+}
+
+/* ---- DESKTOPS / LAPTOPS (up to 1199px) ---- */
+@media (max-width: 1199px) {
+  :root { --section-pad: 80px; }
+  .container { width: 92%; }
+}
+
+/* ---- TABLETS (up to 991px) ---- */
+@media (max-width: 991px) {
+  :root {
+    --section-pad: 70px;
+    --nav-height: 70px;
+  }
+
+  /* Navigation */
+  .nav-links {
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    background: var(--primary);
+    flex-direction: column;
+    padding: 30px 24px 40px;
+    gap: 0;
+    transform: translateY(-110%);
+    transition: transform 0.4s ease;
+    z-index: 999;
+    box-shadow: var(--shadow-lg);
+    max-height: calc(100vh - var(--nav-height));
+    overflow-y: auto;
+  }
+
+  .nav-links.open {
+    transform: translateY(0);
+  }
+
+  .nav-links li a {
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: block;
+    color: var(--bg-white) !important;
+    font-size: 1rem;
+  }
+
+  .dropdown-menu {
+    position: static;
+    background: rgba(255,255,255,0.05);
+    box-shadow: none;
+    border-radius: var(--radius-sm);
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    margin-top: 0;
+    padding: 0 0 0 16px;
+  }
+
+  .hamburger {
+    display: flex !important;
+  }
+
+  .nav-cta {
+    display: none;
+  }
+
+  /* Grids collapse to 2 columns */
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .why-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ---- LARGE PHONES (up to 767px) ---- */
+@media (max-width: 767px) {
+  :root { --section-pad: 60px; }
+
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.6rem; }
+  h3 { font-size: 1.2rem; }
+
+  /* Hero */
+  .hero-content h1   { font-size: 2.2rem; }
+  .hero-content p    { font-size: 1rem; }
+  .hero-buttons      { flex-direction: column; align-items: flex-start; }
+
+  /* Grids collapse to 1 column */
+  .services-grid,
+  .stats-grid,
+  .why-grid,
+  .news-grid,
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Tracking */
+  .tracking-form-row {
+    flex-direction: column;
+  }
+
+  .tracking-form-row .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Contact grid */
+  .contact-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Page hero */
+  .page-hero {
+    padding: 120px 0 60px;
+  }
+
+  /* Cookie banner */
+  .cookie-banner {
+    flex-direction: column;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .cookie-actions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Back to top */
+  .back-to-top {
+    bottom: 20px;
+    right: 20px;
+    width: 42px;
+    height: 42px;
+  }
+}
+
+/* ---- SMALL PHONES (up to 575px) ---- */
+@media (max-width: 575px) {
+  .container { width: 94%; }
+
+  .btn { padding: 13px 24px; font-size: 0.9rem; }
+  .btn-lg { padding: 15px 30px; font-size: 0.95rem; }
+
+  .section-header { margin-bottom: 40px; }
+
+  .services-grid { gap: 16px !important; }
+
+  /* Testimonial */
+  .testimonial-card { padding: 24px 20px; }
+
+  /* Footer */
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+
+  /* Preloader */
+  .preloader-logo { font-size: 1.5rem; }
+}
+
+/* ---- PRINT STYLES ---- */
+@media print {
+  .navbar,
+  .back-to-top,
+  .cookie-banner,
+  .preloader,
+  .scroll-progress {
+    display: none !important;
+  }
+
+  body { background: white; color: black; }
+  a { color: black; }
+}

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>News & Insights — SwiftGlobal Logistics</title>
+  <meta name="description" content="Stay updated with the latest logistics news, shipping trends, industry insights, and SwiftGlobal company updates." />
+  <meta name="robots" content="index, follow" />
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+
+  <div class="preloader" id="preloader">
+    <div class="preloader-logo">Swift<span>Global</span></div>
+    <div class="preloader-spinner"></div>
+  </div>
+  <div class="scroll-progress"></div>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="container flex-between">
+      <div class="topbar-left">
+        <a href="mailto:info@swiftgloballogistics.com"><i class="fa fa-envelope"></i> info@swiftgloballogistics.com</a>
+        <a href="tel:+237000000000"><i class="fa fa-phone"></i> +237 000 000 000</a>
+      </div>
+      <div class="topbar-right">
+        <span><i class="fa fa-clock"></i> Mon – Fri: 08:00 – 18:00</span>
+        <div class="topbar-socials">
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="container flex-between">
+      <a href="index.html" class="nav-logo">
+        <img src="images/logo.png" alt="SwiftGlobal Logo" class="logo-img" onerror="this.style.display='none'" />
+        <span class="logo-text">Swift<span>Global</span></span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li class="has-dropdown">
+          <a href="services.html">Services <i class="fa fa-chevron-down fa-xs"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="pages/sea-freight.html"><i class="fa fa-ship"></i> Sea Freight</a></li>
+            <li><a href="pages/air-freight.html"><i class="fa fa-plane"></i> Air Freight</a></li>
+            <li><a href="pages/land-freight.html"><i class="fa fa-truck"></i> Land Freight</a></li>
+            <li><a href="pages/customs.html"><i class="fa fa-file-contract"></i> Customs Clearance</a></li>
+            <li><a href="pages/warehousing.html"><i class="fa fa-warehouse"></i> Warehousing</a></li>
+            <li><a href="pages/project-cargo.html"><i class="fa fa-boxes-stacked"></i> Project Cargo</a></li>
+          </ul>
+        </li>
+        <li><a href="tracking.html">Track Parcel</a></li>
+        <li><a href="news.html" class="active">News</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-right">
+        <a href="contact.html" class="btn btn-primary btn-sm nav-cta"><i class="fa fa-file-invoice"></i> Get a Quote</a>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="hero-badge animate-fadeInDown delay-1" style="display:inline-flex;margin-bottom:16px;">
+        <i class="fa fa-newspaper"></i> Latest Updates
+      </div>
+      <h1 class="animate-fadeInUp delay-2">News & Insights</h1>
+      <p class="animate-fadeInUp delay-3">Industry news, logistics trends, and updates from the SwiftGlobal team.</p>
+      <nav class="breadcrumb animate-fadeInUp delay-4">
+        <a href="index.html">Home</a>
+        <span><i class="fa fa-chevron-right fa-xs"></i></span>
+        <span>News</span>
+      </nav>
+    </div>
+  </section>
+
+  <!-- ============ NEWS GRID ============ -->
+  <section class="section">
+    <div class="container">
+
+      <!-- Filter Tabs -->
+      <div class="news-filters" data-aos="fade-up">
+        <button class="news-filter-btn active" data-filter="all">All</button>
+        <button class="news-filter-btn" data-filter="sea">Sea Freight</button>
+        <button class="news-filter-btn" data-filter="air">Air Freight</button>
+        <button class="news-filter-btn" data-filter="customs">Customs</button>
+        <button class="news-filter-btn" data-filter="warehousing">Warehousing</button>
+        <button class="news-filter-btn" data-filter="company">Company News</button>
+      </div>
+
+      <!-- Featured Article -->
+      <div class="news-featured" data-aos="fade-up">
+        <div class="news-featured-img">
+          <img src="images/services/sea-freight.jpg" alt="New sea route" loading="lazy" />
+          <span class="news-category">Sea Freight</span>
+        </div>
+        <div class="news-featured-content">
+          <div class="news-meta">
+            <span><i class="fa fa-calendar"></i> May 10, 2025</span>
+            <span><i class="fa fa-user"></i> SwiftGlobal Team</span>
+            <span><i class="fa fa-clock"></i> 4 min read</span>
+          </div>
+          <h2>New Direct Sea Route Launched to Asian Ports</h2>
+          <p>SwiftGlobal is proud to announce the launch of a new direct shipping lane connecting West Africa to major Asian ports including Shanghai, Singapore, and Busan. This new route reduces transit time by up to 30%, opening faster and more cost-effective opportunities for our clients exporting to Asian markets.</p>
+          <p style="margin-top:12px;">The new service operates weekly departures and includes full customs clearance support, real-time container tracking, and competitive rates for both FCL and LCL shipments.</p>
+          <a href="#" class="btn btn-primary" style="margin-top:24px;"><i class="fa fa-arrow-right"></i> Read Full Article</a>
+        </div>
+      </div>
+
+      <!-- Regular Articles Grid -->
+      <div class="news-grid" style="margin-top:60px;">
+
+        <article class="news-card card" data-aos="fade-up" data-aos-delay="0" data-category="warehousing">
+          <div class="news-card-img">
+            <img src="images/services/warehousing.jpg" alt="Warehousing expansion" loading="lazy" />
+            <span class="news-category">Warehousing</span>
+          </div>
+          <div class="news-card-body">
+            <div class="news-meta">
+              <span><i class="fa fa-calendar"></i> April 28, 2025</span>
+              <span><i class="fa fa-clock"></i> 3 min read</span>
+            </div>
+            <h3>Expansion of Our Warehousing Facilities</h3>
+            <p>We have expanded our warehouse capacity by 40% featuring new cold-storage and high-security sections to serve growing client demand.</p>
+            <a href="#" class="service-link">Read More <i class="fa fa-arrow-right"></i></a>
+          </div>
+        </article>
+
+        <article class="news-card card" data-aos="fade-up" data-aos-delay="100" data-category="customs">
+          <div class="news-card-img">
+            <img src="images/services/customs.jpg" alt="Customs regulations" loading="lazy" />
+            <span class="news-category">Customs</span>
+          </div>
+          <div class="news-card-body">
+            <div class="news-meta">
+              <span><i class="fa fa-calendar"></i> April 15, 2025</span>
+              <span><i class="fa fa-clock"></i> 5 min read</span>
+            </div>
+            <h3>Understanding New Import Regulations in 2025</h3>
+            <p>Our customs team breaks down the key regulatory changes affecting importers in 2025 and how SwiftGlobal ensures full compliance.</p>
+            <a href="#" class="service-link">Read More <i class="fa fa-arrow-right"></i></a>
+          </div>
+        </article>
+
+        <article class="news-card card" data-aos="fade-up" data-aos-delay="200" data-category="air">
+          <div class="news-card-img">
+            <img src="images/services/air-freight.jpg" alt="Air freight growth" loading="lazy" />
+            <span class="news-category">Air Freight</span>
+          </div>
+          <div class="news-card-body">
+            <div class="news-meta">
+              <span><i class="fa fa-calendar"></i> March 30, 2025</span>
+              <span><i class="fa fa-clock"></i> 3 min read</span>
+            </div>
+            <h3>Air Freight Volumes Rise 18% in Q1 2025</h3>
+            <p>Global air cargo demand surged in the first quarter of 2025, driven by e-commerce growth and supply chain shifts. Here's what it means for you.</p>
+            <a href="#" class="service-link">Read More <i class="fa fa-arrow-right"></i></a>
+          </div>
+        </article>
+
+        <article class="news-card card" data-aos="fade-up" data-aos-delay="0" data-category="company">
+          <div class="news-card-img">
+            <img src="images/about/team-warehouse.jpg" alt="SwiftGlobal team" loading="lazy" />
+            <span class="news-category">Company News</span>
+          </div>
+          <div class="news-card-body">
+            <div class="news-meta">
+              <span><i class="fa fa-calendar"></i> March 12, 2025</span>
+              <span><i class="fa fa-clock"></i> 2 min read</span>
+            </div>
+            <h3>SwiftGlobal Achieves ISO 9001:2015 Recertification</h3>
+            <p>We are proud to announce the successful recertification of our operations under ISO 9001:2015, reaffirming our commitment to quality management.</p>
+            <a href="#" class="service-link">Read More <i class="fa fa-arrow-right"></i></a>
+          </div>
+        </article>
+
+        <article class="news-card card" data-aos="fade-up" data-aos-delay="100" data-category="sea">
+          <div class="news-card-img">
+            <img src="images/services/sea-freight.jpg" alt="Container rates" loading="lazy" />
+            <span class="news-category">Sea Freight</span>
+          </div>
+          <div class="news-card-body">
+            <div class="news-meta">
+              <span><i class="fa fa-calendar"></i> February 20, 2025</span>
+              <span><i class="fa fa-clock"></i> 4 min read</span>
+            </div>
+            <h3>Container Shipping Rates: 2025 Outlook</h3>
+            <p>Our market analysts break down the latest container rate trends and provide a forecast for global ocean freight pricing through the end of 2025.</p>
+            <a href="#" class="service-link">Read More <i class="fa fa-arrow-right"></i></a>
+          </div>
+        </article>
+
+        <article class="news-card card" data-aos="fade-up" data-aos-delay="200" data-category="company">
+          <div class="news-card-img">
+            <img src="images/services/project-cargo.jpg" alt="Project cargo" loading="lazy" />
+            <span class="news-category">Company News</span>
+          </div>
+          <div class="news-card-body">
+            <div class="news-meta">
+              <span><i class="fa fa-calendar"></i> January 15, 2025</span>
+              <span><i class="fa fa-clock"></i> 3 min read</span>
+            </div>
+            <h3>Successful Delivery of 120-Ton Industrial Turbine</h3>
+            <p>Our project cargo team successfully coordinated the sea and road transport of a 120-ton industrial turbine across 3 countries in under 12 days.</p>
+            <a href="#" class="service-link">Read More <i class="fa fa-arrow-right"></i></a>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Newsletter -->
+      <div class="newsletter-box" data-aos="fade-up">
+        <div class="newsletter-content">
+          <div class="newsletter-icon"><i class="fa fa-bell"></i></div>
+          <div>
+            <h3>Stay in the Loop</h3>
+            <p>Subscribe to our newsletter for weekly logistics insights, rate updates, and SwiftGlobal news.</p>
+          </div>
+        </div>
+        <div class="newsletter-form">
+          <input type="email" id="newsletterEmail" placeholder="Enter your email address" aria-label="Email for newsletter" />
+          <button class="btn btn-primary" onclick="subscribeNewsletter()">
+            <i class="fa fa-paper-plane"></i> Subscribe
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-col footer-brand">
+            <a href="index.html" class="footer-logo">
+              <img src="images/logo.png" alt="SwiftGlobal Logo" onerror="this.style.display='none'" />
+              <span>Swift<span class="text-accent">Global</span></span>
+            </a>
+            <p>Your trusted global logistics partner — delivering reliability, speed, and transparency across every shipment, everywhere.</p>
+            <div class="footer-socials">
+              <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+              <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+              <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>Our Services</h4>
+            <ul class="footer-links">
+              <li><a href="pages/sea-freight.html"><i class="fa fa-chevron-right"></i> Sea Freight</a></li>
+              <li><a href="pages/air-freight.html"><i class="fa fa-chevron-right"></i> Air Freight</a></li>
+              <li><a href="pages/land-freight.html"><i class="fa fa-chevron-right"></i> Land Freight</a></li>
+              <li><a href="pages/customs.html"><i class="fa fa-chevron-right"></i> Customs Clearance</a></li>
+              <li><a href="pages/warehousing.html"><i class="fa fa-chevron-right"></i> Warehousing</a></li>
+              <li><a href="pages/project-cargo.html"><i class="fa fa-chevron-right"></i> Project Cargo</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Quick Links</h4>
+            <ul class="footer-links">
+              <li><a href="index.html"><i class="fa fa-chevron-right"></i> Home</a></li>
+              <li><a href="about.html"><i class="fa fa-chevron-right"></i> About Us</a></li>
+              <li><a href="tracking.html"><i class="fa fa-chevron-right"></i> Track a Parcel</a></li>
+              <li><a href="news.html"><i class="fa fa-chevron-right"></i> News & Insights</a></li>
+              <li><a href="contact.html"><i class="fa fa-chevron-right"></i> Contact Us</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Contact Us</h4>
+            <ul class="footer-contact">
+              <li><i class="fa fa-location-dot"></i><span>123 Logistics Avenue, Business District</span></li>
+              <li><i class="fa fa-phone"></i><a href="tel:+237000000000">+237 000 000 000</a></li>
+              <li><i class="fa fa-envelope"></i><a href="mailto:info@swiftgloballogistics.com">info@swiftgloballogistics.com</a></li>
+              <li><i class="fa fa-clock"></i><span>Mon – Fri: 08:00 – 18:00</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container flex-between">
+        <p>&copy; <span id="year"></span> SwiftGlobal Logistics. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" id="backToTop" aria-label="Back to top"><i class="fa fa-chevron-up"></i></button>
+  <div class="cookie-banner" id="cookieBanner">
+    <p>We use cookies to enhance your experience. By continuing, you agree to our <a href="#">Cookie Policy</a>.</p>
+    <div class="cookie-actions">
+      <button class="btn btn-primary btn-sm cookie-accept">Accept</button>
+      <button class="btn btn-outline btn-sm cookie-decline" style="color:var(--text-light);border-color:var(--text-light);">Decline</button>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // News filter tabs
+    document.querySelectorAll('.news-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.news-filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.getAttribute('data-filter');
+        document.querySelectorAll('.news-card').forEach(card => {
+          const cat = card.getAttribute('data-category');
+          card.style.display = (filter === 'all' || cat === filter) ? 'block' : 'none';
+        });
+      });
+    });
+
+    // Newsletter
+    function subscribeNewsletter() {
+      const email = document.getElementById('newsletterEmail').value.trim();
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!re.test(email)) {
+        document.getElementById('newsletterEmail').style.borderColor = 'var(--error)';
+        return;
+      }
+      document.getElementById('newsletterEmail').style.borderColor = 'var(--success)';
+      document.getElementById('newsletterEmail').value = '';
+      document.getElementById('newsletterEmail').placeholder = '✓ Subscribed! Thank you.';
+    }
+  </script>
+</body>
+</html>

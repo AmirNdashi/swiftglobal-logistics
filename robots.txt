@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Disallow admin or private paths (none yet, but good practice)
+Disallow: /private/
+
+# Sitemap location
+Sitemap: https://www.swiftgloballogistics.com/sitemap.xml
