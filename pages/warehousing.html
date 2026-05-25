@@ -1,83 +1,604 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Warehousing — SwiftGlobal Logistics</title>
-  <meta name="description" content="SwiftGlobal Logistics warehousing — secure, modern storage facilities with inventory management, 24/7 monitoring, and flexible terms." />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://www.swiftglobalogistics.com/pages/warehousing.html" />
-  <link rel="icon" type="image/x-icon" href="../images/favicon.ico" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
-  <link rel="stylesheet" href="../css/style.css" /><link rel="stylesheet" href="../css/animations.css" /><link rel="stylesheet" href="../css/responsive.css" />
-</head>
-<body>
-  <div class="preloader" id="preloader"><div class="preloader-logo">Swift<span>Global</span></div><div class="preloader-spinner"></div></div>
-  <div class="scroll-progress"></div>
-  <div class="topbar"><div class="container flex-between"><div class="topbar-left"><a href="mailto:info@swiftgloballogistics.com"><i class="fa fa-envelope"></i> info@swiftgloballogistics.com</a><a href="tel:+237000000000"><i class="fa fa-phone"></i> +237 000 000 000</a></div><div class="topbar-right"><span><i class="fa fa-clock"></i> Mon – Fri: 08:00 – 18:00</span><div class="topbar-socials"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-x-twitter"></i></a><a href="#"><i class="fab fa-linkedin-in"></i></a><a href="#"><i class="fab fa-instagram"></i></a></div></div></div></div>
-  <nav class="navbar" id="navbar"><div class="container flex-between"><a href="../index.html" class="nav-logo"><img src="../images/logo.png" alt="SwiftGlobal Logo" class="logo-img" onerror="this.style.display='none'" /><span class="logo-text">Swift<span>Global</span></span></a><ul class="nav-links" id="navLinks"><li><a href="../index.html">Home</a></li><li><a href="../about.html">About Us</a></li><li class="has-dropdown"><a href="../services.html" class="active">Services <i class="fa fa-chevron-down fa-xs"></i></a><ul class="dropdown-menu"><li><a href="sea-freight.html"><i class="fa fa-ship"></i> Sea Freight</a></li><li><a href="air-freight.html"><i class="fa fa-plane"></i> Air Freight</a></li><li><a href="land-freight.html"><i class="fa fa-truck"></i> Land Freight</a></li><li><a href="customs.html"><i class="fa fa-file-contract"></i> Customs Clearance</a></li><li><a href="warehousing.html"><i class="fa fa-warehouse"></i> Warehousing</a></li><li><a href="project-cargo.html"><i class="fa fa-boxes-stacked"></i> Project Cargo</a></li></ul></li><li><a href="../tracking.html">Track Parcel</a></li><li><a href="../news.html">News</a></li><li><a href="../contact.html">Contact</a></li></ul><div class="nav-right"><a href="../contact.html" class="btn btn-primary btn-sm nav-cta"><i class="fa fa-file-invoice"></i> Get a Quote</a><button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false"><span></span><span></span><span></span></button></div></div></nav>
-
-  <section class="page-hero">
-    <div class="container">
-      <div class="hero-badge animate-fadeInDown delay-1" style="display:inline-flex;margin-bottom:16px;"><i class="fa fa-warehouse"></i> Warehousing</div>
-      <h1 class="animate-fadeInUp delay-2">Secure Storage Solutions</h1>
-      <p class="animate-fadeInUp delay-3">State-of-the-art warehousing facilities with 24/7 security, inventory management, and flexible storage terms.</p>
-      <nav class="breadcrumb animate-fadeInUp delay-4"><a href="../index.html">Home</a><span><i class="fa fa-chevron-right fa-xs"></i></span><a href="../services.html">Services</a><span><i class="fa fa-chevron-right fa-xs"></i></span><span>Warehousing</span></nav>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Warehousing — SwiftGlobal Logistics</title>
+    <meta
+      name="description"
+      content="SwiftGlobal Logistics warehousing — secure, modern storage facilities with inventory management, 24/7 monitoring, and flexible terms."
+    />
+    <meta name="robots" content="index, follow" />
+    <link
+      rel="canonical"
+      href="https://www.swiftglobalogistics.com/pages/warehousing.html"
+    />
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"
+    />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/animations.css" />
+    <link rel="stylesheet" href="../css/responsive.css" />
+  </head>
+  <body>
+    <div class="preloader" id="preloader">
+      <div class="preloader-logo">Swift<span>Global</span></div>
+      <div class="preloader-spinner"></div>
     </div>
-  </section>
-
-  <section class="section"><div class="container"><div class="service-detail-layout">
-    <div class="service-detail-main">
-      <div class="service-detail-img" data-aos="fade-up"><img src="../images/services/warehousing.jpg" alt="Modern warehousing facility" loading="lazy" /></div>
-      <div class="service-detail-section" data-aos="fade-up">
-        <h2>About Our Warehousing Service</h2><div class="divider divider-left"></div>
-        <p style="margin-top:18px;">SwiftGlobal operates modern, fully secured warehouse facilities strategically located for efficient distribution. Our warehouses are equipped with advanced inventory management systems, 24/7 CCTV surveillance, and expert staff to ensure your goods are stored safely and managed with precision.</p>
-        <p style="margin-top:14px;">Whether you need short-term storage during transit or long-term warehousing for distribution, we offer flexible terms and complete visibility into your stock at all times.</p>
-      </div>
-      <div class="service-detail-section" data-aos="fade-up">
-        <h3>Warehousing Options</h3>
-        <div class="options-grid">
-          <div class="option-card"><div class="option-icon"><i class="fa fa-box"></i></div><h4>Ambient Storage</h4><p>Standard storage for general goods at ambient temperature. Racking systems optimized for easy access and space efficiency.</p></div>
-          <div class="option-card"><div class="option-icon"><i class="fa fa-snowflake"></i></div><h4>Cold Storage</h4><p>Refrigerated and frozen storage for perishables, food products, and temperature-sensitive pharmaceuticals.</p></div>
-          <div class="option-card"><div class="option-icon"><i class="fa fa-shield-halved"></i></div><h4>High-Security Storage</h4><p>Enhanced security vaults for high-value goods, electronics, jewelry, and confidential cargo.</p></div>
-          <div class="option-card"><div class="option-icon"><i class="fa fa-boxes-stacked"></i></div><h4>Pick, Pack & Fulfillment</h4><p>End-to-end order fulfillment services — receive, store, pick, pack, and ship to your customers.</p></div>
+    <div class="scroll-progress"></div>
+    <div class="topbar">
+      <div class="container flex-between">
+        <div class="topbar-left">
+          <a href="mailto:info@swiftglobalogistics.com"
+            ><i class="fa fa-envelope"></i> info@swiftglobalogistics.com</a
+          ><a href="tel:+1xxxxxxxx"
+            ><i class="fa fa-phone"></i> +1 xxx xxx xxx</a
+          >
         </div>
-      </div>
-      <div class="service-detail-section" data-aos="fade-up">
-        <h3>Key Benefits</h3>
-        <div class="benefits-list">
-          <div class="benefit-item"><i class="fa fa-circle-check"></i><div><h4>24/7 CCTV & Security</h4><p>Round-the-clock surveillance, access control, and on-site security personnel protect your goods at all times.</p></div></div>
-          <div class="benefit-item"><i class="fa fa-circle-check"></i><div><h4>Live Inventory Dashboard</h4><p>Access your stock levels, inbound/outbound activity, and reports in real time via our client portal.</p></div></div>
-          <div class="benefit-item"><i class="fa fa-circle-check"></i><div><h4>Flexible Terms</h4><p>Short-term, long-term, and seasonal storage options available. Only pay for the space you actually use.</p></div></div>
-          <div class="benefit-item"><i class="fa fa-circle-check"></i><div><h4>Fully Insured Facility</h4><p>All goods stored with SwiftGlobal are covered by comprehensive warehouse insurance for your peace of mind.</p></div></div>
-        </div>
-      </div>
-      <div class="service-detail-section" data-aos="fade-up">
-        <h3>How It Works</h3>
-        <div class="process-steps">
-          <div class="process-step"><div class="process-num">01</div><div class="process-content"><h4>Discuss Your Needs</h4><p>Tell us your cargo type, volume, and storage duration. We'll recommend the right storage solution.</p></div></div>
-          <div class="process-step"><div class="process-num">02</div><div class="process-content"><h4>Space Allocated</h4><p>We allocate dedicated storage space and configure racking or shelving to fit your cargo specifications.</p></div></div>
-          <div class="process-step"><div class="process-num">03</div><div class="process-content"><h4>Goods Received</h4><p>Your cargo arrives at our facility. Our team verifies, photographs, and logs each item into our system.</p></div></div>
-          <div class="process-step"><div class="process-num">04</div><div class="process-content"><h4>Storage & Management</h4><p>Goods are stored safely. You monitor stock levels and request dispatches anytime via our client portal.</p></div></div>
-          <div class="process-step"><div class="process-num">05</div><div class="process-content"><h4>Dispatch on Request</h4><p>When you're ready, we pick, pack, and dispatch your goods to any destination worldwide.</p></div></div>
+        <div class="topbar-right">
+          <span><i class="fa fa-clock"></i> Mon – Fri: 08:00 – 18:00</span>
+          <div class="topbar-socials">
+            <a href="#"><i class="fab fa-facebook-f"></i></a
+            ><a href="#"><i class="fab fa-x-twitter"></i></a
+            ><a href="#"><i class="fab fa-linkedin-in"></i></a
+            ><a href="#"><i class="fab fa-instagram"></i></a>
+          </div>
         </div>
       </div>
     </div>
-    <div class="service-detail-sidebar">
-      <div class="sidebar-card sidebar-quote" data-aos="fade-left"><h3><i class="fa fa-file-invoice-dollar"></i> Get a Quick Quote</h3><p>Need storage space? Get a warehousing quote today.</p><a href="../contact.html?service=warehousing" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:16px;"><i class="fa fa-paper-plane"></i> Request a Quote</a></div>
-      <div class="sidebar-card" data-aos="fade-left" data-aos-delay="100"><h3>Other Services</h3><ul class="sidebar-services"><li><a href="sea-freight.html"><i class="fa fa-ship"></i> Sea Freight</a></li><li><a href="air-freight.html"><i class="fa fa-plane"></i> Air Freight</a></li><li><a href="land-freight.html"><i class="fa fa-truck"></i> Land Freight</a></li><li><a href="customs.html"><i class="fa fa-file-contract"></i> Customs Clearance</a></li><li><a href="project-cargo.html"><i class="fa fa-boxes-stacked"></i> Project Cargo</a></li></ul></div>
-      <div class="sidebar-card sidebar-track" data-aos="fade-left" data-aos-delay="200"><h3><i class="fa fa-magnifying-glass-location"></i> Track Your Shipment</h3><p>Track any parcel in real time.</p><a href="../tracking.html" class="btn btn-dark" style="width:100%;justify-content:center;margin-top:16px;"><i class="fa fa-search"></i> Track Now</a></div>
-      <div class="sidebar-card" data-aos="fade-left" data-aos-delay="300"><h3>Need Help?</h3><ul class="sidebar-contact-info"><li><i class="fa fa-phone"></i><a href="tel:+237000000000">+237 000 000 000</a></li><li><i class="fa fa-envelope"></i><a href="mailto:info@swiftgloballogistics.com">info@swiftgloballogistics.com</a></li><li><i class="fa fa-clock"></i><span>Mon–Fri: 08:00–18:00</span></li></ul></div>
-    </div>
-  </div></div></section>
+    <nav class="navbar" id="navbar">
+      <div class="container flex-between">
+        <a href="../index.html" class="nav-logo"
+          ><img
+            src="../images/logo.png"
+            alt="SwiftGlobal Logo"
+            class="logo-img"
+            onerror="this.style.display = 'none'"
+          /><span class="logo-text">Swift<span>Global</span></span></a
+        >
+        <ul class="nav-links" id="navLinks">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../about.html">About Us</a></li>
+          <li class="has-dropdown">
+            <a href="../services.html" class="active"
+              >Services <i class="fa fa-chevron-down fa-xs"></i
+            ></a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="sea-freight.html"
+                  ><i class="fa fa-ship"></i> Sea Freight</a
+                >
+              </li>
+              <li>
+                <a href="air-freight.html"
+                  ><i class="fa fa-plane"></i> Air Freight</a
+                >
+              </li>
+              <li>
+                <a href="land-freight.html"
+                  ><i class="fa fa-truck"></i> Land Freight</a
+                >
+              </li>
+              <li>
+                <a href="customs.html"
+                  ><i class="fa fa-file-contract"></i> Customs Clearance</a
+                >
+              </li>
+              <li>
+                <a href="warehousing.html"
+                  ><i class="fa fa-warehouse"></i> Warehousing</a
+                >
+              </li>
+              <li>
+                <a href="project-cargo.html"
+                  ><i class="fa fa-boxes-stacked"></i> Project Cargo</a
+                >
+              </li>
+            </ul>
+          </li>
+          <li><a href="../tracking.html">Track Parcel</a></li>
+          <li><a href="../news.html">News</a></li>
+          <li><a href="../contact.html">Contact</a></li>
+        </ul>
+        <div class="nav-right">
+          <a href="../contact.html" class="btn btn-primary btn-sm nav-cta"
+            ><i class="fa fa-file-invoice"></i> Get a Quote</a
+          ><button
+            class="hamburger"
+            id="hamburger"
+            aria-label="Toggle navigation"
+            aria-expanded="false"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
 
-  <section class="cta-section"><div class="cta-overlay"></div><div class="container" data-aos="zoom-in"><div class="cta-content"><h2>Need Reliable Storage for Your Goods?</h2><p>Our warehousing team will find the perfect solution for your storage needs. Get a quote today.</p><div class="cta-buttons"><a href="../contact.html" class="btn btn-primary btn-lg"><i class="fa fa-file-invoice"></i> Request a Free Quote</a><a href="../tracking.html" class="btn btn-outline btn-lg"><i class="fa fa-magnifying-glass"></i> Track a Parcel</a></div></div></div></section>
-  <footer class="footer"><div class="footer-top"><div class="container"><div class="footer-grid"><div class="footer-col footer-brand"><a href="../index.html" class="footer-logo"><img src="../images/logo.png" alt="SwiftGlobal Logo" onerror="this.style.display='none'" /><span>Swift<span class="text-accent">Global</span></span></a><p>Your trusted global logistics partner — delivering reliability, speed, and transparency across every shipment, everywhere.</p><div class="footer-socials"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-x-twitter"></i></a><a href="#"><i class="fab fa-linkedin-in"></i></a><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-youtube"></i></a></div></div><div class="footer-col"><h4>Our Services</h4><ul class="footer-links"><li><a href="sea-freight.html"><i class="fa fa-chevron-right"></i> Sea Freight</a></li><li><a href="air-freight.html"><i class="fa fa-chevron-right"></i> Air Freight</a></li><li><a href="land-freight.html"><i class="fa fa-chevron-right"></i> Land Freight</a></li><li><a href="customs.html"><i class="fa fa-chevron-right"></i> Customs Clearance</a></li><li><a href="warehousing.html"><i class("fa fa-chevron-right"></i> Warehousing</a></li><li><a href("project-cargo.html"><i class("fa fa-chevron-right"></i> Project Cargo</a></li></ul></div><div class("footer-col")}><h4>Quick Links</h4><ul className("footer-links")}><li><aN href("../index.html")}><i className("fa fa-chevron-right")}></i> Home</aN ></li >< li >< a hrEF = "../about.html" >< i className = "fa fa-chevron-right" ></ i > About Us </ a ></ li >< li >< a hrEF = "../tracking.html" >< i className = "fa fa-chevron-right" ></ i > Track a Parcel </ a ></ li >< li >< a hrEF = "../news.html" >< i className = "fa fa-chevron-right" ></ i > News & Insights </ a ></ li >< li >< a hrEF = "../contact.html" >< i className = "fa fa-chevron-right" ></ i > Contact Us </ a ></ li ></ ul ></ div >< div className("footer-col")}><h4>Contact Us</h4><ul className("footer-contact")}><li>{< i className = "fa fa-location-dot" ></ i >}<span>{123 Logistics Avenue, Business District}</span>{< / li >}< li >{< i className = "fa fa-phone" ></ i >}<aN hREF = "tel:+237000000000">+237 000 000 000</aN >{< / li >}< li >{< i className = "fa fa-envelope" ></ i >}<aN hREF = "mailto:info@swiftgloballogistics.com">info@swiftgloballogistics.com</aN >{< / li >}< li >{< i className = "fa fa-clock" ></ i >}<span>{Mon – Fri: 08:00 – 18:00}</span>{< / li >}</ ul ></ div ></ div ></ div ></ div >< div className("footer-bottom")}>< div className("container flex-between")}>< p >&copy; < span id = "year" ></ span > SwiftGlobal Logistics. All rights reserved.</ p >< div className("footer-bottom-links")}>< a hREF = "#" > Privacy Policy </ a >< a hREF = "#" > Terms of Service </ a >< a hREF = "#" > Sitemap </ a ></ div ></ div ></ div ></ footer >
-  <button class="back-to-top" id="backToTop" aria-label="Back to top"><i class="fa fa-chevron-up"></i></button>
-  <div class="cookie-banner" id="cookieBanner"><p>We use cookies to enhance your experience. By continuing, you agree to our <a href="#">Cookie Policy</a>.</p><div class="cookie-actions"><button class="btn btn-primary btn-sm cookie-accept">Accept</button><button class="btn btn-outline btn-sm cookie-decline" style="color:var(--text-light);border-color:var(--text-light);">Decline</button></div></div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script><script src="../js/main.js"></script>
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
-</body>
+    <section class="page-hero">
+      <div class="container">
+        <div
+          class="hero-badge animate-fadeInDown delay-1"
+          style="display: inline-flex; margin-bottom: 16px"
+        >
+          <i class="fa fa-warehouse"></i> Warehousing
+        </div>
+        <h1 class="animate-fadeInUp delay-2">Secure Storage Solutions</h1>
+        <p class="animate-fadeInUp delay-3">
+          State-of-the-art warehousing facilities with 24/7 security, inventory
+          management, and flexible storage terms.
+        </p>
+        <nav class="breadcrumb animate-fadeInUp delay-4">
+          <a href="../index.html">Home</a
+          ><span><i class="fa fa-chevron-right fa-xs"></i></span
+          ><a href="../services.html">Services</a
+          ><span><i class="fa fa-chevron-right fa-xs"></i></span
+          ><span>Warehousing</span>
+        </nav>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="service-detail-layout">
+          <div class="service-detail-main">
+            <div class="service-detail-img" data-aos="fade-up">
+              <img
+                src="../images/services/warehousing.jpg"
+                alt="Modern warehousing facility"
+                loading="lazy"
+              />
+            </div>
+            <div class="service-detail-section" data-aos="fade-up">
+              <h2>About Our Warehousing Service</h2>
+              <div class="divider divider-left"></div>
+              <p style="margin-top: 18px">
+                SwiftGlobal operates modern, fully secured warehouse facilities
+                strategically located for efficient distribution. Our warehouses
+                are equipped with advanced inventory management systems, 24/7
+                CCTV surveillance, and expert staff to ensure your goods are
+                stored safely and managed with precision.
+              </p>
+              <p style="margin-top: 14px">
+                Whether you need short-term storage during transit or long-term
+                warehousing for distribution, we offer flexible terms and
+                complete visibility into your stock at all times.
+              </p>
+            </div>
+            <div class="service-detail-section" data-aos="fade-up">
+              <h3>Warehousing Options</h3>
+              <div class="options-grid">
+                <div class="option-card">
+                  <div class="option-icon"><i class="fa fa-box"></i></div>
+                  <h4>Ambient Storage</h4>
+                  <p>
+                    Standard storage for general goods at ambient temperature.
+                    Racking systems optimized for easy access and space
+                    efficiency.
+                  </p>
+                </div>
+                <div class="option-card">
+                  <div class="option-icon"><i class="fa fa-snowflake"></i></div>
+                  <h4>Cold Storage</h4>
+                  <p>
+                    Refrigerated and frozen storage for perishables, food
+                    products, and temperature-sensitive pharmaceuticals.
+                  </p>
+                </div>
+                <div class="option-card">
+                  <div class="option-icon">
+                    <i class="fa fa-shield-halved"></i>
+                  </div>
+                  <h4>High-Security Storage</h4>
+                  <p>
+                    Enhanced security vaults for high-value goods, electronics,
+                    jewelry, and confidential cargo.
+                  </p>
+                </div>
+                <div class="option-card">
+                  <div class="option-icon">
+                    <i class="fa fa-boxes-stacked"></i>
+                  </div>
+                  <h4>Pick, Pack & Fulfillment</h4>
+                  <p>
+                    End-to-end order fulfillment services — receive, store,
+                    pick, pack, and ship to your customers.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="service-detail-section" data-aos="fade-up">
+              <h3>Key Benefits</h3>
+              <div class="benefits-list">
+                <div class="benefit-item">
+                  <i class="fa fa-circle-check"></i>
+                  <div>
+                    <h4>24/7 CCTV & Security</h4>
+                    <p>
+                      Round-the-clock surveillance, access control, and on-site
+                      security personnel protect your goods at all times.
+                    </p>
+                  </div>
+                </div>
+                <div class="benefit-item">
+                  <i class="fa fa-circle-check"></i>
+                  <div>
+                    <h4>Live Inventory Dashboard</h4>
+                    <p>
+                      Access your stock levels, inbound/outbound activity, and
+                      reports in real time via our client portal.
+                    </p>
+                  </div>
+                </div>
+                <div class="benefit-item">
+                  <i class="fa fa-circle-check"></i>
+                  <div>
+                    <h4>Flexible Terms</h4>
+                    <p>
+                      Short-term, long-term, and seasonal storage options
+                      available. Only pay for the space you actually use.
+                    </p>
+                  </div>
+                </div>
+                <div class="benefit-item">
+                  <i class="fa fa-circle-check"></i>
+                  <div>
+                    <h4>Fully Insured Facility</h4>
+                    <p>
+                      All goods stored with SwiftGlobal are covered by
+                      comprehensive warehouse insurance for your peace of mind.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="service-detail-section" data-aos="fade-up">
+              <h3>How It Works</h3>
+              <div class="process-steps">
+                <div class="process-step">
+                  <div class="process-num">01</div>
+                  <div class="process-content">
+                    <h4>Discuss Your Needs</h4>
+                    <p>
+                      Tell us your cargo type, volume, and storage duration.
+                      We'll recommend the right storage solution.
+                    </p>
+                  </div>
+                </div>
+                <div class="process-step">
+                  <div class="process-num">02</div>
+                  <div class="process-content">
+                    <h4>Space Allocated</h4>
+                    <p>
+                      We allocate dedicated storage space and configure racking
+                      or shelving to fit your cargo specifications.
+                    </p>
+                  </div>
+                </div>
+                <div class="process-step">
+                  <div class="process-num">03</div>
+                  <div class="process-content">
+                    <h4>Goods Received</h4>
+                    <p>
+                      Your cargo arrives at our facility. Our team verifies,
+                      photographs, and logs each item into our system.
+                    </p>
+                  </div>
+                </div>
+                <div class="process-step">
+                  <div class="process-num">04</div>
+                  <div class="process-content">
+                    <h4>Storage & Management</h4>
+                    <p>
+                      Goods are stored safely. You monitor stock levels and
+                      request dispatches anytime via our client portal.
+                    </p>
+                  </div>
+                </div>
+                <div class="process-step">
+                  <div class="process-num">05</div>
+                  <div class="process-content">
+                    <h4>Dispatch on Request</h4>
+                    <p>
+                      When you're ready, we pick, pack, and dispatch your goods
+                      to any destination worldwide.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="service-detail-sidebar">
+            <div class="sidebar-card sidebar-quote" data-aos="fade-left">
+              <h3>
+                <i class="fa fa-file-invoice-dollar"></i> Get a Quick Quote
+              </h3>
+              <p>Need storage space? Get a warehousing quote today.</p>
+              <a
+                href="../contact.html?service=warehousing"
+                class="btn btn-primary"
+                style="width: 100%; justify-content: center; margin-top: 16px"
+                ><i class="fa fa-paper-plane"></i> Request a Quote</a
+              >
+            </div>
+            <div class="sidebar-card" data-aos="fade-left" data-aos-delay="100">
+              <h3>Other Services</h3>
+              <ul class="sidebar-services">
+                <li>
+                  <a href="sea-freight.html"
+                    ><i class="fa fa-ship"></i> Sea Freight</a
+                  >
+                </li>
+                <li>
+                  <a href="air-freight.html"
+                    ><i class="fa fa-plane"></i> Air Freight</a
+                  >
+                </li>
+                <li>
+                  <a href="land-freight.html"
+                    ><i class="fa fa-truck"></i> Land Freight</a
+                  >
+                </li>
+                <li>
+                  <a href="customs.html"
+                    ><i class="fa fa-file-contract"></i> Customs Clearance</a
+                  >
+                </li>
+                <li>
+                  <a href="project-cargo.html"
+                    ><i class="fa fa-boxes-stacked"></i> Project Cargo</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div
+              class="sidebar-card sidebar-track"
+              data-aos="fade-left"
+              data-aos-delay="200"
+            >
+              <h3>
+                <i class="fa fa-magnifying-glass-location"></i> Track Your
+                Shipment
+              </h3>
+              <p>Track any parcel in real time.</p>
+              <a
+                href="../tracking.html"
+                class="btn btn-dark"
+                style="width: 100%; justify-content: center; margin-top: 16px"
+                ><i class="fa fa-search"></i> Track Now</a
+              >
+            </div>
+            <div class="sidebar-card" data-aos="fade-left" data-aos-delay="300">
+              <h3>Need Help?</h3>
+              <ul class="sidebar-contact-info">
+                <li>
+                  <i class="fa fa-phone"></i
+                  ><a href="tel:+1xxxxxxxx">+1 xxx xxx xxx</a>
+                </li>
+                <li>
+                  <i class="fa fa-envelope"></i
+                  ><a href="mailto:info@swiftglobalogistics.com"
+                    >info@swiftglobalogistics.com</a
+                  >
+                </li>
+                <li>
+                  <i class="fa fa-clock"></i><span>Mon–Fri: 08:00–18:00</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="cta-overlay"></div>
+      <div class="container" data-aos="zoom-in">
+        <div class="cta-content">
+          <h2>Need Reliable Storage for Your Goods?</h2>
+          <p>
+            Our warehousing team will find the perfect solution for your storage
+            needs. Get a quote today.
+          </p>
+          <div class="cta-buttons">
+            <a href="../contact.html" class="btn btn-primary btn-lg"
+              ><i class="fa fa-file-invoice"></i> Request a Free Quote</a
+            ><a href="../tracking.html" class="btn btn-outline btn-lg"
+              ><i class="fa fa-magnifying-glass"></i> Track a Parcel</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-top">
+        <div class="container">
+          <div class="footer-grid">
+            <div class="footer-col footer-brand">
+              <a href="../index.html" class="footer-logo">
+                <img
+                  src="../images/logo.png"
+                  alt="SwiftGlobal Logo"
+                  onerror="this.style.display = 'none'"
+                />
+                <span>Swift<span class="text-accent">Global</span></span>
+              </a>
+
+              <p>
+                Your trusted global logistics partner — delivering reliability,
+                speed, and transparency across every shipment, everywhere.
+              </p>
+
+              <div class="footer-socials">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-x-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+              </div>
+            </div>
+
+            <div class="footer-col">
+              <h4>Our Services</h4>
+
+              <ul class="footer-links">
+                <li>
+                  <a href="sea-freight.html">
+                    <i class="fa fa-chevron-right"></i> Sea Freight
+                  </a>
+                </li>
+
+                <li>
+                  <a href="air-freight.html">
+                    <i class="fa fa-chevron-right"></i> Air Freight
+                  </a>
+                </li>
+
+                <li>
+                  <a href="land-freight.html">
+                    <i class="fa fa-chevron-right"></i> Land Freight
+                  </a>
+                </li>
+
+                <li>
+                  <a href="customs.html">
+                    <i class="fa fa-chevron-right"></i> Customs Clearance
+                  </a>
+                </li>
+
+                <li>
+                  <a href="warehousing.html">
+                    <i class="fa fa-chevron-right"></i> Warehousing
+                  </a>
+                </li>
+
+                <li>
+                  <a href="project-cargo.html">
+                    <i class="fa fa-chevron-right"></i> Project Cargo
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="footer-col">
+              <h4>Quick Links</h4>
+
+              <ul class="footer-links">
+                <li>
+                  <a href="../index.html">
+                    <i class="fa fa-chevron-right"></i> Home
+                  </a>
+                </li>
+
+                <li>
+                  <a href="../about.html">
+                    <i class="fa fa-chevron-right"></i> About Us
+                  </a>
+                </li>
+
+                <li>
+                  <a href="../tracking.html">
+                    <i class="fa fa-chevron-right"></i> Track a Parcel
+                  </a>
+                </li>
+
+                <li>
+                  <a href="../news.html">
+                    <i class="fa fa-chevron-right"></i> News & Insights
+                  </a>
+                </li>
+
+                <li>
+                  <a href="../contact.html">
+                    <i class="fa fa-chevron-right"></i> Contact Us
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="footer-col">
+              <h4>Contact Us</h4>
+
+              <ul class="footer-contact">
+                <li>
+                  <i class="fa fa-location-dot"></i>
+                  <span>123 Logistics Avenue, Business District</span>
+                </li>
+
+                <li>
+                  <i class="fa fa-phone"></i>
+                  <a href="tel:+1xxxxxxxx">+1 xxx xxx xxx</a>
+                </li>
+
+                <li>
+                  <i class="fa fa-envelope"></i>
+                  <a href="mailto:info@swiftglobalogistics.com">
+                    info@swiftglobalogistics.com
+                  </a>
+                </li>
+
+                <li>
+                  <i class="fa fa-clock"></i>
+                  <span>Mon – Fri: 08:00 – 18:00</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="container flex-between">
+          <p>
+            &copy; <span id="year"></span>
+            SwiftGlobal Logistics. All rights reserved.
+          </p>
+
+          <div class="footer-bottom-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Sitemap</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+      <i class="fa fa-chevron-up"></i>
+    </button>
+    <div class="cookie-banner" id="cookieBanner">
+      <p>
+        We use cookies to enhance your experience. By continuing, you agree to
+        our <a href="#">Cookie Policy</a>.
+      </p>
+      <div class="cookie-actions">
+        <button class="btn btn-primary btn-sm cookie-accept">Accept</button
+        ><button
+          class="btn btn-outline btn-sm cookie-decline"
+          style="color: var(--text-light); border-color: var(--text-light)"
+        >
+          Decline
+        </button>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
 </html>

@@ -1,335 +1,608 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Our Services — SwiftGlobal Logistics</title>
-  <meta name="description" content="SwiftGlobal Logistics offers sea freight, air freight, land freight, customs clearance, warehousing, and project cargo services worldwide." />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://www.swiftglobalogistics.com/services.html" />
-  <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/animations.css" />
-  <link rel="stylesheet" href="css/responsive.css" />
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Our Services — SwiftGlobal Logistics</title>
+    <meta
+      name="description"
+      content="SwiftGlobal Logistics offers sea freight, air freight, land freight, customs clearance, warehousing, and project cargo services worldwide."
+    />
+    <meta name="robots" content="index, follow" />
+    <link
+      rel="canonical"
+      href="https://www.swiftglobalogistics.com/services.html"
+    />
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+  </head>
+  <body>
+    <div class="preloader" id="preloader">
+      <div class="preloader-logo">Swift<span>Global</span></div>
+      <div class="preloader-spinner"></div>
+    </div>
+    <div class="scroll-progress"></div>
 
-  <div class="preloader" id="preloader">
-    <div class="preloader-logo">Swift<span>Global</span></div>
-    <div class="preloader-spinner"></div>
-  </div>
-  <div class="scroll-progress"></div>
-
-  <!-- TOP BAR -->
-  <div class="topbar">
-    <div class="container flex-between">
-      <div class="topbar-left">
-        <a href="mailto:info@swiftglobalogistics.com"><i class="fa fa-envelope"></i> info@swiftglobalogistics.com</a>
-        <a href="tel:+237000000000"><i class="fa fa-phone"></i> +237 000 000 000</a>
-      </div>
-      <div class="topbar-right">
-        <span><i class="fa fa-clock"></i> Mon – Fri: 08:00 – 18:00</span>
-        <div class="topbar-socials">
-          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
-          <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <div class="container flex-between">
+        <div class="topbar-left">
+          <a href="mailto:info@swiftglobalogistics.com"
+            ><i class="fa fa-envelope"></i> info@swiftglobalogistics.com</a
+          >
+          <a href="tel:+1xxxxxxxxx"
+            ><i class="fa fa-phone"></i> +1 xxx xxx xxx</a
+          >
+        </div>
+        <div class="topbar-right">
+          <span><i class="fa fa-clock"></i> Mon – Fri: 08:00 – 18:00</span>
+          <div class="topbar-socials">
+            <a href="#" aria-label="Facebook"
+              ><i class="fab fa-facebook-f"></i
+            ></a>
+            <a href="#" aria-label="Twitter"
+              ><i class="fab fa-x-twitter"></i
+            ></a>
+            <a href="#" aria-label="LinkedIn"
+              ><i class="fab fa-linkedin-in"></i
+            ></a>
+            <a href="#" aria-label="Instagram"
+              ><i class="fab fa-instagram"></i
+            ></a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- NAVBAR -->
-  <nav class="navbar" id="navbar">
-    <div class="container flex-between">
-      <a href="index.html" class="nav-logo">
-        <img src="images/logo.png" alt="SwiftGlobal Logo" class="logo-img" onerror="this.style.display='none'" />
-        <span class="logo-text">Swift<span>Global</span></span>
-      </a>
-      <ul class="nav-links" id="navLinks">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About Us</a></li>
-        <li class="has-dropdown">
-          <a href="services.html" class="active">Services <i class="fa fa-chevron-down fa-xs"></i></a>
-          <ul class="dropdown-menu">
-            <li><a href="pages/sea-freight.html"><i class="fa fa-ship"></i> Sea Freight</a></li>
-            <li><a href="pages/air-freight.html"><i class="fa fa-plane"></i> Air Freight</a></li>
-            <li><a href="pages/land-freight.html"><i class="fa fa-truck"></i> Land Freight</a></li>
-            <li><a href="pages/customs.html"><i class="fa fa-file-contract"></i> Customs Clearance</a></li>
-            <li><a href="pages/warehousing.html"><i class="fa fa-warehouse"></i> Warehousing</a></li>
-            <li><a href="pages/project-cargo.html"><i class="fa fa-boxes-stacked"></i> Project Cargo</a></li>
-          </ul>
-        </li>
-        <li><a href="tracking.html">Track Parcel</a></li>
-        <li><a href="news.html">News</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-      <div class="nav-right">
-        <a href="contact.html" class="btn btn-primary btn-sm nav-cta"><i class="fa fa-file-invoice"></i> Get a Quote</a>
-        <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
-          <span></span><span></span><span></span>
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+      <div class="container flex-between">
+        <a href="index.html" class="nav-logo">
+          <img
+            src="images/logo.png"
+            alt="SwiftGlobal Logo"
+            class="logo-img"
+            onerror="this.style.display = 'none'"
+          />
+          <span class="logo-text">Swift<span>Global</span></span>
+        </a>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li class="has-dropdown">
+            <a href="services.html" class="active"
+              >Services <i class="fa fa-chevron-down fa-xs"></i
+            ></a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="pages/sea-freight.html"
+                  ><i class="fa fa-ship"></i> Sea Freight</a
+                >
+              </li>
+              <li>
+                <a href="pages/air-freight.html"
+                  ><i class="fa fa-plane"></i> Air Freight</a
+                >
+              </li>
+              <li>
+                <a href="pages/land-freight.html"
+                  ><i class="fa fa-truck"></i> Land Freight</a
+                >
+              </li>
+              <li>
+                <a href="pages/customs.html"
+                  ><i class="fa fa-file-contract"></i> Customs Clearance</a
+                >
+              </li>
+              <li>
+                <a href="pages/warehousing.html"
+                  ><i class="fa fa-warehouse"></i> Warehousing</a
+                >
+              </li>
+              <li>
+                <a href="pages/project-cargo.html"
+                  ><i class="fa fa-boxes-stacked"></i> Project Cargo</a
+                >
+              </li>
+            </ul>
+          </li>
+          <li><a href="tracking.html">Track Parcel</a></li>
+          <li><a href="news.html">News</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="nav-right">
+          <a href="contact.html" class="btn btn-primary btn-sm nav-cta"
+            ><i class="fa fa-file-invoice"></i> Get a Quote</a
+          >
+          <button
+            class="hamburger"
+            id="hamburger"
+            aria-label="Toggle navigation"
+            aria-expanded="false"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+      <div class="container">
+        <div
+          class="hero-badge animate-fadeInDown delay-1"
+          style="display: inline-flex; margin-bottom: 16px"
+        >
+          <i class="fa fa-th-large"></i> What We Offer
+        </div>
+        <h1 class="animate-fadeInUp delay-2">Our Logistics Services</h1>
+        <p class="animate-fadeInUp delay-3">
+          Comprehensive freight solutions by sea, air, and land — tailored to
+          your business needs worldwide.
+        </p>
+        <nav class="breadcrumb animate-fadeInUp delay-4">
+          <a href="index.html">Home</a>
+          <span><i class="fa fa-chevron-right fa-xs"></i></span>
+          <span>Services</span>
+        </nav>
+      </div>
+    </section>
+
+    <!-- ============ SERVICES FULL GRID ============ -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header" data-aos="fade-up">
+          <span class="tagline">Full Range</span>
+          <h2>Everything Your Cargo Needs</h2>
+          <div class="divider"></div>
+          <p>
+            From a single parcel to an oversized industrial shipment — we have
+            the right solution for every need.
+          </p>
+        </div>
+
+        <!-- Service rows — alternating layout -->
+        <div class="service-row" data-aos="fade-up">
+          <div class="service-row-img">
+            <img
+              src="images/services/sea-freight.jpg"
+              alt="Sea Freight"
+              loading="lazy"
+            />
+          </div>
+          <div class="service-row-content">
+            <div class="service-row-icon"><i class="fa fa-ship"></i></div>
+            <span class="tagline-inline">Sea Freight</span>
+            <h2>Ocean Cargo Solutions</h2>
+            <div class="divider divider-left"></div>
+            <p style="margin: 16px 0">
+              Move bulk, heavy, or oversized cargo across the world's major
+              shipping lanes. We offer full container load (FCL),
+              less-than-container load (LCL), and roll-on/roll-off (RoRo)
+              services.
+            </p>
+            <ul class="service-row-features">
+              <li><i class="fa fa-check-circle"></i> FCL & LCL options</li>
+              <li>
+                <i class="fa fa-check-circle"></i> Port-to-port and door-to-door
+              </li>
+              <li>
+                <i class="fa fa-check-circle"></i> Hazardous cargo handling
+              </li>
+              <li>
+                <i class="fa fa-check-circle"></i> Real-time vessel tracking
+              </li>
+            </ul>
+            <a
+              href="pages/sea-freight.html"
+              class="btn btn-primary"
+              style="margin-top: 24px"
+            >
+              <i class="fa fa-arrow-right"></i> Learn More
+            </a>
+          </div>
+        </div>
+
+        <div class="service-row service-row--reverse" data-aos="fade-up">
+          <div class="service-row-img">
+            <img
+              src="images/services/air-freight.jpg"
+              alt="Air Freight"
+              loading="lazy"
+            />
+          </div>
+          <div class="service-row-content">
+            <div class="service-row-icon"><i class="fa fa-plane"></i></div>
+            <span class="tagline-inline">Air Freight</span>
+            <h2>Fast Global Air Cargo</h2>
+            <div class="divider divider-left"></div>
+            <p style="margin: 16px 0">
+              When speed is non-negotiable, our air freight service delivers. We
+              connect you to a global network of airline partners for express
+              and standard air cargo services worldwide.
+            </p>
+            <ul class="service-row-features">
+              <li>
+                <i class="fa fa-check-circle"></i> Express & standard options
+              </li>
+              <li>
+                <i class="fa fa-check-circle"></i> Charter flights for large
+                cargo
+              </li>
+              <li>
+                <i class="fa fa-check-circle"></i> Temperature-controlled cargo
+              </li>
+              <li>
+                <i class="fa fa-check-circle"></i> Airport-to-door delivery
+              </li>
+            </ul>
+            <a
+              href="pages/air-freight.html"
+              class="btn btn-primary"
+              style="margin-top: 24px"
+            >
+              <i class="fa fa-arrow-right"></i> Learn More
+            </a>
+          </div>
+        </div>
+
+        <div class="service-row" data-aos="fade-up">
+          <div class="service-row-img">
+            <img
+              src="images/services/land-freight.jpg"
+              alt="Land Freight"
+              loading="lazy"
+            />
+          </div>
+          <div class="service-row-content">
+            <div class="service-row-icon"><i class="fa fa-truck"></i></div>
+            <span class="tagline-inline">Land Freight</span>
+            <h2>Road Transport Network</h2>
+            <div class="divider divider-left"></div>
+            <p style="margin: 16px 0">
+              Our road freight services offer flexible and cost-effective
+              solutions for local and cross-border deliveries. Full truckload
+              (FTL) and less-than-truckload (LTL) services available.
+            </p>
+            <ul class="service-row-features">
+              <li><i class="fa fa-check-circle"></i> FTL & LTL options</li>
+              <li><i class="fa fa-check-circle"></i> Cross-border expertise</li>
+              <li><i class="fa fa-check-circle"></i> Refrigerated trucking</li>
+              <li><i class="fa fa-check-circle"></i> GPS-tracked fleet</li>
+            </ul>
+            <a
+              href="pages/land-freight.html"
+              class="btn btn-primary"
+              style="margin-top: 24px"
+            >
+              <i class="fa fa-arrow-right"></i> Learn More
+            </a>
+          </div>
+        </div>
+
+        <div class="service-row service-row--reverse" data-aos="fade-up">
+          <div class="service-row-img">
+            <img
+              src="images/services/customs.jpg"
+              alt="Customs Clearance"
+              loading="lazy"
+            />
+          </div>
+          <div class="service-row-content">
+            <div class="service-row-icon">
+              <i class="fa fa-file-contract"></i>
+            </div>
+            <span class="tagline-inline">Customs Clearance</span>
+            <h2>Smooth Border Crossings</h2>
+            <div class="divider divider-left"></div>
+            <p style="margin: 16px 0">
+              Our licensed customs brokers handle all import and export
+              formalities, ensuring your cargo clears customs without delay. We
+              stay current on all regulatory changes so you don't have to.
+            </p>
+            <ul class="service-row-features">
+              <li>
+                <i class="fa fa-check-circle"></i> Import & export documentation
+              </li>
+              <li><i class="fa fa-check-circle"></i> Duty & tax calculation</li>
+              <li><i class="fa fa-check-circle"></i> Compliance advisory</li>
+              <li><i class="fa fa-check-circle"></i> Tariff classification</li>
+            </ul>
+            <a
+              href="pages/customs.html"
+              class="btn btn-primary"
+              style="margin-top: 24px"
+            >
+              <i class="fa fa-arrow-right"></i> Learn More
+            </a>
+          </div>
+        </div>
+
+        <div class="service-row" data-aos="fade-up">
+          <div class="service-row-img">
+            <img
+              src="images/services/warehousing.jpg"
+              alt="Warehousing"
+              loading="lazy"
+            />
+          </div>
+          <div class="service-row-content">
+            <div class="service-row-icon"><i class="fa fa-warehouse"></i></div>
+            <span class="tagline-inline">Warehousing</span>
+            <h2>Secure Storage Solutions</h2>
+            <div class="divider divider-left"></div>
+            <p style="margin: 16px 0">
+              Our modern warehousing facilities provide safe, secure, and
+              flexible storage for your goods. With 24/7 CCTV surveillance,
+              advanced inventory management, and expert staff on site.
+            </p>
+            <ul class="service-row-features">
+              <li>
+                <i class="fa fa-check-circle"></i> 24/7 monitored facility
+              </li>
+              <li><i class="fa fa-check-circle"></i> Cold & ambient storage</li>
+              <li>
+                <i class="fa fa-check-circle"></i> Inventory management system
+              </li>
+              <li>
+                <i class="fa fa-check-circle"></i> Pick, pack & fulfillment
+              </li>
+            </ul>
+            <a
+              href="pages/warehousing.html"
+              class="btn btn-primary"
+              style="margin-top: 24px"
+            >
+              <i class="fa fa-arrow-right"></i> Learn More
+            </a>
+          </div>
+        </div>
+
+        <div class="service-row service-row--reverse" data-aos="fade-up">
+          <div class="service-row-img">
+            <img
+              src="images/services/project-cargo.jpg"
+              alt="Project Cargo"
+              loading="lazy"
+            />
+          </div>
+          <div class="service-row-content">
+            <div class="service-row-icon">
+              <i class="fa fa-boxes-stacked"></i>
+            </div>
+            <span class="tagline-inline">Project Cargo</span>
+            <h2>Heavy & Oversized Logistics</h2>
+            <div class="divider divider-left"></div>
+            <p style="margin: 16px 0">
+              From industrial machinery to construction equipment, our project
+              cargo team specializes in planning and executing the transport of
+              complex, oversized, and high-value shipments.
+            </p>
+            <ul class="service-row-features">
+              <li><i class="fa fa-check-circle"></i> Heavy-lift solutions</li>
+              <li>
+                <i class="fa fa-check-circle"></i> Route surveys & permits
+              </li>
+              <li><i class="fa fa-check-circle"></i> Multi-modal transport</li>
+              <li>
+                <i class="fa fa-check-circle"></i> Dedicated project manager
+              </li>
+            </ul>
+            <a
+              href="pages/project-cargo.html"
+              class="btn btn-primary"
+              style="margin-top: 24px"
+            >
+              <i class="fa fa-arrow-right"></i> Learn More
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <div class="cta-overlay"></div>
+      <div class="container" data-aos="zoom-in">
+        <div class="cta-content">
+          <h2>Not Sure Which Service You Need?</h2>
+          <p>
+            Our logistics experts will assess your needs and recommend the best
+            solution. Get in touch for a free consultation.
+          </p>
+          <div class="cta-buttons">
+            <a href="contact.html" class="btn btn-primary btn-lg"
+              ><i class="fa fa-file-invoice"></i> Request a Free Quote</a
+            >
+            <a href="tracking.html" class="btn btn-outline btn-lg"
+              ><i class="fa fa-magnifying-glass"></i> Track a Parcel</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-top">
+        <div class="container">
+          <div class="footer-grid">
+            <div class="footer-col footer-brand">
+              <a href="index.html" class="footer-logo">
+                <img
+                  src="images/logo.png"
+                  alt="SwiftGlobal Logo"
+                  onerror="this.style.display = 'none'"
+                />
+                <span>Swift<span class="text-accent">Global</span></span>
+              </a>
+              <p>
+                Your trusted global logistics partner — delivering reliability,
+                speed, and transparency across every shipment, everywhere.
+              </p>
+              <div class="footer-socials">
+                <a href="#" aria-label="Facebook"
+                  ><i class="fab fa-facebook-f"></i
+                ></a>
+                <a href="#" aria-label="Twitter"
+                  ><i class="fab fa-x-twitter"></i
+                ></a>
+                <a href="#" aria-label="LinkedIn"
+                  ><i class="fab fa-linkedin-in"></i
+                ></a>
+                <a href="#" aria-label="Instagram"
+                  ><i class="fab fa-instagram"></i
+                ></a>
+                <a href="#" aria-label="YouTube"
+                  ><i class="fab fa-youtube"></i
+                ></a>
+              </div>
+            </div>
+            <div class="footer-col">
+              <h4>Our Services</h4>
+              <ul class="footer-links">
+                <li>
+                  <a href="pages/sea-freight.html"
+                    ><i class="fa fa-chevron-right"></i> Sea Freight</a
+                  >
+                </li>
+                <li>
+                  <a href="pages/air-freight.html"
+                    ><i class="fa fa-chevron-right"></i> Air Freight</a
+                  >
+                </li>
+                <li>
+                  <a href="pages/land-freight.html"
+                    ><i class="fa fa-chevron-right"></i> Land Freight</a
+                  >
+                </li>
+                <li>
+                  <a href="pages/customs.html"
+                    ><i class="fa fa-chevron-right"></i> Customs Clearance</a
+                  >
+                </li>
+                <li>
+                  <a href="pages/warehousing.html"
+                    ><i class="fa fa-chevron-right"></i> Warehousing</a
+                  >
+                </li>
+                <li>
+                  <a href="pages/project-cargo.html"
+                    ><i class="fa fa-chevron-right"></i> Project Cargo</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Quick Links</h4>
+              <ul class="footer-links">
+                <li>
+                  <a href="index.html"
+                    ><i class="fa fa-chevron-right"></i> Home</a
+                  >
+                </li>
+                <li>
+                  <a href="about.html"
+                    ><i class="fa fa-chevron-right"></i> About Us</a
+                  >
+                </li>
+                <li>
+                  <a href="tracking.html"
+                    ><i class="fa fa-chevron-right"></i> Track a Parcel</a
+                  >
+                </li>
+                <li>
+                  <a href="news.html"
+                    ><i class="fa fa-chevron-right"></i> News & Insights</a
+                  >
+                </li>
+                <li>
+                  <a href="contact.html"
+                    ><i class="fa fa-chevron-right"></i> Contact Us</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Contact Us</h4>
+              <ul class="footer-contact">
+                <li>
+                  <i class="fa fa-location-dot"></i
+                  ><span>123 Logistics Avenue, Business District</span>
+                </li>
+                <li>
+                  <i class="fa fa-phone"></i
+                  ><a href="tel:+1xxxxxxxxx">+1 xxx xxx xxx</a>
+                </li>
+                <li>
+                  <i class="fa fa-envelope"></i
+                  ><a href="mailto:info@swiftglobalogistics.com"
+                    >info@swiftglobalogistics.com</a
+                  >
+                </li>
+                <li>
+                  <i class="fa fa-clock"></i
+                  ><span>Mon – Fri: 08:00 – 18:00</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container flex-between">
+          <p>
+            &copy; <span id="year"></span> SwiftGlobal Logistics. All rights
+            reserved.
+          </p>
+          <div class="footer-bottom-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Sitemap</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+      <i class="fa fa-chevron-up"></i>
+    </button>
+    <div class="cookie-banner" id="cookieBanner">
+      <p>
+        We use cookies to enhance your experience. By continuing, you agree to
+        our <a href="#">Cookie Policy</a>.
+      </p>
+      <div class="cookie-actions">
+        <button class="btn btn-primary btn-sm cookie-accept">Accept</button>
+        <button
+          class="btn btn-outline btn-sm cookie-decline"
+          style="color: var(--text-light); border-color: var(--text-light)"
+        >
+          Decline
         </button>
       </div>
     </div>
-  </nav>
 
-  <!-- PAGE HERO -->
-  <section class="page-hero">
-    <div class="container">
-      <div class="hero-badge animate-fadeInDown delay-1" style="display:inline-flex;margin-bottom:16px;">
-        <i class="fa fa-th-large"></i> What We Offer
-      </div>
-      <h1 class="animate-fadeInUp delay-2">Our Logistics Services</h1>
-      <p class="animate-fadeInUp delay-3">Comprehensive freight solutions by sea, air, and land — tailored to your business needs worldwide.</p>
-      <nav class="breadcrumb animate-fadeInUp delay-4">
-        <a href="index.html">Home</a>
-        <span><i class="fa fa-chevron-right fa-xs"></i></span>
-        <span>Services</span>
-      </nav>
-    </div>
-  </section>
-
-  <!-- ============ SERVICES FULL GRID ============ -->
-  <section class="section">
-    <div class="container">
-      <div class="section-header" data-aos="fade-up">
-        <span class="tagline">Full Range</span>
-        <h2>Everything Your Cargo Needs</h2>
-        <div class="divider"></div>
-        <p>From a single parcel to an oversized industrial shipment — we have the right solution for every need.</p>
-      </div>
-
-      <!-- Service rows — alternating layout -->
-      <div class="service-row" data-aos="fade-up">
-        <div class="service-row-img">
-          <img src="images/services/sea-freight.jpg" alt="Sea Freight" loading="lazy" />
-        </div>
-        <div class="service-row-content">
-          <div class="service-row-icon"><i class="fa fa-ship"></i></div>
-          <span class="tagline-inline">Sea Freight</span>
-          <h2>Ocean Cargo Solutions</h2>
-          <div class="divider divider-left"></div>
-          <p style="margin:16px 0;">Move bulk, heavy, or oversized cargo across the world's major shipping lanes. We offer full container load (FCL), less-than-container load (LCL), and roll-on/roll-off (RoRo) services.</p>
-          <ul class="service-row-features">
-            <li><i class="fa fa-check-circle"></i> FCL & LCL options</li>
-            <li><i class="fa fa-check-circle"></i> Port-to-port and door-to-door</li>
-            <li><i class="fa fa-check-circle"></i> Hazardous cargo handling</li>
-            <li><i class="fa fa-check-circle"></i> Real-time vessel tracking</li>
-          </ul>
-          <a href="pages/sea-freight.html" class="btn btn-primary" style="margin-top:24px;">
-            <i class="fa fa-arrow-right"></i> Learn More
-          </a>
-        </div>
-      </div>
-
-      <div class="service-row service-row--reverse" data-aos="fade-up">
-        <div class="service-row-img">
-          <img src="images/services/air-freight.jpg" alt="Air Freight" loading="lazy" />
-        </div>
-        <div class="service-row-content">
-          <div class="service-row-icon"><i class="fa fa-plane"></i></div>
-          <span class="tagline-inline">Air Freight</span>
-          <h2>Fast Global Air Cargo</h2>
-          <div class="divider divider-left"></div>
-          <p style="margin:16px 0;">When speed is non-negotiable, our air freight service delivers. We connect you to a global network of airline partners for express and standard air cargo services worldwide.</p>
-          <ul class="service-row-features">
-            <li><i class="fa fa-check-circle"></i> Express & standard options</li>
-            <li><i class="fa fa-check-circle"></i> Charter flights for large cargo</li>
-            <li><i class="fa fa-check-circle"></i> Temperature-controlled cargo</li>
-            <li><i class="fa fa-check-circle"></i> Airport-to-door delivery</li>
-          </ul>
-          <a href="pages/air-freight.html" class="btn btn-primary" style="margin-top:24px;">
-            <i class="fa fa-arrow-right"></i> Learn More
-          </a>
-        </div>
-      </div>
-
-      <div class="service-row" data-aos="fade-up">
-        <div class="service-row-img">
-          <img src="images/services/land-freight.jpg" alt="Land Freight" loading="lazy" />
-        </div>
-        <div class="service-row-content">
-          <div class="service-row-icon"><i class="fa fa-truck"></i></div>
-          <span class="tagline-inline">Land Freight</span>
-          <h2>Road Transport Network</h2>
-          <div class="divider divider-left"></div>
-          <p style="margin:16px 0;">Our road freight services offer flexible and cost-effective solutions for local and cross-border deliveries. Full truckload (FTL) and less-than-truckload (LTL) services available.</p>
-          <ul class="service-row-features">
-            <li><i class="fa fa-check-circle"></i> FTL & LTL options</li>
-            <li><i class="fa fa-check-circle"></i> Cross-border expertise</li>
-            <li><i class="fa fa-check-circle"></i> Refrigerated trucking</li>
-            <li><i class="fa fa-check-circle"></i> GPS-tracked fleet</li>
-          </ul>
-          <a href="pages/land-freight.html" class="btn btn-primary" style="margin-top:24px;">
-            <i class="fa fa-arrow-right"></i> Learn More
-          </a>
-        </div>
-      </div>
-
-      <div class="service-row service-row--reverse" data-aos="fade-up">
-        <div class="service-row-img">
-          <img src="images/services/customs.jpg" alt="Customs Clearance" loading="lazy" />
-        </div>
-        <div class="service-row-content">
-          <div class="service-row-icon"><i class="fa fa-file-contract"></i></div>
-          <span class="tagline-inline">Customs Clearance</span>
-          <h2>Smooth Border Crossings</h2>
-          <div class="divider divider-left"></div>
-          <p style="margin:16px 0;">Our licensed customs brokers handle all import and export formalities, ensuring your cargo clears customs without delay. We stay current on all regulatory changes so you don't have to.</p>
-          <ul class="service-row-features">
-            <li><i class="fa fa-check-circle"></i> Import & export documentation</li>
-            <li><i class="fa fa-check-circle"></i> Duty & tax calculation</li>
-            <li><i class="fa fa-check-circle"></i> Compliance advisory</li>
-            <li><i class="fa fa-check-circle"></i> Tariff classification</li>
-          </ul>
-          <a href="pages/customs.html" class="btn btn-primary" style="margin-top:24px;">
-            <i class="fa fa-arrow-right"></i> Learn More
-          </a>
-        </div>
-      </div>
-
-      <div class="service-row" data-aos="fade-up">
-        <div class="service-row-img">
-          <img src="images/services/warehousing.jpg" alt="Warehousing" loading="lazy" />
-        </div>
-        <div class="service-row-content">
-          <div class="service-row-icon"><i class="fa fa-warehouse"></i></div>
-          <span class="tagline-inline">Warehousing</span>
-          <h2>Secure Storage Solutions</h2>
-          <div class="divider divider-left"></div>
-          <p style="margin:16px 0;">Our modern warehousing facilities provide safe, secure, and flexible storage for your goods. With 24/7 CCTV surveillance, advanced inventory management, and expert staff on site.</p>
-          <ul class="service-row-features">
-            <li><i class="fa fa-check-circle"></i> 24/7 monitored facility</li>
-            <li><i class="fa fa-check-circle"></i> Cold & ambient storage</li>
-            <li><i class="fa fa-check-circle"></i> Inventory management system</li>
-            <li><i class="fa fa-check-circle"></i> Pick, pack & fulfillment</li>
-          </ul>
-          <a href="pages/warehousing.html" class="btn btn-primary" style="margin-top:24px;">
-            <i class="fa fa-arrow-right"></i> Learn More
-          </a>
-        </div>
-      </div>
-
-      <div class="service-row service-row--reverse" data-aos="fade-up">
-        <div class="service-row-img">
-          <img src="images/services/project-cargo.jpg" alt="Project Cargo" loading="lazy" />
-        </div>
-        <div class="service-row-content">
-          <div class="service-row-icon"><i class="fa fa-boxes-stacked"></i></div>
-          <span class="tagline-inline">Project Cargo</span>
-          <h2>Heavy & Oversized Logistics</h2>
-          <div class="divider divider-left"></div>
-          <p style="margin:16px 0;">From industrial machinery to construction equipment, our project cargo team specializes in planning and executing the transport of complex, oversized, and high-value shipments.</p>
-          <ul class="service-row-features">
-            <li><i class="fa fa-check-circle"></i> Heavy-lift solutions</li>
-            <li><i class="fa fa-check-circle"></i> Route surveys & permits</li>
-            <li><i class="fa fa-check-circle"></i> Multi-modal transport</li>
-            <li><i class="fa fa-check-circle"></i> Dedicated project manager</li>
-          </ul>
-          <a href="pages/project-cargo.html" class="btn btn-primary" style="margin-top:24px;">
-            <i class="fa fa-arrow-right"></i> Learn More
-          </a>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="cta-section">
-    <div class="cta-overlay"></div>
-    <div class="container" data-aos="zoom-in">
-      <div class="cta-content">
-        <h2>Not Sure Which Service You Need?</h2>
-        <p>Our logistics experts will assess your needs and recommend the best solution. Get in touch for a free consultation.</p>
-        <div class="cta-buttons">
-          <a href="contact.html" class="btn btn-primary btn-lg"><i class="fa fa-file-invoice"></i> Request a Free Quote</a>
-          <a href="tracking.html" class="btn btn-outline btn-lg"><i class="fa fa-magnifying-glass"></i> Track a Parcel</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="footer-top">
-      <div class="container">
-        <div class="footer-grid">
-          <div class="footer-col footer-brand">
-            <a href="index.html" class="footer-logo">
-              <img src="images/logo.png" alt="SwiftGlobal Logo" onerror="this.style.display='none'" />
-              <span>Swift<span class="text-accent">Global</span></span>
-            </a>
-            <p>Your trusted global logistics partner — delivering reliability, speed, and transparency across every shipment, everywhere.</p>
-            <div class="footer-socials">
-              <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-              <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
-              <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-              <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-              <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-            </div>
-          </div>
-          <div class="footer-col">
-            <h4>Our Services</h4>
-            <ul class="footer-links">
-              <li><a href="pages/sea-freight.html"><i class="fa fa-chevron-right"></i> Sea Freight</a></li>
-              <li><a href="pages/air-freight.html"><i class="fa fa-chevron-right"></i> Air Freight</a></li>
-              <li><a href="pages/land-freight.html"><i class="fa fa-chevron-right"></i> Land Freight</a></li>
-              <li><a href="pages/customs.html"><i class="fa fa-chevron-right"></i> Customs Clearance</a></li>
-              <li><a href="pages/warehousing.html"><i class="fa fa-chevron-right"></i> Warehousing</a></li>
-              <li><a href="pages/project-cargo.html"><i class="fa fa-chevron-right"></i> Project Cargo</a></li>
-            </ul>
-          </div>
-          <div class="footer-col">
-            <h4>Quick Links</h4>
-            <ul class="footer-links">
-              <li><a href="index.html"><i class="fa fa-chevron-right"></i> Home</a></li>
-              <li><a href="about.html"><i class="fa fa-chevron-right"></i> About Us</a></li>
-              <li><a href="tracking.html"><i class="fa fa-chevron-right"></i> Track a Parcel</a></li>
-              <li><a href="news.html"><i class="fa fa-chevron-right"></i> News & Insights</a></li>
-              <li><a href="contact.html"><i class="fa fa-chevron-right"></i> Contact Us</a></li>
-            </ul>
-          </div>
-          <div class="footer-col">
-            <h4>Contact Us</h4>
-            <ul class="footer-contact">
-              <li><i class="fa fa-location-dot"></i><span>123 Logistics Avenue, Business District</span></li>
-              <li><i class="fa fa-phone"></i><a href="tel:+237000000000">+237 000 000 000</a></li>
-              <li><i class="fa fa-envelope"></i><a href="mailto:info@swiftglobalogistics.com">info@swiftglobalogistics.com</a></li>
-              <li><i class="fa fa-clock"></i><span>Mon – Fri: 08:00 – 18:00</span></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <div class="container flex-between">
-        <p>&copy; <span id="year"></span> SwiftGlobal Logistics. All rights reserved.</p>
-        <div class="footer-bottom-links">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-          <a href="#">Sitemap</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <button class="back-to-top" id="backToTop" aria-label="Back to top"><i class="fa fa-chevron-up"></i></button>
-  <div class="cookie-banner" id="cookieBanner">
-    <p>We use cookies to enhance your experience. By continuing, you agree to our <a href="#">Cookie Policy</a>.</p>
-    <div class="cookie-actions">
-      <button class="btn btn-primary btn-sm cookie-accept">Accept</button>
-      <button class="btn btn-outline btn-sm cookie-decline" style="color:var(--text-light);border-color:var(--text-light);">Decline</button>
-    </div>
-  </div>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-  <script src="js/main.js"></script>
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
-</body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
 </html>

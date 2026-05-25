@@ -12,13 +12,19 @@
 
 /* ---- LARGE DESKTOPS (1200px+) ---- */
 @media (min-width: 1200px) {
-  .container { max-width: 1200px; }
+  .container {
+    max-width: 1200px;
+  }
 }
 
 /* ---- DESKTOPS / LAPTOPS (up to 1199px) ---- */
 @media (max-width: 1199px) {
-  :root { --section-pad: 80px; }
-  .container { width: 92%; }
+  :root {
+    --section-pad: 80px;
+  }
+  .container {
+    width: 92%;
+  }
 }
 
 /* ---- TABLETS (up to 991px) ---- */
@@ -52,7 +58,7 @@
 
   .nav-links li a {
     padding: 14px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     display: block;
     color: var(--bg-white) !important;
     font-size: 1rem;
@@ -60,7 +66,7 @@
 
   .dropdown-menu {
     position: static;
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.05);
     box-shadow: none;
     border-radius: var(--radius-sm);
     opacity: 1;
@@ -94,16 +100,31 @@
 
 /* ---- LARGE PHONES (up to 767px) ---- */
 @media (max-width: 767px) {
-  :root { --section-pad: 60px; }
+  :root {
+    --section-pad: 60px;
+  }
 
-  h1 { font-size: 2rem; }
-  h2 { font-size: 1.6rem; }
-  h3 { font-size: 1.2rem; }
+  h1 {
+    font-size: 2rem;
+  }
+  h2 {
+    font-size: 1.6rem;
+  }
+  h3 {
+    font-size: 1.2rem;
+  }
 
   /* Hero */
-  .hero-content h1   { font-size: 2.2rem; }
-  .hero-content p    { font-size: 1rem; }
-  .hero-buttons      { flex-direction: column; align-items: flex-start; }
+  .hero-content h1 {
+    font-size: 2.2rem;
+  }
+  .hero-content p {
+    font-size: 1rem;
+  }
+  .hero-buttons {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
   /* Grids collapse to 1 column */
   .services-grid,
@@ -157,17 +178,31 @@
 
 /* ---- SMALL PHONES (up to 575px) ---- */
 @media (max-width: 575px) {
-  .container { width: 94%; }
+  .container {
+    width: 94%;
+  }
 
-  .btn { padding: 13px 24px; font-size: 0.9rem; }
-  .btn-lg { padding: 15px 30px; font-size: 0.95rem; }
+  .btn {
+    padding: 13px 24px;
+    font-size: 0.9rem;
+  }
+  .btn-lg {
+    padding: 15px 30px;
+    font-size: 0.95rem;
+  }
 
-  .section-header { margin-bottom: 40px; }
+  .section-header {
+    margin-bottom: 40px;
+  }
 
-  .services-grid { gap: 16px !important; }
+  .services-grid {
+    gap: 16px !important;
+  }
 
   /* Testimonial */
-  .testimonial-card { padding: 24px 20px; }
+  .testimonial-card {
+    padding: 24px 20px;
+  }
 
   /* Footer */
   .footer-bottom {
@@ -177,7 +212,9 @@
   }
 
   /* Preloader */
-  .preloader-logo { font-size: 1.5rem; }
+  .preloader-logo {
+    font-size: 1.5rem;
+  }
 }
 
 /* ---- PRINT STYLES ---- */
@@ -190,6 +227,11 @@
     display: none !important;
   }
 
-  body { background: white; color: black; }
-  a { color: black; }
+  body {
+    background: white;
+    color: black;
+  }
+  a {
+    color: black;
+  }
 }

@@ -1,340 +1,595 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact Us — SwiftGlobal Logistics</title>
-  <meta name="description" content="Get in touch with SwiftGlobal Logistics. Request a quote, ask a question, or contact our 24/7 support team." />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://www.swiftglobalogistics.com/contact.html" />
-  <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/animations.css" />
-  <link rel="stylesheet" href="css/responsive.css" />
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us — SwiftGlobal Logistics</title>
+    <meta
+      name="description"
+      content="Get in touch with SwiftGlobal Logistics. Request a quote, ask a question, or contact our 24/7 support team."
+    />
+    <meta name="robots" content="index, follow" />
+    <link
+      rel="canonical"
+      href="https://www.swiftglobalogistics.com/contact.html"
+    />
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+  </head>
+  <body>
+    <div class="preloader" id="preloader">
+      <div class="preloader-logo">Swift<span>Global</span></div>
+      <div class="preloader-spinner"></div>
+    </div>
+    <div class="scroll-progress"></div>
 
-  <div class="preloader" id="preloader">
-    <div class="preloader-logo">Swift<span>Global</span></div>
-    <div class="preloader-spinner"></div>
-  </div>
-  <div class="scroll-progress"></div>
-
-  <!-- TOP BAR -->
-  <div class="topbar">
-    <div class="container flex-between">
-      <div class="topbar-left">
-        <a href="mailto:info@swiftglobalogistics.com"><i class="fa fa-envelope"></i> info@swiftglobalogistics.com</a>
-        <a href="tel:+237000000000"><i class="fa fa-phone"></i> +237 000 000 000</a>
-      </div>
-      <div class="topbar-right">
-        <span><i class="fa fa-clock"></i> Mon – Fri: 08:00 – 18:00</span>
-        <div class="topbar-socials">
-          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
-          <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <div class="container flex-between">
+        <div class="topbar-left">
+          <a href="mailto:info@swiftglobalogistics.com"
+            ><i class="fa fa-envelope"></i> info@swiftglobalogistics.com</a
+          >
+          <a href="tel:+1xxxxxxxxx"
+            ><i class="fa fa-phone"></i> +1 xxx xxx xxx</a
+          >
+        </div>
+        <div class="topbar-right">
+          <span><i class="fa fa-clock"></i> Mon – Fri: 08:00 – 18:00</span>
+          <div class="topbar-socials">
+            <a href="#" aria-label="Facebook"
+              ><i class="fab fa-facebook-f"></i
+            ></a>
+            <a href="#" aria-label="Twitter"
+              ><i class="fab fa-x-twitter"></i
+            ></a>
+            <a href="#" aria-label="LinkedIn"
+              ><i class="fab fa-linkedin-in"></i
+            ></a>
+            <a href="#" aria-label="Instagram"
+              ><i class="fab fa-instagram"></i
+            ></a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- NAVBAR -->
-  <nav class="navbar" id="navbar">
-    <div class="container flex-between">
-      <a href="index.html" class="nav-logo">
-        <img src="images/logo.png" alt="SwiftGlobal Logo" class="logo-img" onerror="this.style.display='none'" />
-        <span class="logo-text">Swift<span>Global</span></span>
-      </a>
-      <ul class="nav-links" id="navLinks">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About Us</a></li>
-        <li class="has-dropdown">
-          <a href="services.html">Services <i class="fa fa-chevron-down fa-xs"></i></a>
-          <ul class="dropdown-menu">
-            <li><a href="pages/sea-freight.html"><i class="fa fa-ship"></i> Sea Freight</a></li>
-            <li><a href="pages/air-freight.html"><i class="fa fa-plane"></i> Air Freight</a></li>
-            <li><a href="pages/land-freight.html"><i class="fa fa-truck"></i> Land Freight</a></li>
-            <li><a href="pages/customs.html"><i class="fa fa-file-contract"></i> Customs Clearance</a></li>
-            <li><a href="pages/warehousing.html"><i class="fa fa-warehouse"></i> Warehousing</a></li>
-            <li><a href="pages/project-cargo.html"><i class="fa fa-boxes-stacked"></i> Project Cargo</a></li>
-          </ul>
-        </li>
-        <li><a href="tracking.html">Track Parcel</a></li>
-        <li><a href="news.html">News</a></li>
-        <li><a href="contact.html" class="active">Contact</a></li>
-      </ul>
-      <div class="nav-right">
-        <a href="contact.html" class="btn btn-primary btn-sm nav-cta"><i class="fa fa-file-invoice"></i> Get a Quote</a>
-        <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
-          <span></span><span></span><span></span>
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+      <div class="container flex-between">
+        <a href="index.html" class="nav-logo">
+          <img
+            src="images/logo.png"
+            alt="SwiftGlobal Logo"
+            class="logo-img"
+            onerror="this.style.display = 'none'"
+          />
+          <span class="logo-text">Swift<span>Global</span></span>
+        </a>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li class="has-dropdown">
+            <a href="services.html"
+              >Services <i class="fa fa-chevron-down fa-xs"></i
+            ></a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="pages/sea-freight.html"
+                  ><i class="fa fa-ship"></i> Sea Freight</a
+                >
+              </li>
+              <li>
+                <a href="pages/air-freight.html"
+                  ><i class="fa fa-plane"></i> Air Freight</a
+                >
+              </li>
+              <li>
+                <a href="pages/land-freight.html"
+                  ><i class="fa fa-truck"></i> Land Freight</a
+                >
+              </li>
+              <li>
+                <a href="pages/customs.html"
+                  ><i class="fa fa-file-contract"></i> Customs Clearance</a
+                >
+              </li>
+              <li>
+                <a href="pages/warehousing.html"
+                  ><i class="fa fa-warehouse"></i> Warehousing</a
+                >
+              </li>
+              <li>
+                <a href="pages/project-cargo.html"
+                  ><i class="fa fa-boxes-stacked"></i> Project Cargo</a
+                >
+              </li>
+            </ul>
+          </li>
+          <li><a href="tracking.html">Track Parcel</a></li>
+          <li><a href="news.html">News</a></li>
+          <li><a href="contact.html" class="active">Contact</a></li>
+        </ul>
+        <div class="nav-right">
+          <a href="contact.html" class="btn btn-primary btn-sm nav-cta"
+            ><i class="fa fa-file-invoice"></i> Get a Quote</a
+          >
+          <button
+            class="hamburger"
+            id="hamburger"
+            aria-label="Toggle navigation"
+            aria-expanded="false"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+      <div class="container">
+        <div
+          class="hero-badge animate-fadeInDown delay-1"
+          style="display: inline-flex; margin-bottom: 16px"
+        >
+          <i class="fa fa-headset"></i> We're Here to Help
+        </div>
+        <h1 class="animate-fadeInUp delay-2">Contact Us</h1>
+        <p class="animate-fadeInUp delay-3">
+          Have a question, need a quote, or want to discuss your logistics
+          needs? Our team is ready to help.
+        </p>
+        <nav class="breadcrumb animate-fadeInUp delay-4">
+          <a href="index.html">Home</a>
+          <span><i class="fa fa-chevron-right fa-xs"></i></span>
+          <span>Contact</span>
+        </nav>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT INFO CARDS ============ -->
+    <section class="section-sm bg-light">
+      <div class="container">
+        <div class="contact-info-cards">
+          <div class="contact-info-card" data-aos="fade-up" data-aos-delay="0">
+            <div class="cic-icon"><i class="fa fa-location-dot"></i></div>
+            <h4>Our Office</h4>
+            <p>123 Logistics Avenue<br />Business District</p>
+          </div>
+          <div
+            class="contact-info-card"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <div class="cic-icon"><i class="fa fa-phone"></i></div>
+            <h4>Call Us</h4>
+            <p>
+              <a href="tel:+1xxxxxxxx">+1 xxx xxx xxx</a><br />Mon – Fri: 08:00
+              – 18:00
+            </p>
+          </div>
+          <div
+            class="contact-info-card"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
+            <div class="cic-icon"><i class="fa fa-envelope"></i></div>
+            <h4>Email Us</h4>
+            <p>
+              <a href="mailto:info@swiftglobalogistics.com"
+                >info@swiftglobalogistics.com</a
+              ><br />We reply within 24 hours
+            </p>
+          </div>
+          <div
+            class="contact-info-card"
+            data-aos="fade-up"
+            data-aos-delay="300"
+          >
+            <div class="cic-icon"><i class="fa fa-headset"></i></div>
+            <h4>24/7 Support</h4>
+            <p>Emergency logistics support<br />available around the clock</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT FORM + MAP ============ -->
+    <section class="section">
+      <div class="container">
+        <div class="contact-grid">
+          <!-- Form -->
+          <div class="contact-form-wrap" data-aos="fade-right">
+            <span class="tagline-inline">Send a Message</span>
+            <h2>Get in Touch</h2>
+            <div class="divider divider-left"></div>
+            <p style="margin: 16px 0 30px">
+              Fill out the form below and one of our logistics specialists will
+              get back to you within 24 hours.
+            </p>
+
+            <form id="contactForm" novalidate>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="firstName">First Name *</label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    placeholder="John"
+                    required
+                  />
+                  <span class="field-error" id="firstNameError"></span>
+                </div>
+                <div class="form-group">
+                  <label for="lastName">Last Name *</label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    placeholder="Doe"
+                    required
+                  />
+                  <span class="field-error" id="lastNameError"></span>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="email">Email Address *</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="john@example.com"
+                    required
+                  />
+                  <span class="field-error" id="emailError"></span>
+                </div>
+                <div class="form-group">
+                  <label for="phone">Phone Number</label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="+1 xxx xxx xxx"
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="service">Service of Interest</label>
+                <select id="service" name="service">
+                  <option value="">— Select a service —</option>
+                  <option value="sea">Sea Freight</option>
+                  <option value="air">Air Freight</option>
+                  <option value="land">Land Freight</option>
+                  <option value="customs">Customs Clearance</option>
+                  <option value="warehousing">Warehousing</option>
+                  <option value="project">Project Cargo</option>
+                  <option value="tracking">Parcel Tracking</option>
+                  <option value="other">Other / General Inquiry</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="subject">Subject *</label>
+                <input
+                  type="text"
+                  id="subject"
+                  name="subject"
+                  placeholder="e.g. Quote request for sea freight to Europe"
+                  required
+                />
+                <span class="field-error" id="subjectError"></span>
+              </div>
+              <div class="form-group">
+                <label for="message">Message *</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  placeholder="Tell us about your shipment needs, cargo details, origin, destination, and any specific requirements..."
+                  required
+                ></textarea>
+                <span class="field-error" id="messageError"></span>
+              </div>
+              <button
+                type="submit"
+                class="btn btn-primary btn-lg"
+                style="width: 100%; justify-content: center"
+                id="submitBtn"
+              >
+                <i class="fa fa-paper-plane"></i> Send Message
+              </button>
+              <div
+                id="formSuccess"
+                class="form-success-msg"
+                style="display: none"
+              >
+                <i class="fa fa-circle-check"></i> Thank you! Your message has
+                been sent. We'll get back to you within 24 hours.
+              </div>
+            </form>
+          </div>
+
+          <!-- Map + FAQ -->
+          <div class="contact-side" data-aos="fade-left">
+            <!-- Embedded Map -->
+            <div class="contact-map-wrap">
+              <h3>Find Us</h3>
+              <div class="contact-map">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387190.2799146853!2d-74.2598672!3d40.6971494!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c250b1f1b4b5f%3A0x7b6e6d6d6d6d6d6d!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sus!4v1699999999999!5m2!1sen!2sus"
+                  width="100%"
+                  height="280"
+                  style="
+                    border: 0;
+                    border-radius: var(--radius);
+                    display: block;
+                  "
+                  allowfullscreen=""
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                  title="SwiftGlobal Logistics Office Location"
+                >
+                </iframe>
+              </div>
+            </div>
+
+            <!-- Office Hours -->
+            <div class="office-hours-card">
+              <h4><i class="fa fa-clock"></i> Office Hours</h4>
+              <ul class="hours-list">
+                <li>
+                  <span>Monday – Friday</span
+                  ><span class="hours-open">08:00 – 18:00</span>
+                </li>
+                <li>
+                  <span>Saturday</span
+                  ><span class="hours-open">09:00 – 14:00</span>
+                </li>
+                <li>
+                  <span>Sunday</span><span class="hours-closed">Closed</span>
+                </li>
+                <li class="hours-note">
+                  <i class="fa fa-headset"></i> Emergency support available 24/7
+                </li>
+              </ul>
+            </div>
+
+            <!-- Quick FAQ -->
+            <div class="contact-faq">
+              <h4>Frequently Asked</h4>
+              <div class="faq-item">
+                <button class="faq-q" onclick="toggleFaq(this)">
+                  How quickly can I get a quote?
+                  <i class="fa fa-chevron-down"></i>
+                </button>
+                <div class="faq-a">
+                  We aim to provide quotes within 2–4 business hours for
+                  standard shipments. Complex or project cargo may take up to 24
+                  hours.
+                </div>
+              </div>
+              <div class="faq-item">
+                <button class="faq-q" onclick="toggleFaq(this)">
+                  Do you offer door-to-door delivery?
+                  <i class="fa fa-chevron-down"></i>
+                </button>
+                <div class="faq-a">
+                  Yes. We offer complete door-to-door logistics solutions for
+                  both sea and air freight, including customs clearance and
+                  last-mile delivery.
+                </div>
+              </div>
+              <div class="faq-item">
+                <button class="faq-q" onclick="toggleFaq(this)">
+                  How do I track my shipment? <i class="fa fa-chevron-down"></i>
+                </button>
+                <div class="faq-a">
+                  Simply visit our
+                  <a href="tracking.html" style="color: var(--accent)"
+                    >Tracking page</a
+                  >
+                  and enter your tracking number. We support 1,200+ carriers
+                  worldwide.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-top">
+        <div class="container">
+          <div class="footer-grid">
+            <div class="footer-col footer-brand">
+              <a href="index.html" class="footer-logo">
+                <img
+                  src="images/logo.png"
+                  alt="SwiftGlobal Logo"
+                  onerror="this.style.display = 'none'"
+                />
+                <span>Swift<span class="text-accent">Global</span></span>
+              </a>
+              <p>
+                Your trusted global logistics partner — delivering reliability,
+                speed, and transparency across every shipment, everywhere.
+              </p>
+              <div class="footer-socials">
+                <a href="#" aria-label="Facebook"
+                  ><i class="fab fa-facebook-f"></i
+                ></a>
+                <a href="#" aria-label="Twitter"
+                  ><i class="fab fa-x-twitter"></i
+                ></a>
+                <a href="#" aria-label="LinkedIn"
+                  ><i class="fab fa-linkedin-in"></i
+                ></a>
+                <a href="#" aria-label="Instagram"
+                  ><i class="fab fa-instagram"></i
+                ></a>
+                <a href="#" aria-label="YouTube"
+                  ><i class="fab fa-youtube"></i
+                ></a>
+              </div>
+            </div>
+            <div class="footer-col">
+              <h4>Our Services</h4>
+              <ul class="footer-links">
+                <li>
+                  <a href="pages/sea-freight.html"
+                    ><i class="fa fa-chevron-right"></i> Sea Freight</a
+                  >
+                </li>
+                <li>
+                  <a href="pages/air-freight.html"
+                    ><i class="fa fa-chevron-right"></i> Air Freight</a
+                  >
+                </li>
+                <li>
+                  <a href="pages/land-freight.html"
+                    ><i class="fa fa-chevron-right"></i> Land Freight</a
+                  >
+                </li>
+                <li>
+                  <a href="pages/customs.html"
+                    ><i class="fa fa-chevron-right"></i> Customs Clearance</a
+                  >
+                </li>
+                <li>
+                  <a href="pages/warehousing.html"
+                    ><i class="fa fa-chevron-right"></i> Warehousing</a
+                  >
+                </li>
+                <li>
+                  <a href="pages/project-cargo.html"
+                    ><i class="fa fa-chevron-right"></i> Project Cargo</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Quick Links</h4>
+              <ul class="footer-links">
+                <li>
+                  <a href="index.html"
+                    ><i class="fa fa-chevron-right"></i> Home</a
+                  >
+                </li>
+                <li>
+                  <a href="about.html"
+                    ><i class="fa fa-chevron-right"></i> About Us</a
+                  >
+                </li>
+                <li>
+                  <a href="tracking.html"
+                    ><i class="fa fa-chevron-right"></i> Track a Parcel</a
+                  >
+                </li>
+                <li>
+                  <a href="news.html"
+                    ><i class="fa fa-chevron-right"></i> News & Insights</a
+                  >
+                </li>
+                <li>
+                  <a href="contact.html"
+                    ><i class="fa fa-chevron-right"></i> Contact Us</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Contact Us</h4>
+              <ul class="footer-contact">
+                <li>
+                  <i class="fa fa-location-dot"></i
+                  ><span>123 Logistics Avenue, Business District</span>
+                </li>
+                <li>
+                  <i class="fa fa-phone"></i
+                  ><a href="tel:+1xxxxxxxxx">+1 xxx xxx xxx</a>
+                </li>
+                <li>
+                  <i class="fa fa-envelope"></i
+                  ><a href="mailto:info@swiftglobalogistics.com"
+                    >info@swiftglobalogistics.com</a
+                  >
+                </li>
+                <li>
+                  <i class="fa fa-clock"></i
+                  ><span>Mon – Fri: 08:00 – 18:00</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container flex-between">
+          <p>
+            &copy; <span id="year"></span> SwiftGlobal Logistics. All rights
+            reserved.
+          </p>
+          <div class="footer-bottom-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Sitemap</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+      <i class="fa fa-chevron-up"></i>
+    </button>
+    <div class="cookie-banner" id="cookieBanner">
+      <p>
+        We use cookies to enhance your experience. By continuing, you agree to
+        our <a href="#">Cookie Policy</a>.
+      </p>
+      <div class="cookie-actions">
+        <button class="btn btn-primary btn-sm cookie-accept">Accept</button>
+        <button
+          class="btn btn-outline btn-sm cookie-decline"
+          style="color: var(--text-light); border-color: var(--text-light)"
+        >
+          Decline
         </button>
       </div>
     </div>
-  </nav>
-
-  <!-- PAGE HERO -->
-  <section class="page-hero">
-    <div class="container">
-      <div class="hero-badge animate-fadeInDown delay-1" style="display:inline-flex;margin-bottom:16px;">
-        <i class="fa fa-headset"></i> We're Here to Help
-      </div>
-      <h1 class="animate-fadeInUp delay-2">Contact Us</h1>
-      <p class="animate-fadeInUp delay-3">Have a question, need a quote, or want to discuss your logistics needs? Our team is ready to help.</p>
-      <nav class="breadcrumb animate-fadeInUp delay-4">
-        <a href="index.html">Home</a>
-        <span><i class="fa fa-chevron-right fa-xs"></i></span>
-        <span>Contact</span>
-      </nav>
-    </div>
-  </section>
-
-  <!-- ============ CONTACT INFO CARDS ============ -->
-  <section class="section-sm bg-light">
-    <div class="container">
-      <div class="contact-info-cards">
-        <div class="contact-info-card" data-aos="fade-up" data-aos-delay="0">
-          <div class="cic-icon"><i class="fa fa-location-dot"></i></div>
-          <h4>Our Office</h4>
-          <p>123 Logistics Avenue<br />Business District</p>
-        </div>
-        <div class="contact-info-card" data-aos="fade-up" data-aos-delay="100">
-          <div class="cic-icon"><i class="fa fa-phone"></i></div>
-          <h4>Call Us</h4>
-          <p><a href="tel:+237000000000">+237 000 000 000</a><br />Mon – Fri: 08:00 – 18:00</p>
-        </div>
-        <div class="contact-info-card" data-aos="fade-up" data-aos-delay="200">
-          <div class="cic-icon"><i class="fa fa-envelope"></i></div>
-          <h4>Email Us</h4>
-          <p><a href="mailto:info@swiftglobalogistics.com">info@swiftglobalogistics.com</a><br />We reply within 24 hours</p>
-        </div>
-        <div class="contact-info-card" data-aos="fade-up" data-aos-delay="300">
-          <div class="cic-icon"><i class="fa fa-headset"></i></div>
-          <h4>24/7 Support</h4>
-          <p>Emergency logistics support<br />available around the clock</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ CONTACT FORM + MAP ============ -->
-  <section class="section">
-    <div class="container">
-      <div class="contact-grid">
-
-        <!-- Form -->
-        <div class="contact-form-wrap" data-aos="fade-right">
-          <span class="tagline-inline">Send a Message</span>
-          <h2>Get in Touch</h2>
-          <div class="divider divider-left"></div>
-          <p style="margin:16px 0 30px;">Fill out the form below and one of our logistics specialists will get back to you within 24 hours.</p>
-
-          <form id="contactForm" novalidate>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="firstName">First Name *</label>
-                <input type="text" id="firstName" name="firstName" placeholder="John" required />
-                <span class="field-error" id="firstNameError"></span>
-              </div>
-              <div class="form-group">
-                <label for="lastName">Last Name *</label>
-                <input type="text" id="lastName" name="lastName" placeholder="Doe" required />
-                <span class="field-error" id="lastNameError"></span>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="email">Email Address *</label>
-                <input type="email" id="email" name="email" placeholder="john@example.com" required />
-                <span class="field-error" id="emailError"></span>
-              </div>
-              <div class="form-group">
-                <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" name="phone" placeholder="+237 000 000 000" />
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="service">Service of Interest</label>
-              <select id="service" name="service">
-                <option value="">— Select a service —</option>
-                <option value="sea">Sea Freight</option>
-                <option value="air">Air Freight</option>
-                <option value="land">Land Freight</option>
-                <option value="customs">Customs Clearance</option>
-                <option value="warehousing">Warehousing</option>
-                <option value="project">Project Cargo</option>
-                <option value="tracking">Parcel Tracking</option>
-                <option value="other">Other / General Inquiry</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="subject">Subject *</label>
-              <input type="text" id="subject" name="subject" placeholder="e.g. Quote request for sea freight to Europe" required />
-              <span class="field-error" id="subjectError"></span>
-            </div>
-            <div class="form-group">
-              <label for="message">Message *</label>
-              <textarea id="message" name="message" placeholder="Tell us about your shipment needs, cargo details, origin, destination, and any specific requirements..." required></textarea>
-              <span class="field-error" id="messageError"></span>
-            </div>
-            <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;" id="submitBtn">
-              <i class="fa fa-paper-plane"></i> Send Message
-            </button>
-            <div id="formSuccess" class="form-success-msg" style="display:none;">
-              <i class="fa fa-circle-check"></i> Thank you! Your message has been sent. We'll get back to you within 24 hours.
-            </div>
-          </form>
-        </div>
-
-        <!-- Map + FAQ -->
-        <div class="contact-side" data-aos="fade-left">
-
-          <!-- Embedded Map -->
-          <div class="contact-map-wrap">
-            <h3>Find Us</h3>
-            <div class="contact-map">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127484.33848124822!2d9.6144696!3d4.0510564!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1061128be2e1fe6d%3A0x92daa1444781c48b!2sDouala%2C%20Cameroon!5e0!3m2!1sen!2scm!4v1699999999999!5m2!1sen!2scm"
-                width="100%"
-                height="280"
-                style="border:0;border-radius:var(--radius);display:block;"
-                allowfullscreen=""
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-                title="SwiftGlobal Logistics Office Location">
-              </iframe>
-            </div>
-          </div>
-
-          <!-- Office Hours -->
-          <div class="office-hours-card">
-            <h4><i class="fa fa-clock"></i> Office Hours</h4>
-            <ul class="hours-list">
-              <li><span>Monday – Friday</span><span class="hours-open">08:00 – 18:00</span></li>
-              <li><span>Saturday</span><span class="hours-open">09:00 – 14:00</span></li>
-              <li><span>Sunday</span><span class="hours-closed">Closed</span></li>
-              <li class="hours-note"><i class="fa fa-headset"></i> Emergency support available 24/7</li>
-            </ul>
-          </div>
-
-          <!-- Quick FAQ -->
-          <div class="contact-faq">
-            <h4>Frequently Asked</h4>
-            <div class="faq-item">
-              <button class="faq-q" onclick="toggleFaq(this)">
-                How quickly can I get a quote? <i class="fa fa-chevron-down"></i>
-              </button>
-              <div class="faq-a">We aim to provide quotes within 2–4 business hours for standard shipments. Complex or project cargo may take up to 24 hours.</div>
-            </div>
-            <div class="faq-item">
-              <button class="faq-q" onclick="toggleFaq(this)">
-                Do you offer door-to-door delivery? <i class="fa fa-chevron-down"></i>
-              </button>
-              <div class="faq-a">Yes. We offer complete door-to-door logistics solutions for both sea and air freight, including customs clearance and last-mile delivery.</div>
-            </div>
-            <div class="faq-item">
-              <button class="faq-q" onclick="toggleFaq(this)">
-                How do I track my shipment? <i class="fa fa-chevron-down"></i>
-              </button>
-              <div class="faq-a">Simply visit our <a href="tracking.html" style="color:var(--accent);">Tracking page</a> and enter your tracking number. We support 1,200+ carriers worldwide.</div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="footer-top">
-      <div class="container">
-        <div class="footer-grid">
-          <div class="footer-col footer-brand">
-            <a href="index.html" class="footer-logo">
-              <img src="images/logo.png" alt="SwiftGlobal Logo" onerror="this.style.display='none'" />
-              <span>Swift<span class="text-accent">Global</span></span>
-            </a>
-            <p>Your trusted global logistics partner — delivering reliability, speed, and transparency across every shipment, everywhere.</p>
-            <div class="footer-socials">
-              <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-              <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
-              <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-              <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-              <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-            </div>
-          </div>
-          <div class="footer-col">
-            <h4>Our Services</h4>
-            <ul class="footer-links">
-              <li><a href="pages/sea-freight.html"><i class="fa fa-chevron-right"></i> Sea Freight</a></li>
-              <li><a href="pages/air-freight.html"><i class="fa fa-chevron-right"></i> Air Freight</a></li>
-              <li><a href="pages/land-freight.html"><i class="fa fa-chevron-right"></i> Land Freight</a></li>
-              <li><a href="pages/customs.html"><i class="fa fa-chevron-right"></i> Customs Clearance</a></li>
-              <li><a href="pages/warehousing.html"><i class="fa fa-chevron-right"></i> Warehousing</a></li>
-              <li><a href="pages/project-cargo.html"><i class="fa fa-chevron-right"></i> Project Cargo</a></li>
-            </ul>
-          </div>
-          <div class="footer-col">
-            <h4>Quick Links</h4>
-            <ul class="footer-links">
-              <li><a href="index.html"><i class="fa fa-chevron-right"></i> Home</a></li>
-              <li><a href="about.html"><i class="fa fa-chevron-right"></i> About Us</a></li>
-              <li><a href="tracking.html"><i class="fa fa-chevron-right"></i> Track a Parcel</a></li>
-              <li><a href="news.html"><i class="fa fa-chevron-right"></i> News & Insights</a></li>
-              <li><a href="contact.html"><i class="fa fa-chevron-right"></i> Contact Us</a></li>
-            </ul>
-          </div>
-          <div class="footer-col">
-            <h4>Contact Us</h4>
-            <ul class="footer-contact">
-              <li><i class="fa fa-location-dot"></i><span>123 Logistics Avenue, Business District</span></li>
-              <li><i class="fa fa-phone"></i><a href="tel:+237000000000">+237 000 000 000</a></li>
-              <li><i class="fa fa-envelope"></i><a href="mailto:info@swiftglobalogistics.com">info@swiftglobalogistics.com</a></li>
-              <li><i class="fa fa-clock"></i><span>Mon – Fri: 08:00 – 18:00</span></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <div class="container flex-between">
-        <p>&copy; <span id="year"></span> SwiftGlobal Logistics. All rights reserved.</p>
-        <div class="footer-bottom-links">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-          <a href="#">Sitemap</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <button class="back-to-top" id="backToTop" aria-label="Back to top"><i class="fa fa-chevron-up"></i></button>
-  <div class="cookie-banner" id="cookieBanner">
-    <p>We use cookies to enhance your experience. By continuing, you agree to our <a href="#">Cookie Policy</a>.</p>
-    <div class="cookie-actions">
-      <button class="btn btn-primary btn-sm cookie-accept">Accept</button>
-      <button class="btn btn-outline btn-sm cookie-decline" style="color:var(--text-light);border-color:var(--text-light);">Decline</button>
-    </div>
-  </div>
-  <!-- EmailJS -->
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/form.js"></script>
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-    function toggleFaq(btn) {
-      const item = btn.parentElement;
-      const isOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item').forEach(f => f.classList.remove('open'));
-      if (!isOpen) item.classList.add('open');
-    }
-  </script>
-</body>
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/form.js"></script>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+      function toggleFaq(btn) {
+        const item = btn.parentElement;
+        const isOpen = item.classList.contains("open");
+        document
+          .querySelectorAll(".faq-item")
+          .forEach((f) => f.classList.remove("open"));
+        if (!isOpen) item.classList.add("open");
+      }
+    </script>
+  </body>
 </html>

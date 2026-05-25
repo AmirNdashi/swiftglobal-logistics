@@ -12,68 +12,133 @@
 
 /* ---------- Fade Animations ---------- */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(40px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-40px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeInLeft {
-  from { opacity: 0; transform: translateX(-40px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes fadeInRight {
-  from { opacity: 0; transform: translateX(40px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 /* ---------- Scale Animations ---------- */
 @keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.85); }
-  to   { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50%       { transform: scale(1.05); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
 }
 
 /* ---------- Slide Animations ---------- */
 @keyframes slideInUp {
-  from { transform: translateY(100%); opacity: 0; }
-  to   { transform: translateY(0);    opacity: 1; }
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* ---------- Hero Specific ---------- */
 @keyframes heroFloat {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-12px); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
 }
 
 @keyframes heroPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(232,163,23,0.5); }
-  70%       { box-shadow: 0 0 0 16px rgba(232,163,23,0); }
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(232, 163, 23, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 16px rgba(232, 163, 23, 0);
+  }
 }
 
 /* ---------- Counter Animation ---------- */
 @keyframes countUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ---------- Shimmer (skeleton loading) ---------- */
 @keyframes shimmer {
-  0%   { background-position: -1000px 0; }
-  100% { background-position: 1000px 0; }
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
 }
 
 .shimmer {
@@ -83,41 +148,77 @@
 }
 
 /* ---------- Utility Animation Classes ---------- */
-.animate-fadeIn      { animation: fadeIn      0.6s ease forwards; }
-.animate-fadeInUp    { animation: fadeInUp    0.7s ease forwards; }
-.animate-fadeInDown  { animation: fadeInDown  0.7s ease forwards; }
-.animate-fadeInLeft  { animation: fadeInLeft  0.7s ease forwards; }
-.animate-fadeInRight { animation: fadeInRight 0.7s ease forwards; }
-.animate-scaleIn     { animation: scaleIn     0.6s ease forwards; }
-.animate-pulse       { animation: pulse       2s ease infinite; }
-.animate-float       { animation: heroFloat   4s ease-in-out infinite; }
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease forwards;
+}
+.animate-fadeInUp {
+  animation: fadeInUp 0.7s ease forwards;
+}
+.animate-fadeInDown {
+  animation: fadeInDown 0.7s ease forwards;
+}
+.animate-fadeInLeft {
+  animation: fadeInLeft 0.7s ease forwards;
+}
+.animate-fadeInRight {
+  animation: fadeInRight 0.7s ease forwards;
+}
+.animate-scaleIn {
+  animation: scaleIn 0.6s ease forwards;
+}
+.animate-pulse {
+  animation: pulse 2s ease infinite;
+}
+.animate-float {
+  animation: heroFloat 4s ease-in-out infinite;
+}
 
 /* Delay helpers */
-.delay-1 { animation-delay: 0.1s; }
-.delay-2 { animation-delay: 0.2s; }
-.delay-3 { animation-delay: 0.3s; }
-.delay-4 { animation-delay: 0.4s; }
-.delay-5 { animation-delay: 0.5s; }
-.delay-6 { animation-delay: 0.6s; }
+.delay-1 {
+  animation-delay: 0.1s;
+}
+.delay-2 {
+  animation-delay: 0.2s;
+}
+.delay-3 {
+  animation-delay: 0.3s;
+}
+.delay-4 {
+  animation-delay: 0.4s;
+}
+.delay-5 {
+  animation-delay: 0.5s;
+}
+.delay-6 {
+  animation-delay: 0.6s;
+}
 
 /* ---------- Hover Effects ---------- */
 .hover-lift {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 .hover-lift:hover {
   transform: translateY(-6px);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
 }
 
 .hover-glow:hover {
-  box-shadow: 0 0 20px rgba(232,163,23,0.5);
+  box-shadow: 0 0 20px rgba(232, 163, 23, 0.5);
 }
 
 /* ---------- Tracking Status Animations ---------- */
 @keyframes trackingPulse {
-  0%   { box-shadow: 0 0 0 0 rgba(56,161,105,0.6); }
-  70%  { box-shadow: 0 0 0 10px rgba(56,161,105,0); }
-  100% { box-shadow: 0 0 0 0 rgba(56,161,105,0); }
+  0% {
+    box-shadow: 0 0 0 0 rgba(56, 161, 105, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(56, 161, 105, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(56, 161, 105, 0);
+  }
 }
 
 .tracking-active {
@@ -126,8 +227,16 @@
 
 /* ---------- Loading Dots ---------- */
 @keyframes dotBounce {
-  0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
-  40%            { transform: scale(1); opacity: 1; }
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+    opacity: 0.3;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .loading-dots {
@@ -145,9 +254,15 @@
   animation: dotBounce 1.4s ease-in-out infinite;
 }
 
-.loading-dots span:nth-child(1) { animation-delay: 0s; }
-.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+.loading-dots span:nth-child(1) {
+  animation-delay: 0s;
+}
+.loading-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.loading-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
 
 /* ---------- Page Transition ---------- */
 .page-transition {

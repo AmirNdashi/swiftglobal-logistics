@@ -1,233 +1,288 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard — SwiftGlobal Logistics</title>
-  <meta name="robots" content="noindex, nofollow" />
-  <link rel="icon" type="image/x-icon" href="../images/favicon.ico" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="admin.css" />
-</head>
-<body class="admin-body">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard — SwiftGlobal Logistics</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body class="admin-body">
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-logo">
+        <span>Swift<span>Global</span></span>
+        <span class="sidebar-badge">Admin</span>
+      </div>
 
-  <!-- ============ SIDEBAR ============ -->
-  <aside class="admin-sidebar" id="adminSidebar">
-    <div class="sidebar-logo">
-      <span>Swift<span>Global</span></span>
-      <span class="sidebar-badge">Admin</span>
+      <nav class="sidebar-nav">
+        <a href="#" class="sidebar-link active" data-section="dashboard">
+          <i class="fa fa-gauge-high"></i> Dashboard
+        </a>
+        <a href="#" class="sidebar-link" data-section="messages">
+          <i class="fa fa-envelope"></i> Messages
+          <span class="sidebar-badge-count" id="unreadBadge">0</span>
+        </a>
+        <a href="#" class="sidebar-link" data-section="quotes">
+          <i class="fa fa-file-invoice-dollar"></i> Quote Requests
+          <span class="sidebar-badge-count" id="quoteBadge">0</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="../index.html" target="_blank" class="sidebar-link">
+          <i class="fa fa-globe"></i> View Website
+        </a>
+        <button class="sidebar-link sidebar-logout" id="logoutBtn">
+          <i class="fa fa-right-from-bracket"></i> Logout
+        </button>
+      </div>
+    </aside>
+
+    <!-- ============ MAIN ============ -->
+    <div class="admin-main">
+      <!-- Top Bar -->
+      <header class="admin-topbar">
+        <button
+          class="sidebar-toggle"
+          id="sidebarToggle"
+          aria-label="Toggle sidebar"
+        >
+          <i class="fa fa-bars"></i>
+        </button>
+        <div class="admin-topbar-title" id="pageTitle">Dashboard</div>
+        <div class="admin-topbar-right">
+          <span class="admin-time" id="adminClock"></span>
+          <div class="admin-user-badge">
+            <i class="fa fa-user-shield"></i> Admin
+          </div>
+        </div>
+      </header>
+
+      <!-- ============ DASHBOARD SECTION ============ -->
+      <section class="admin-section active" id="section-dashboard">
+        <div class="admin-section-header">
+          <h2>Dashboard Overview</h2>
+          <p>Welcome back, Admin. Here's a summary of all site activity.</p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-cards">
+          <div class="stat-card stat-card--blue">
+            <div class="stat-card-icon"><i class="fa fa-envelope"></i></div>
+            <div class="stat-card-info">
+              <span class="stat-card-num" id="statTotal">0</span>
+              <span class="stat-card-label">Total Messages</span>
+            </div>
+          </div>
+          <div class="stat-card stat-card--amber">
+            <div class="stat-card-icon">
+              <i class="fa fa-envelope-open"></i>
+            </div>
+            <div class="stat-card-info">
+              <span class="stat-card-num" id="statUnread">0</span>
+              <span class="stat-card-label">Unread Messages</span>
+            </div>
+          </div>
+          <div class="stat-card stat-card--green">
+            <div class="stat-card-icon">
+              <i class="fa fa-file-invoice-dollar"></i>
+            </div>
+            <div class="stat-card-info">
+              <span class="stat-card-num" id="statQuotes">0</span>
+              <span class="stat-card-label">Quote Requests</span>
+            </div>
+          </div>
+          <div class="stat-card stat-card--purple">
+            <div class="stat-card-icon"><i class="fa fa-trash"></i></div>
+            <div class="stat-card-info">
+              <span class="stat-card-num" id="statDeleted">0</span>
+              <span class="stat-card-label">Deleted Messages</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Messages Preview -->
+        <div class="admin-card" style="margin-top: 32px">
+          <div class="admin-card-header">
+            <h3><i class="fa fa-clock-rotate-left"></i> Recent Messages</h3>
+            <button
+              class="admin-btn admin-btn-sm"
+              onclick="switchSection('messages')"
+            >
+              View All <i class="fa fa-arrow-right"></i>
+            </button>
+          </div>
+          <div id="recentMessages">
+            <div class="admin-empty">
+              <i class="fa fa-inbox"></i>
+              <p>
+                No messages yet. They'll appear here once the contact form is
+                submitted.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ MESSAGES SECTION ============ -->
+      <section class="admin-section" id="section-messages">
+        <div class="admin-section-header">
+          <h2>All Messages</h2>
+          <p>All contact form submissions from the website.</p>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="admin-toolbar">
+          <div class="admin-search-wrap">
+            <i class="fa fa-search"></i>
+            <input
+              type="text"
+              id="messageSearch"
+              placeholder="Search messages..."
+              oninput="filterMessages()"
+            />
+          </div>
+          <div class="admin-toolbar-actions">
+            <select
+              id="messageFilter"
+              onchange="filterMessages()"
+              class="admin-select"
+            >
+              <option value="all">All Messages</option>
+              <option value="unread">Unread Only</option>
+              <option value="read">Read Only</option>
+            </select>
+            <button
+              class="admin-btn admin-btn-danger admin-btn-sm"
+              onclick="deleteAllMessages()"
+            >
+              <i class="fa fa-trash"></i> Clear All
+            </button>
+          </div>
+        </div>
+
+        <div id="messagesList"></div>
+      </section>
+
+      <!-- ============ QUOTES SECTION ============ -->
+      <section class="admin-section" id="section-quotes">
+        <div class="admin-section-header">
+          <h2>Quote Requests</h2>
+          <p>
+            All contact form submissions where a specific service was selected.
+          </p>
+        </div>
+
+        <div class="admin-toolbar">
+          <div class="admin-search-wrap">
+            <i class="fa fa-search"></i>
+            <input
+              type="text"
+              id="quoteSearch"
+              placeholder="Search quote requests..."
+              oninput="filterQuotes()"
+            />
+          </div>
+          <div class="admin-toolbar-actions">
+            <select
+              id="quoteServiceFilter"
+              onchange="filterQuotes()"
+              class="admin-select"
+            >
+              <option value="all">All Services</option>
+              <option value="sea">Sea Freight</option>
+              <option value="air">Air Freight</option>
+              <option value="land">Land Freight</option>
+              <option value="customs">Customs Clearance</option>
+              <option value="warehousing">Warehousing</option>
+              <option value="project">Project Cargo</option>
+              <option value="other">Other</option>
+            </select>
+            <button
+              class="admin-btn admin-btn-danger admin-btn-sm"
+              onclick="deleteAllQuotes()"
+            >
+              <i class="fa fa-trash"></i> Clear All
+            </button>
+          </div>
+        </div>
+
+        <div id="quotesList"></div>
+      </section>
     </div>
 
-    <nav class="sidebar-nav">
-      <a href="#" class="sidebar-link active" data-section="dashboard">
-        <i class="fa fa-gauge-high"></i> Dashboard
-      </a>
-      <a href="#" class="sidebar-link" data-section="messages">
-        <i class="fa fa-envelope"></i> Messages
-        <span class="sidebar-badge-count" id="unreadBadge">0</span>
-      </a>
-      <a href="#" class="sidebar-link" data-section="quotes">
-        <i class="fa fa-file-invoice-dollar"></i> Quote Requests
-        <span class="sidebar-badge-count" id="quoteBadge">0</span>
-      </a>
-    </nav>
-
-    <div class="sidebar-footer">
-      <a href="../index.html" target="_blank" class="sidebar-link">
-        <i class="fa fa-globe"></i> View Website
-      </a>
-      <button class="sidebar-link sidebar-logout" id="logoutBtn">
-        <i class="fa fa-right-from-bracket"></i> Logout
-      </button>
-    </div>
-  </aside>
-
-  <!-- ============ MAIN ============ -->
-  <div class="admin-main">
-
-    <!-- Top Bar -->
-    <header class="admin-topbar">
-      <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
-        <i class="fa fa-bars"></i>
-      </button>
-      <div class="admin-topbar-title" id="pageTitle">Dashboard</div>
-      <div class="admin-topbar-right">
-        <span class="admin-time" id="adminClock"></span>
-        <div class="admin-user-badge">
-          <i class="fa fa-user-shield"></i> Admin
-        </div>
-      </div>
-    </header>
-
-    <!-- ============ DASHBOARD SECTION ============ -->
-    <section class="admin-section active" id="section-dashboard">
-      <div class="admin-section-header">
-        <h2>Dashboard Overview</h2>
-        <p>Welcome back, Admin. Here's a summary of all site activity.</p>
-      </div>
-
-      <!-- Stats Cards -->
-      <div class="stats-cards">
-        <div class="stat-card stat-card--blue">
-          <div class="stat-card-icon"><i class="fa fa-envelope"></i></div>
-          <div class="stat-card-info">
-            <span class="stat-card-num" id="statTotal">0</span>
-            <span class="stat-card-label">Total Messages</span>
-          </div>
-        </div>
-        <div class="stat-card stat-card--amber">
-          <div class="stat-card-icon"><i class="fa fa-envelope-open"></i></div>
-          <div class="stat-card-info">
-            <span class="stat-card-num" id="statUnread">0</span>
-            <span class="stat-card-label">Unread Messages</span>
-          </div>
-        </div>
-        <div class="stat-card stat-card--green">
-          <div class="stat-card-icon"><i class="fa fa-file-invoice-dollar"></i></div>
-          <div class="stat-card-info">
-            <span class="stat-card-num" id="statQuotes">0</span>
-            <span class="stat-card-label">Quote Requests</span>
-          </div>
-        </div>
-        <div class="stat-card stat-card--purple">
-          <div class="stat-card-icon"><i class="fa fa-trash"></i></div>
-          <div class="stat-card-info">
-            <span class="stat-card-num" id="statDeleted">0</span>
-            <span class="stat-card-label">Deleted Messages</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Recent Messages Preview -->
-      <div class="admin-card" style="margin-top:32px;">
-        <div class="admin-card-header">
-          <h3><i class="fa fa-clock-rotate-left"></i> Recent Messages</h3>
-          <button class="admin-btn admin-btn-sm" onclick="switchSection('messages')">
-            View All <i class="fa fa-arrow-right"></i>
+    <!-- ============ MESSAGE MODAL ============ -->
+    <div class="admin-modal-overlay" id="modalOverlay" style="display: none">
+      <div class="admin-modal">
+        <div class="admin-modal-header">
+          <h3 id="modalTitle">Message Detail</h3>
+          <button class="admin-modal-close" onclick="closeModal()">
+            <i class="fa fa-times"></i>
           </button>
         </div>
-        <div id="recentMessages">
-          <div class="admin-empty">
-            <i class="fa fa-inbox"></i>
-            <p>No messages yet. They'll appear here once the contact form is submitted.</p>
-          </div>
-        </div>
-      </div>
-
-    </section>
-
-    <!-- ============ MESSAGES SECTION ============ -->
-    <section class="admin-section" id="section-messages">
-      <div class="admin-section-header">
-        <h2>All Messages</h2>
-        <p>All contact form submissions from the website.</p>
-      </div>
-
-      <!-- Toolbar -->
-      <div class="admin-toolbar">
-        <div class="admin-search-wrap">
-          <i class="fa fa-search"></i>
-          <input type="text" id="messageSearch" placeholder="Search messages..." oninput="filterMessages()" />
-        </div>
-        <div class="admin-toolbar-actions">
-          <select id="messageFilter" onchange="filterMessages()" class="admin-select">
-            <option value="all">All Messages</option>
-            <option value="unread">Unread Only</option>
-            <option value="read">Read Only</option>
-          </select>
-          <button class="admin-btn admin-btn-danger admin-btn-sm" onclick="deleteAllMessages()">
-            <i class="fa fa-trash"></i> Clear All
+        <div class="admin-modal-body" id="modalBody"></div>
+        <div class="admin-modal-footer">
+          <button class="admin-btn admin-btn-sm" onclick="toggleReadModal()">
+            <i class="fa fa-envelope-open" id="modalReadIcon"></i>
+            <span id="modalReadText">Mark as Read</span>
+          </button>
+          <button
+            class="admin-btn admin-btn-danger admin-btn-sm"
+            onclick="deleteFromModal()"
+          >
+            <i class="fa fa-trash"></i> Delete
+          </button>
+          <button
+            class="admin-btn admin-btn-secondary admin-btn-sm"
+            onclick="closeModal()"
+          >
+            <i class="fa fa-times"></i> Close
           </button>
         </div>
       </div>
+    </div>
 
-      <div id="messagesList"></div>
-
-    </section>
-
-    <!-- ============ QUOTES SECTION ============ -->
-    <section class="admin-section" id="section-quotes">
-      <div class="admin-section-header">
-        <h2>Quote Requests</h2>
-        <p>All contact form submissions where a specific service was selected.</p>
-      </div>
-
-      <div class="admin-toolbar">
-        <div class="admin-search-wrap">
-          <i class="fa fa-search"></i>
-          <input type="text" id="quoteSearch" placeholder="Search quote requests..." oninput="filterQuotes()" />
+    <!-- ============ CONFIRM MODAL ============ -->
+    <div class="admin-modal-overlay" id="confirmOverlay" style="display: none">
+      <div class="admin-modal admin-modal--sm">
+        <div class="admin-modal-header">
+          <h3>
+            <i
+              class="fa fa-triangle-exclamation"
+              style="color: var(--admin-danger)"
+            ></i>
+            Confirm Delete
+          </h3>
         </div>
-        <div class="admin-toolbar-actions">
-          <select id="quoteServiceFilter" onchange="filterQuotes()" class="admin-select">
-            <option value="all">All Services</option>
-            <option value="sea">Sea Freight</option>
-            <option value="air">Air Freight</option>
-            <option value="land">Land Freight</option>
-            <option value="customs">Customs Clearance</option>
-            <option value="warehousing">Warehousing</option>
-            <option value="project">Project Cargo</option>
-            <option value="other">Other</option>
-          </select>
-          <button class="admin-btn admin-btn-danger admin-btn-sm" onclick="deleteAllQuotes()">
-            <i class="fa fa-trash"></i> Clear All
+        <div class="admin-modal-body">
+          <p id="confirmMsg">Are you sure you want to delete this?</p>
+        </div>
+        <div class="admin-modal-footer">
+          <button class="admin-btn admin-btn-danger" id="confirmYes">
+            <i class="fa fa-trash"></i> Yes, Delete
+          </button>
+          <button
+            class="admin-btn admin-btn-secondary"
+            onclick="closeConfirm()"
+          >
+            Cancel
           </button>
         </div>
       </div>
-
-      <div id="quotesList"></div>
-
-    </section>
-
-  </div>
-
-  <!-- ============ MESSAGE MODAL ============ -->
-  <div class="admin-modal-overlay" id="modalOverlay" style="display:none;">
-    <div class="admin-modal">
-      <div class="admin-modal-header">
-        <h3 id="modalTitle">Message Detail</h3>
-        <button class="admin-modal-close" onclick="closeModal()">
-          <i class="fa fa-times"></i>
-        </button>
-      </div>
-      <div class="admin-modal-body" id="modalBody"></div>
-      <div class="admin-modal-footer">
-        <button class="admin-btn admin-btn-sm" onclick="toggleReadModal()">
-          <i class="fa fa-envelope-open" id="modalReadIcon"></i>
-          <span id="modalReadText">Mark as Read</span>
-        </button>
-        <button class="admin-btn admin-btn-danger admin-btn-sm" onclick="deleteFromModal()">
-          <i class="fa fa-trash"></i> Delete
-        </button>
-        <button class="admin-btn admin-btn-secondary admin-btn-sm" onclick="closeModal()">
-          <i class="fa fa-times"></i> Close
-        </button>
-      </div>
     </div>
-  </div>
 
-  <!-- ============ CONFIRM MODAL ============ -->
-  <div class="admin-modal-overlay" id="confirmOverlay" style="display:none;">
-    <div class="admin-modal admin-modal--sm">
-      <div class="admin-modal-header">
-        <h3><i class="fa fa-triangle-exclamation" style="color:var(--admin-danger);"></i> Confirm Delete</h3>
-      </div>
-      <div class="admin-modal-body">
-        <p id="confirmMsg">Are you sure you want to delete this?</p>
-      </div>
-      <div class="admin-modal-footer">
-        <button class="admin-btn admin-btn-danger" id="confirmYes">
-          <i class="fa fa-trash"></i> Yes, Delete
-        </button>
-        <button class="admin-btn admin-btn-secondary" onclick="closeConfirm()">
-          Cancel
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <script src="admin.js"></script>
-</body>
+    <script src="admin.js"></script>
+  </body>
 </html>

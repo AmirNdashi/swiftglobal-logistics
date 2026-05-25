@@ -1,506 +1,755 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-  <!-- SEO -->
-  <title>Track Your Parcel — SwiftGlobal Logistics</title>
-  <meta name="description" content="Track any parcel in real time across 1,200+ carriers worldwide. Enter your tracking number and get instant live updates." />
-  <meta name="keywords" content="parcel tracking, shipment tracking, track package, DHL tracking, FedEx tracking, UPS tracking, real-time tracking" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://www.swiftglobalogistics.com/tracking.html" />
+    <!-- SEO -->
+    <title>Track Your Parcel — SwiftGlobal Logistics</title>
+    <meta
+      name="description"
+      content="Track any parcel in real time across 1,200+ carriers worldwide. Enter your tracking number and get instant live updates."
+    />
+    <meta
+      name="keywords"
+      content="parcel tracking, shipment tracking, track package, DHL tracking, FedEx tracking, UPS tracking, real-time tracking"
+    />
+    <meta name="robots" content="index, follow" />
+    <link
+      rel="canonical"
+      href="https://www.swiftglobalogistics.com/tracking.html"
+    />
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
 
-  <!-- AOS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+    <!-- AOS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"
+    />
 
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/animations.css" />
-  <link rel="stylesheet" href="css/responsive.css" />
-</head>
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+  </head>
 
-<body>
+  <body>
+    <!-- PRELOADER -->
+    <div class="preloader" id="preloader">
+      <div class="preloader-logo">Swift<span>Track</span></div>
+      <div class="preloader-spinner"></div>
+    </div>
 
-  <!-- PRELOADER -->
-  <div class="preloader" id="preloader">
-    <div class="preloader-logo">Swift<span>Track</span></div>
-    <div class="preloader-spinner"></div>
-  </div>
+    <!-- SCROLL PROGRESS -->
+    <div class="scroll-progress" id="scrollProgress"></div>
 
-  <!-- SCROLL PROGRESS -->
-  <div class="scroll-progress" id="scrollProgress"></div>
-
-  <!-- TOP BAR -->
-  <div class="topbar">
-    <div class="container flex-between">
-      <div class="topbar-left">
-        <a href="mailto:info@swiftglobalogistics.com">
-          <i class="fa fa-envelope"></i> info@swiftglobalogistics.com
-        </a>
-        <a href="tel:+237000000000">
-          <i class="fa fa-phone"></i> +237 000 000 000
-        </a>
-      </div>
-      <div class="topbar-right">
-        <span><i class="fa fa-clock"></i> Mon – Fri: 08:00 – 18:00</span>
-        <div class="topbar-socials">
-          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
-          <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <div class="container flex-between">
+        <div class="topbar-left">
+          <a href="mailto:info@swiftglobalogistics.com">
+            <i class="fa fa-envelope"></i> info@swiftglobalogistics.com
+          </a>
+          <a href="tel:+1xxxxxxxx">
+            <i class="fa fa-phone"></i> +1 xxx xxx xxx
+          </a>
+        </div>
+        <div class="topbar-right">
+          <span><i class="fa fa-clock"></i> Mon – Fri: 08:00 – 18:00</span>
+          <div class="topbar-socials">
+            <a href="#" aria-label="Facebook"
+              ><i class="fab fa-facebook-f"></i
+            ></a>
+            <a href="#" aria-label="Twitter"
+              ><i class="fab fa-x-twitter"></i
+            ></a>
+            <a href="#" aria-label="LinkedIn"
+              ><i class="fab fa-linkedin-in"></i
+            ></a>
+            <a href="#" aria-label="Instagram"
+              ><i class="fab fa-instagram"></i
+            ></a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- NAVBAR -->
-  <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
-    <div class="container flex-between">
-      <a href="index.html" class="nav-logo" aria-label="SwiftGlobal Logistics Home">
-        <img src="images/logo.png" alt="SwiftGlobal Logistics Logo" class="logo-img" onerror="this.style.display='none'" />
-        <span class="logo-text">Swift<span>Global</span></span>
-      </a>
-      <ul class="nav-links" id="navLinks" role="menubar">
-        <li role="none"><a href="index.html" role="menuitem">Home</a></li>
-        <li role="none"><a href="about.html" role="menuitem">About Us</a></li>
-        <li class="has-dropdown" role="none">
-          <a href="services.html" role="menuitem" aria-haspopup="true">
-            Services <i class="fa fa-chevron-down fa-xs"></i>
-          </a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="pages/sea-freight.html" role="menuitem"><i class="fa fa-ship"></i> Sea Freight</a></li>
-            <li><a href="pages/air-freight.html" role="menuitem"><i class="fa fa-plane"></i> Air Freight</a></li>
-            <li><a href="pages/land-freight.html" role="menuitem"><i class="fa fa-truck"></i> Land Freight</a></li>
-            <li><a href="pages/customs.html" role="menuitem"><i class="fa fa-file-contract"></i> Customs Clearance</a></li>
-            <li><a href="pages/warehousing.html" role="menuitem"><i class="fa fa-warehouse"></i> Warehousing</a></li>
-            <li><a href="pages/project-cargo.html" role="menuitem"><i class="fa fa-boxes-stacked"></i> Project Cargo</a></li>
-          </ul>
-        </li>
-        <li role="none"><a href="tracking.html" class="active" role="menuitem">Track Parcel</a></li>
-        <li role="none"><a href="news.html" role="menuitem">News</a></li>
-        <li role="none"><a href="contact.html" role="menuitem">Contact</a></li>
-      </ul>
-      <div class="nav-right">
-        <a href="contact.html" class="btn btn-primary btn-sm nav-cta">
-          <i class="fa fa-file-invoice"></i> Get a Quote
+    <!-- NAVBAR -->
+    <nav
+      class="navbar"
+      id="navbar"
+      role="navigation"
+      aria-label="Main navigation"
+    >
+      <div class="container flex-between">
+        <a
+          href="index.html"
+          class="nav-logo"
+          aria-label="SwiftGlobal Logistics Home"
+        >
+          <img
+            src="images/logo.png"
+            alt="SwiftGlobal Logistics Logo"
+            class="logo-img"
+            onerror="this.style.display = 'none'"
+          />
+          <span class="logo-text">Swift<span>Global</span></span>
         </a>
-        <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
-          <span></span><span></span><span></span>
+        <ul class="nav-links" id="navLinks" role="menubar">
+          <li role="none"><a href="index.html" role="menuitem">Home</a></li>
+          <li role="none"><a href="about.html" role="menuitem">About Us</a></li>
+          <li class="has-dropdown" role="none">
+            <a href="services.html" role="menuitem" aria-haspopup="true">
+              Services <i class="fa fa-chevron-down fa-xs"></i>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+              <li>
+                <a href="pages/sea-freight.html" role="menuitem"
+                  ><i class="fa fa-ship"></i> Sea Freight</a
+                >
+              </li>
+              <li>
+                <a href="pages/air-freight.html" role="menuitem"
+                  ><i class="fa fa-plane"></i> Air Freight</a
+                >
+              </li>
+              <li>
+                <a href="pages/land-freight.html" role="menuitem"
+                  ><i class="fa fa-truck"></i> Land Freight</a
+                >
+              </li>
+              <li>
+                <a href="pages/customs.html" role="menuitem"
+                  ><i class="fa fa-file-contract"></i> Customs Clearance</a
+                >
+              </li>
+              <li>
+                <a href="pages/warehousing.html" role="menuitem"
+                  ><i class="fa fa-warehouse"></i> Warehousing</a
+                >
+              </li>
+              <li>
+                <a href="pages/project-cargo.html" role="menuitem"
+                  ><i class="fa fa-boxes-stacked"></i> Project Cargo</a
+                >
+              </li>
+            </ul>
+          </li>
+          <li role="none">
+            <a href="tracking.html" class="active" role="menuitem"
+              >Track Parcel</a
+            >
+          </li>
+          <li role="none"><a href="news.html" role="menuitem">News</a></li>
+          <li role="none">
+            <a href="contact.html" role="menuitem">Contact</a>
+          </li>
+        </ul>
+        <div class="nav-right">
+          <a href="contact.html" class="btn btn-primary btn-sm nav-cta">
+            <i class="fa fa-file-invoice"></i> Get a Quote
+          </a>
+          <button
+            class="hamburger"
+            id="hamburger"
+            aria-label="Toggle navigation"
+            aria-expanded="false"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero" aria-label="Track Parcel Page Hero">
+      <div class="container">
+        <div
+          class="hero-badge animate-fadeInDown delay-1"
+          style="display: inline-flex; margin-bottom: 16px"
+        >
+          <i class="fa fa-magnifying-glass-location"></i> Universal Parcel
+          Tracking
+        </div>
+        <h1 class="animate-fadeInUp delay-2">Track Your Shipment</h1>
+        <p class="animate-fadeInUp delay-3">
+          Real-time tracking across 1,200+ carriers worldwide. Enter your
+          tracking number below for instant status updates.
+        </p>
+        <nav
+          class="breadcrumb animate-fadeInUp delay-4"
+          aria-label="Breadcrumb"
+        >
+          <a href="index.html">Home</a>
+          <span><i class="fa fa-chevron-right fa-xs"></i></span>
+          <span>Track Parcel</span>
+        </nav>
+      </div>
+    </section>
+
+    <!-- ============================================
+       MAIN TRACKING SECTION
+       ============================================ -->
+    <section class="tracking-page-section section" aria-label="Tracking tool">
+      <div class="container">
+        <!-- Tracking Input Card -->
+        <div class="tracking-input-card" data-aos="fade-up">
+          <div class="tracking-input-card-header">
+            <div class="tracking-input-card-icon">
+              <i class="fa fa-box-open"></i>
+            </div>
+            <div>
+              <h2>Enter Your Tracking Number</h2>
+              <p>
+                Supports DHL, FedEx, UPS, USPS, DPD, TNT, China Post, EMS, and
+                1,200+ more carriers worldwide.
+              </p>
+            </div>
+          </div>
+
+          <!-- Input Row -->
+          <div class="tracking-main-form">
+            <div class="tracking-input-wrap">
+              <i class="fa fa-barcode tracking-input-icon"></i>
+              <input
+                type="text"
+                id="trackingInput"
+                class="tracking-main-input"
+                placeholder="e.g. 1Z999AA10123456784 or JD014600006228"
+                aria-label="Enter tracking number"
+                autocomplete="off"
+                spellcheck="false"
+              />
+              <button
+                class="tracking-clear-btn"
+                id="clearBtn"
+                title="Clear"
+                aria-label="Clear input"
+              >
+                <i class="fa fa-times"></i>
+              </button>
+            </div>
+            <button
+              class="btn btn-primary btn-lg tracking-submit-btn"
+              id="trackBtn"
+              onclick="trackParcel()"
+            >
+              <i class="fa fa-magnifying-glass"></i>
+              <span>Track Now</span>
+            </button>
+          </div>
+
+          <!-- Carrier Logos Strip -->
+          <div class="carrier-strip">
+            <span class="carrier-strip-label">Supported carriers include:</span>
+            <div class="carrier-logos">
+              <span class="carrier-tag"
+                ><i class="fa fa-circle-check"></i> DHL</span
+              >
+              <span class="carrier-tag"
+                ><i class="fa fa-circle-check"></i> FedEx</span
+              >
+              <span class="carrier-tag"
+                ><i class="fa fa-circle-check"></i> UPS</span
+              >
+              <span class="carrier-tag"
+                ><i class="fa fa-circle-check"></i> USPS</span
+              >
+              <span class="carrier-tag"
+                ><i class="fa fa-circle-check"></i> DPD</span
+              >
+              <span class="carrier-tag"
+                ><i class="fa fa-circle-check"></i> TNT</span
+              >
+              <span class="carrier-tag"
+                ><i class="fa fa-circle-check"></i> China Post</span
+              >
+              <span class="carrier-tag"
+                ><i class="fa fa-circle-check"></i> EMS</span
+              >
+              <span class="carrier-tag"
+                ><i class="fa fa-circle-check"></i> GLS</span
+              >
+              <span class="carrier-tag"
+                ><i class="fa fa-circle-check"></i> PostNL</span
+              >
+              <span class="carrier-tag"
+                ><i class="fa fa-circle-check"></i> + 1,200 more</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ RESULTS AREA ============ -->
+        <div
+          id="trackingResults"
+          class="tracking-results-area"
+          aria-live="polite"
+        >
+          <!-- Loading State (hidden by default) -->
+          <div
+            id="trackingLoading"
+            class="tracking-state-box"
+            style="display: none"
+          >
+            <div class="loading-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <p class="tracking-state-msg">
+              Searching across 1,200+ carriers...
+            </p>
+          </div>
+
+          <!-- Error State (hidden by default) -->
+          <div
+            id="trackingError"
+            class="tracking-state-box tracking-error-box"
+            style="display: none"
+          >
+            <div class="tracking-state-icon error">
+              <i class="fa fa-triangle-exclamation"></i>
+            </div>
+            <h3 id="trackingErrorTitle">Tracking Number Not Found</h3>
+            <p id="trackingErrorMsg">
+              We couldn't find any results for this tracking number. Please
+              check the number and try again.
+            </p>
+            <button class="btn btn-primary" onclick="resetTracking()">
+              <i class="fa fa-rotate-left"></i> Try Again
+            </button>
+          </div>
+
+          <!-- Success Result (hidden by default) -->
+          <div id="trackingSuccess" style="display: none">
+            <!-- Summary Card -->
+            <div class="tracking-summary-card" data-aos="fade-up">
+              <div class="tracking-summary-top">
+                <div class="tracking-summary-info">
+                  <div class="tracking-number-display">
+                    <span class="ts-label">Tracking Number</span>
+                    <span class="ts-value" id="resultTrackingNum">—</span>
+                  </div>
+                  <div class="tracking-number-display">
+                    <span class="ts-label">Carrier</span>
+                    <span class="ts-value" id="resultCarrier">—</span>
+                  </div>
+                  <div class="tracking-number-display">
+                    <span class="ts-label">Origin</span>
+                    <span class="ts-value" id="resultOrigin">—</span>
+                  </div>
+                  <div class="tracking-number-display">
+                    <span class="ts-label">Destination</span>
+                    <span class="ts-value" id="resultDestination">—</span>
+                  </div>
+                  <div class="tracking-number-display">
+                    <span class="ts-label">Est. Delivery</span>
+                    <span class="ts-value" id="resultETA">—</span>
+                  </div>
+                </div>
+                <div class="tracking-status-badge-wrap">
+                  <div class="tracking-status-badge" id="resultStatusBadge">
+                    <i
+                      class="fa fa-circle-notch fa-spin"
+                      id="resultStatusIcon"
+                    ></i>
+                    <span id="resultStatusText">Checking...</span>
+                  </div>
+                  <div
+                    class="tracking-last-updated"
+                    id="resultLastUpdate"
+                  ></div>
+                </div>
+              </div>
+
+              <!-- Progress Bar -->
+              <div class="tracking-progress-wrap">
+                <div class="tracking-progress-steps" id="progressSteps">
+                  <div class="tp-step active" data-step="1">
+                    <div class="tp-step-dot"><i class="fa fa-box"></i></div>
+                    <span>Picked Up</span>
+                  </div>
+                  <div class="tp-step-line" id="line1"></div>
+                  <div class="tp-step" data-step="2">
+                    <div class="tp-step-dot">
+                      <i class="fa fa-warehouse"></i>
+                    </div>
+                    <span>In Warehouse</span>
+                  </div>
+                  <div class="tp-step-line" id="line2"></div>
+                  <div class="tp-step" data-step="3">
+                    <div class="tp-step-dot"><i class="fa fa-truck"></i></div>
+                    <span>In Transit</span>
+                  </div>
+                  <div class="tp-step-line" id="line3"></div>
+                  <div class="tp-step" data-step="4">
+                    <div class="tp-step-dot">
+                      <i class="fa fa-truck-fast"></i>
+                    </div>
+                    <span>Out for Delivery</span>
+                  </div>
+                  <div class="tp-step-line" id="line4"></div>
+                  <div class="tp-step" data-step="5">
+                    <div class="tp-step-dot">
+                      <i class="fa fa-circle-check"></i>
+                    </div>
+                    <span>Delivered</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Timeline + Info Grid -->
+            <div
+              class="tracking-detail-grid"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
+              <!-- Timeline -->
+              <div class="tracking-timeline-card">
+                <div class="tracking-card-header">
+                  <i class="fa fa-timeline"></i>
+                  <h3>Shipment Timeline</h3>
+                  <span class="timeline-count" id="eventCount">0 events</span>
+                </div>
+                <div class="tracking-timeline" id="trackingTimeline">
+                  <!-- Events injected by JS -->
+                </div>
+              </div>
+
+              <!-- Info Panel -->
+              <div class="tracking-info-panel">
+                <!-- Package Info -->
+                <div class="tracking-info-card">
+                  <div class="tracking-card-header">
+                    <i class="fa fa-cube"></i>
+                    <h3>Package Details</h3>
+                  </div>
+                  <ul class="tracking-info-list" id="packageDetails">
+                    <li>
+                      <span class="ti-label">Weight</span>
+                      <span class="ti-value" id="pkgWeight">—</span>
+                    </li>
+                    <li>
+                      <span class="ti-label">Dimensions</span>
+                      <span class="ti-value" id="pkgDimensions">—</span>
+                    </li>
+                    <li>
+                      <span class="ti-label">Service Type</span>
+                      <span class="ti-value" id="pkgService">—</span>
+                    </li>
+                    <li>
+                      <span class="ti-label">Signed By</span>
+                      <span class="ti-value" id="pkgSigned">—</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <!-- Track Another -->
+                <div class="tracking-info-card track-another-card">
+                  <div class="tracking-card-header">
+                    <i class="fa fa-rotate"></i>
+                    <h3>Track Another</h3>
+                  </div>
+                  <p style="font-size: 0.88rem; margin-bottom: 16px">
+                    Need to track a different parcel? Enter a new tracking
+                    number below.
+                  </p>
+                  <div class="track-another-form">
+                    <input
+                      type="text"
+                      id="trackAnotherInput"
+                      placeholder="Enter tracking number"
+                      aria-label="New tracking number"
+                    />
+                    <button class="btn btn-primary" onclick="trackAnother()">
+                      <i class="fa fa-search"></i> Track
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Help Card -->
+                <div class="tracking-info-card tracking-help-card">
+                  <div class="tracking-card-header">
+                    <i class="fa fa-circle-question"></i>
+                    <h3>Need Help?</h3>
+                  </div>
+                  <p style="font-size: 0.88rem; margin-bottom: 16px">
+                    Having issues with your shipment? Our team is ready to
+                    assist.
+                  </p>
+                  <a
+                    href="contact.html"
+                    class="btn btn-dark btn-sm"
+                    style="width: 100%; justify-content: center"
+                  >
+                    <i class="fa fa-headset"></i> Contact Support
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end trackingSuccess -->
+        </div>
+        <!-- end trackingResults -->
+
+        <!-- Info Cards Row -->
+        <div class="tracking-info-row" data-aos="fade-up">
+          <div class="tracking-info-feature">
+            <div class="tif-icon"><i class="fa fa-globe"></i></div>
+            <div>
+              <h4>1,200+ Carriers</h4>
+              <p>
+                Universal tracking across all major and regional couriers
+                worldwide.
+              </p>
+            </div>
+          </div>
+
+          <div class="tracking-info-feature">
+            <div class="tif-icon"><i class="fa fa-bolt"></i></div>
+            <div>
+              <h4>Real-Time Updates</h4>
+              <p>Live tracking data pulled directly from carrier systems.</p>
+            </div>
+          </div>
+
+          <div class="tracking-info-feature">
+            <div class="tif-icon"><i class="fa fa-shield-halved"></i></div>
+            <div>
+              <h4>Secure & Private</h4>
+              <p>
+                Your tracking data is never stored or shared with third parties.
+              </p>
+            </div>
+          </div>
+
+          <div class="tracking-info-feature">
+            <div class="tif-icon"><i class="fa fa-mobile-screen"></i></div>
+            <div>
+              <h4>Works on Any Device</h4>
+              <p>
+                Track your parcels from desktop, tablet, or mobile — anywhere.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA BANNER -->
+    <section class="cta-section" aria-label="Call to action">
+      <div class="cta-overlay"></div>
+      <div class="container" data-aos="zoom-in">
+        <div class="cta-content">
+          <h2>Ship with SwiftGlobal Today</h2>
+          <p>
+            Let us handle your freight while you focus on growing your business.
+            Get a free quote in minutes.
+          </p>
+          <div class="cta-buttons">
+            <a href="contact.html" class="btn btn-primary btn-lg">
+              <i class="fa fa-file-invoice"></i> Request a Free Quote
+            </a>
+            <a href="services.html" class="btn btn-outline btn-lg">
+              <i class="fa fa-th-large"></i> Our Services
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer" aria-label="Site footer">
+      <div class="footer-top">
+        <div class="container">
+          <div class="footer-grid">
+            <div class="footer-col footer-brand">
+              <a href="index.html" class="footer-logo">
+                <img
+                  src="images/logo.png"
+                  alt="SwiftGlobal Logo"
+                  onerror="this.style.display = 'none'"
+                />
+                <span>Swift<span class="text-accent">Global</span></span>
+              </a>
+              <p>
+                Your trusted global logistics partner — delivering reliability,
+                speed, and transparency across every shipment, everywhere.
+              </p>
+              <div class="footer-socials">
+                <a href="#" aria-label="Facebook"
+                  ><i class="fab fa-facebook-f"></i
+                ></a>
+                <a href="#" aria-label="Twitter"
+                  ><i class="fab fa-x-twitter"></i
+                ></a>
+                <a href="#" aria-label="LinkedIn"
+                  ><i class="fab fa-linkedin-in"></i
+                ></a>
+                <a href="#" aria-label="Instagram"
+                  ><i class="fab fa-instagram"></i
+                ></a>
+                <a href="#" aria-label="YouTube"
+                  ><i class="fab fa-youtube"></i
+                ></a>
+              </div>
+            </div>
+            <div class="footer-col">
+              <h4>Our Services</h4>
+              <ul class="footer-links">
+                <li>
+                  <a href="pages/sea-freight.html"
+                    ><i class="fa fa-chevron-right"></i> Sea Freight</a
+                  >
+                </li>
+                <li>
+                  <a href="pages/air-freight.html"
+                    ><i class="fa fa-chevron-right"></i> Air Freight</a
+                  >
+                </li>
+                <li>
+                  <a href="pages/land-freight.html"
+                    ><i class="fa fa-chevron-right"></i> Land Freight</a
+                  >
+                </li>
+                <li>
+                  <a href="pages/customs.html"
+                    ><i class="fa fa-chevron-right"></i> Customs Clearance</a
+                  >
+                </li>
+                <li>
+                  <a href="pages/warehousing.html"
+                    ><i class="fa fa-chevron-right"></i> Warehousing</a
+                  >
+                </li>
+                <li>
+                  <a href="pages/project-cargo.html"
+                    ><i class="fa fa-chevron-right"></i> Project Cargo</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Quick Links</h4>
+              <ul class="footer-links">
+                <li>
+                  <a href="index.html"
+                    ><i class="fa fa-chevron-right"></i> Home</a
+                  >
+                </li>
+                <li>
+                  <a href="about.html"
+                    ><i class="fa fa-chevron-right"></i> About Us</a
+                  >
+                </li>
+                <li>
+                  <a href="tracking.html"
+                    ><i class="fa fa-chevron-right"></i> Track a Parcel</a
+                  >
+                </li>
+                <li>
+                  <a href="news.html"
+                    ><i class="fa fa-chevron-right"></i> News & Insights</a
+                  >
+                </li>
+                <li>
+                  <a href="contact.html"
+                    ><i class="fa fa-chevron-right"></i> Contact Us</a
+                  >
+                </li>
+                <li>
+                  <a href="contact.html"
+                    ><i class="fa fa-chevron-right"></i> Request a Quote</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Contact Us</h4>
+              <ul class="footer-contact">
+                <li>
+                  <i class="fa fa-location-dot"></i
+                  ><span>123 Logistics Avenue, Business District</span>
+                </li>
+                <li>
+                  <i class="fa fa-phone"></i
+                  ><a href="tel:+1xxxxxxxx">+1 xxx xxx xxx</a>
+                </li>
+                <li>
+                  <i class="fa fa-envelope"></i
+                  ><a href="mailto:info@swiftglobalogistics.com"
+                    >info@swiftglobalogistics.com</a
+                  >
+                </li>
+                <li>
+                  <i class="fa fa-clock"></i
+                  ><span>Mon – Fri: 08:00 – 18:00</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container flex-between">
+          <p>
+            &copy; <span id="year"></span> SwiftGlobal Logistics. All rights
+            reserved.
+          </p>
+          <div class="footer-bottom-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Sitemap</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- BACK TO TOP -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+      <i class="fa fa-chevron-up"></i>
+    </button>
+
+    <!-- COOKIE BANNER -->
+    <div class="cookie-banner" id="cookieBanner" role="alert">
+      <p>
+        We use cookies to enhance your experience. By continuing, you agree to
+        our <a href="#">Cookie Policy</a>.
+      </p>
+      <div class="cookie-actions">
+        <button class="btn btn-primary btn-sm cookie-accept">Accept</button>
+        <button
+          class="btn btn-outline btn-sm cookie-decline"
+          style="color: var(--text-light); border-color: var(--text-light)"
+        >
+          Decline
         </button>
       </div>
     </div>
-  </nav>
 
-  <!-- PAGE HERO -->
-  <section class="page-hero" aria-label="Track Parcel Page Hero">
-    <div class="container">
-      <div class="hero-badge animate-fadeInDown delay-1" style="display:inline-flex;margin-bottom:16px;">
-        <i class="fa fa-magnifying-glass-location"></i> Universal Parcel Tracking
-      </div>
-      <h1 class="animate-fadeInUp delay-2">Track Your Shipment</h1>
-      <p class="animate-fadeInUp delay-3">Real-time tracking across 1,200+ carriers worldwide. Enter your tracking number below for instant status updates.</p>
-      <nav class="breadcrumb animate-fadeInUp delay-4" aria-label="Breadcrumb">
-        <a href="index.html">Home</a>
-        <span><i class="fa fa-chevron-right fa-xs"></i></span>
-        <span>Track Parcel</span>
-      </nav>
-    </div>
-  </section>
-
-  <!-- ============================================
-       MAIN TRACKING SECTION
-       ============================================ -->
-  <section class="tracking-page-section section" aria-label="Tracking tool">
-    <div class="container">
-
-      <!-- Tracking Input Card -->
-      <div class="tracking-input-card" data-aos="fade-up">
-        <div class="tracking-input-card-header">
-          <div class="tracking-input-card-icon">
-            <i class="fa fa-box-open"></i>
-          </div>
-          <div>
-            <h2>Enter Your Tracking Number</h2>
-            <p>Supports DHL, FedEx, UPS, USPS, DPD, TNT, China Post, EMS, and 1,200+ more carriers worldwide.</p>
-          </div>
-        </div>
-
-        <!-- Input Row -->
-        <div class="tracking-main-form">
-          <div class="tracking-input-wrap">
-            <i class="fa fa-barcode tracking-input-icon"></i>
-            <input
-              type="text"
-              id="trackingInput"
-              class="tracking-main-input"
-              placeholder="e.g. 1Z999AA10123456784 or JD014600006228"
-              aria-label="Enter tracking number"
-              autocomplete="off"
-              spellcheck="false"
-            />
-            <button class="tracking-clear-btn" id="clearBtn" title="Clear" aria-label="Clear input">
-              <i class="fa fa-times"></i>
-            </button>
-          </div>
-          <button class="btn btn-primary btn-lg tracking-submit-btn" id="trackBtn" onclick="trackParcel()">
-            <i class="fa fa-magnifying-glass"></i>
-            <span>Track Now</span>
-          </button>
-        </div>
-
-        <!-- Carrier Logos Strip -->
-        <div class="carrier-strip">
-          <span class="carrier-strip-label">Supported carriers include:</span>
-          <div class="carrier-logos">
-            <span class="carrier-tag"><i class="fa fa-circle-check"></i> DHL</span>
-            <span class="carrier-tag"><i class="fa fa-circle-check"></i> FedEx</span>
-            <span class="carrier-tag"><i class="fa fa-circle-check"></i> UPS</span>
-            <span class="carrier-tag"><i class="fa fa-circle-check"></i> USPS</span>
-            <span class="carrier-tag"><i class="fa fa-circle-check"></i> DPD</span>
-            <span class="carrier-tag"><i class="fa fa-circle-check"></i> TNT</span>
-            <span class="carrier-tag"><i class="fa fa-circle-check"></i> China Post</span>
-            <span class="carrier-tag"><i class="fa fa-circle-check"></i> EMS</span>
-            <span class="carrier-tag"><i class="fa fa-circle-check"></i> GLS</span>
-            <span class="carrier-tag"><i class="fa fa-circle-check"></i> PostNL</span>
-            <span class="carrier-tag"><i class="fa fa-circle-check"></i> + 1,200 more</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- ============ RESULTS AREA ============ -->
-      <div id="trackingResults" class="tracking-results-area" aria-live="polite">
-
-        <!-- Loading State (hidden by default) -->
-        <div id="trackingLoading" class="tracking-state-box" style="display:none;">
-          <div class="loading-dots">
-            <span></span><span></span><span></span>
-          </div>
-          <p class="tracking-state-msg">Searching across 1,200+ carriers...</p>
-        </div>
-
-        <!-- Error State (hidden by default) -->
-        <div id="trackingError" class="tracking-state-box tracking-error-box" style="display:none;">
-          <div class="tracking-state-icon error">
-            <i class="fa fa-triangle-exclamation"></i>
-          </div>
-          <h3 id="trackingErrorTitle">Tracking Number Not Found</h3>
-          <p id="trackingErrorMsg">We couldn't find any results for this tracking number. Please check the number and try again.</p>
-          <button class="btn btn-primary" onclick="resetTracking()">
-            <i class="fa fa-rotate-left"></i> Try Again
-          </button>
-        </div>
-
-        <!-- Success Result (hidden by default) -->
-        <div id="trackingSuccess" style="display:none;">
-
-          <!-- Summary Card -->
-          <div class="tracking-summary-card" data-aos="fade-up">
-            <div class="tracking-summary-top">
-              <div class="tracking-summary-info">
-                <div class="tracking-number-display">
-                  <span class="ts-label">Tracking Number</span>
-                  <span class="ts-value" id="resultTrackingNum">—</span>
-                </div>
-                <div class="tracking-number-display">
-                  <span class="ts-label">Carrier</span>
-                  <span class="ts-value" id="resultCarrier">—</span>
-                </div>
-                <div class="tracking-number-display">
-                  <span class="ts-label">Origin</span>
-                  <span class="ts-value" id="resultOrigin">—</span>
-                </div>
-                <div class="tracking-number-display">
-                  <span class="ts-label">Destination</span>
-                  <span class="ts-value" id="resultDestination">—</span>
-                </div>
-                <div class="tracking-number-display">
-                  <span class="ts-label">Est. Delivery</span>
-                  <span class="ts-value" id="resultETA">—</span>
-                </div>
-              </div>
-              <div class="tracking-status-badge-wrap">
-                <div class="tracking-status-badge" id="resultStatusBadge">
-                  <i class="fa fa-circle-notch fa-spin" id="resultStatusIcon"></i>
-                  <span id="resultStatusText">Checking...</span>
-                </div>
-                <div class="tracking-last-updated" id="resultLastUpdate"></div>
-              </div>
-            </div>
-
-            <!-- Progress Bar -->
-            <div class="tracking-progress-wrap">
-              <div class="tracking-progress-steps" id="progressSteps">
-                <div class="tp-step active" data-step="1">
-                  <div class="tp-step-dot"><i class="fa fa-box"></i></div>
-                  <span>Picked Up</span>
-                </div>
-                <div class="tp-step-line" id="line1"></div>
-                <div class="tp-step" data-step="2">
-                  <div class="tp-step-dot"><i class="fa fa-warehouse"></i></div>
-                  <span>In Warehouse</span>
-                </div>
-                <div class="tp-step-line" id="line2"></div>
-                <div class="tp-step" data-step="3">
-                  <div class="tp-step-dot"><i class="fa fa-truck"></i></div>
-                  <span>In Transit</span>
-                </div>
-                <div class="tp-step-line" id="line3"></div>
-                <div class="tp-step" data-step="4">
-                  <div class="tp-step-dot"><i class="fa fa-truck-fast"></i></div>
-                  <span>Out for Delivery</span>
-                </div>
-                <div class="tp-step-line" id="line4"></div>
-                <div class="tp-step" data-step="5">
-                  <div class="tp-step-dot"><i class="fa fa-circle-check"></i></div>
-                  <span>Delivered</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Timeline + Info Grid -->
-          <div class="tracking-detail-grid" data-aos="fade-up" data-aos-delay="100">
-
-            <!-- Timeline -->
-            <div class="tracking-timeline-card">
-              <div class="tracking-card-header">
-                <i class="fa fa-timeline"></i>
-                <h3>Shipment Timeline</h3>
-                <span class="timeline-count" id="eventCount">0 events</span>
-              </div>
-              <div class="tracking-timeline" id="trackingTimeline">
-                <!-- Events injected by JS -->
-              </div>
-            </div>
-
-            <!-- Info Panel -->
-            <div class="tracking-info-panel">
-
-              <!-- Package Info -->
-              <div class="tracking-info-card">
-                <div class="tracking-card-header">
-                  <i class="fa fa-cube"></i>
-                  <h3>Package Details</h3>
-                </div>
-                <ul class="tracking-info-list" id="packageDetails">
-                  <li>
-                    <span class="ti-label">Weight</span>
-                    <span class="ti-value" id="pkgWeight">—</span>
-                  </li>
-                  <li>
-                    <span class="ti-label">Dimensions</span>
-                    <span class="ti-value" id="pkgDimensions">—</span>
-                  </li>
-                  <li>
-                    <span class="ti-label">Service Type</span>
-                    <span class="ti-value" id="pkgService">—</span>
-                  </li>
-                  <li>
-                    <span class="ti-label">Signed By</span>
-                    <span class="ti-value" id="pkgSigned">—</span>
-                  </li>
-                </ul>
-              </div>
-
-              <!-- Track Another -->
-              <div class="tracking-info-card track-another-card">
-                <div class="tracking-card-header">
-                  <i class="fa fa-rotate"></i>
-                  <h3>Track Another</h3>
-                </div>
-                <p style="font-size:0.88rem;margin-bottom:16px;">Need to track a different parcel? Enter a new tracking number below.</p>
-                <div class="track-another-form">
-                  <input
-                    type="text"
-                    id="trackAnotherInput"
-                    placeholder="Enter tracking number"
-                    aria-label="New tracking number"
-                  />
-                  <button class="btn btn-primary" onclick="trackAnother()">
-                    <i class="fa fa-search"></i> Track
-                  </button>
-                </div>
-              </div>
-
-              <!-- Help Card -->
-              <div class="tracking-info-card tracking-help-card">
-                <div class="tracking-card-header">
-                  <i class="fa fa-circle-question"></i>
-                  <h3>Need Help?</h3>
-                </div>
-                <p style="font-size:0.88rem;margin-bottom:16px;">Having issues with your shipment? Our team is ready to assist.</p>
-                <a href="contact.html" class="btn btn-dark btn-sm" style="width:100%;justify-content:center;">
-                  <i class="fa fa-headset"></i> Contact Support
-                </a>
-              </div>
-
-            </div>
-          </div>
-
-        </div>
-        <!-- end trackingSuccess -->
-
-      </div>
-      <!-- end trackingResults -->
-
-      <!-- Info Cards Row -->
-      <div class="tracking-info-row" data-aos="fade-up">
-
-        <div class="tracking-info-feature">
-          <div class="tif-icon"><i class="fa fa-globe"></i></div>
-          <div>
-            <h4>1,200+ Carriers</h4>
-            <p>Universal tracking across all major and regional couriers worldwide.</p>
-          </div>
-        </div>
-
-        <div class="tracking-info-feature">
-          <div class="tif-icon"><i class="fa fa-bolt"></i></div>
-          <div>
-            <h4>Real-Time Updates</h4>
-            <p>Live tracking data pulled directly from carrier systems.</p>
-          </div>
-        </div>
-
-        <div class="tracking-info-feature">
-          <div class="tif-icon"><i class="fa fa-shield-halved"></i></div>
-          <div>
-            <h4>Secure & Private</h4>
-            <p>Your tracking data is never stored or shared with third parties.</p>
-          </div>
-        </div>
-
-        <div class="tracking-info-feature">
-          <div class="tif-icon"><i class="fa fa-mobile-screen"></i></div>
-          <div>
-            <h4>Works on Any Device</h4>
-            <p>Track your parcels from desktop, tablet, or mobile — anywhere.</p>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- CTA BANNER -->
-  <section class="cta-section" aria-label="Call to action">
-    <div class="cta-overlay"></div>
-    <div class="container" data-aos="zoom-in">
-      <div class="cta-content">
-        <h2>Ship with SwiftGlobal Today</h2>
-        <p>Let us handle your freight while you focus on growing your business. Get a free quote in minutes.</p>
-        <div class="cta-buttons">
-          <a href="contact.html" class="btn btn-primary btn-lg">
-            <i class="fa fa-file-invoice"></i> Request a Free Quote
-          </a>
-          <a href="services.html" class="btn btn-outline btn-lg">
-            <i class="fa fa-th-large"></i> Our Services
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="footer" aria-label="Site footer">
-    <div class="footer-top">
-      <div class="container">
-        <div class="footer-grid">
-          <div class="footer-col footer-brand">
-            <a href="index.html" class="footer-logo">
-              <img src="images/logo.png" alt="SwiftGlobal Logo" onerror="this.style.display='none'" />
-              <span>Swift<span class="text-accent">Global</span></span>
-            </a>
-            <p>Your trusted global logistics partner — delivering reliability, speed, and transparency across every shipment, everywhere.</p>
-            <div class="footer-socials">
-              <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-              <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
-              <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-              <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-              <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-            </div>
-          </div>
-          <div class="footer-col">
-            <h4>Our Services</h4>
-            <ul class="footer-links">
-              <li><a href="pages/sea-freight.html"><i class="fa fa-chevron-right"></i> Sea Freight</a></li>
-              <li><a href="pages/air-freight.html"><i class="fa fa-chevron-right"></i> Air Freight</a></li>
-              <li><a href="pages/land-freight.html"><i class="fa fa-chevron-right"></i> Land Freight</a></li>
-              <li><a href="pages/customs.html"><i class="fa fa-chevron-right"></i> Customs Clearance</a></li>
-              <li><a href="pages/warehousing.html"><i class="fa fa-chevron-right"></i> Warehousing</a></li>
-              <li><a href="pages/project-cargo.html"><i class="fa fa-chevron-right"></i> Project Cargo</a></li>
-            </ul>
-          </div>
-          <div class="footer-col">
-            <h4>Quick Links</h4>
-            <ul class="footer-links">
-              <li><a href="index.html"><i class="fa fa-chevron-right"></i> Home</a></li>
-              <li><a href="about.html"><i class="fa fa-chevron-right"></i> About Us</a></li>
-              <li><a href="tracking.html"><i class="fa fa-chevron-right"></i> Track a Parcel</a></li>
-              <li><a href="news.html"><i class="fa fa-chevron-right"></i> News & Insights</a></li>
-              <li><a href="contact.html"><i class="fa fa-chevron-right"></i> Contact Us</a></li>
-              <li><a href="contact.html"><i class="fa fa-chevron-right"></i> Request a Quote</a></li>
-            </ul>
-          </div>
-          <div class="footer-col">
-            <h4>Contact Us</h4>
-            <ul class="footer-contact">
-              <li><i class="fa fa-location-dot"></i><span>123 Logistics Avenue, Business District</span></li>
-              <li><i class="fa fa-phone"></i><a href="tel:+237000000000">+237 000 000 000</a></li>
-              <li><i class="fa fa-envelope"></i><a href="mailto:info@swiftglobalogistics.com">info@swiftglobalogistics.com</a></li>
-              <li><i class="fa fa-clock"></i><span>Mon – Fri: 08:00 – 18:00</span></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <div class="container flex-between">
-        <p>&copy; <span id="year"></span> SwiftGlobal Logistics. All rights reserved.</p>
-        <div class="footer-bottom-links">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-          <a href="#">Sitemap</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- BACK TO TOP -->
-  <button class="back-to-top" id="backToTop" aria-label="Back to top">
-    <i class="fa fa-chevron-up"></i>
-  </button>
-
-  <!-- COOKIE BANNER -->
-  <div class="cookie-banner" id="cookieBanner" role="alert">
-    <p>We use cookies to enhance your experience. By continuing, you agree to our <a href="#">Cookie Policy</a>.</p>
-    <div class="cookie-actions">
-      <button class="btn btn-primary btn-sm cookie-accept">Accept</button>
-      <button class="btn btn-outline btn-sm cookie-decline" style="color:var(--text-light);border-color:var(--text-light);">Decline</button>
-    </div>
-  </div>
-
-  <!-- SCRIPTS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/tracking.js"></script>
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-
-</body>
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/tracking.js"></script>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
 </html>

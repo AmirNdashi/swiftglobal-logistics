@@ -1,137 +1,151 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Login — SwiftGlobal Logistics</title>
-  <meta name="robots" content="noindex, nofollow" />
-  <link rel="icon" type="image/x-icon" href="../images/favicon.ico" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="admin.css" />
-</head>
-<body class="admin-login-body">
-
-  <div class="login-wrapper">
-
-    <!-- Logo -->
-    <div class="login-logo">
-      <span class="login-logo-text">Swift<span>Global</span></span>
-      <span class="login-logo-badge">Admin</span>
-    </div>
-
-    <!-- Card -->
-    <div class="login-card">
-      <div class="login-card-header">
-        <div class="login-icon"><i class="fa fa-shield-halved"></i></div>
-        <h1>Admin Login</h1>
-        <p>Enter your credentials to access the admin panel</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login — SwiftGlobal Logistics</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body class="admin-login-body">
+    <div class="login-wrapper">
+      <!-- Logo -->
+      <div class="login-logo">
+        <span class="login-logo-text">Swift<span>Global</span></span>
+        <span class="login-logo-badge">Admin</span>
       </div>
 
-      <form id="loginForm" novalidate>
-
-        <div class="admin-form-group">
-          <label for="adminUser"><i class="fa fa-user"></i> Username</label>
-          <input
-            type="text"
-            id="adminUser"
-            placeholder="Enter username"
-            autocomplete="username"
-            required
-          />
+      <!-- Card -->
+      <div class="login-card">
+        <div class="login-card-header">
+          <div class="login-icon"><i class="fa fa-shield-halved"></i></div>
+          <h1>Admin Login</h1>
+          <p>Enter your credentials to access the admin panel</p>
         </div>
 
-        <div class="admin-form-group">
-          <label for="adminPass"><i class="fa fa-lock"></i> Password</label>
-          <div class="pass-wrap">
+        <form id="loginForm" novalidate>
+          <div class="admin-form-group">
+            <label for="adminUser"><i class="fa fa-user"></i> Username</label>
             <input
-              type="password"
-              id="adminPass"
-              placeholder="Enter password"
-              autocomplete="current-password"
+              type="text"
+              id="adminUser"
+              placeholder="Enter username"
+              autocomplete="username"
               required
             />
-            <button type="button" class="pass-toggle" id="passToggle" aria-label="Toggle password">
-              <i class="fa fa-eye"></i>
-            </button>
           </div>
-        </div>
 
-        <div class="login-error" id="loginError" style="display:none;">
-          <i class="fa fa-triangle-exclamation"></i>
-          <span id="loginErrorMsg">Invalid credentials. Please try again.</span>
-        </div>
+          <div class="admin-form-group">
+            <label for="adminPass"><i class="fa fa-lock"></i> Password</label>
+            <div class="pass-wrap">
+              <input
+                type="password"
+                id="adminPass"
+                placeholder="Enter password"
+                autocomplete="current-password"
+                required
+              />
+              <button
+                type="button"
+                class="pass-toggle"
+                id="passToggle"
+                aria-label="Toggle password"
+              >
+                <i class="fa fa-eye"></i>
+              </button>
+            </div>
+          </div>
 
-        <button type="submit" class="admin-btn admin-btn-primary login-btn" id="loginBtn">
-          <i class="fa fa-right-to-bracket"></i> Login to Admin Panel
-        </button>
+          <div class="login-error" id="loginError" style="display: none">
+            <i class="fa fa-triangle-exclamation"></i>
+            <span id="loginErrorMsg"
+              >Invalid credentials. Please try again.</span
+            >
+          </div>
 
-      </form>
+          <button
+            type="submit"
+            class="admin-btn admin-btn-primary login-btn"
+            id="loginBtn"
+          >
+            <i class="fa fa-right-to-bracket"></i> Login to Admin Panel
+          </button>
+        </form>
+      </div>
 
+      <p class="login-footer-note">
+        <i class="fa fa-lock"></i> Secure admin access — SwiftGlobal Logistics
+        &copy; <span id="year"></span>
+      </p>
     </div>
 
-    <p class="login-footer-note">
-      <i class="fa fa-lock"></i> Secure admin access — SwiftGlobal Logistics &copy; <span id="year"></span>
-    </p>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
 
-  </div>
+      // Credentials
+      const ADMIN_USER = "admin";
+      const ADMIN_PASS = "admin2002";
 
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Credentials
-    const ADMIN_USER = 'admin';
-    const ADMIN_PASS = 'admin2002';
-
-    // Password toggle
-    document.getElementById('passToggle').addEventListener('click', () => {
-      const inp = document.getElementById('adminPass');
-      const ico = document.querySelector('#passToggle i');
-      if (inp.type === 'password') {
-        inp.type = 'text';
-        ico.className = 'fa fa-eye-slash';
-      } else {
-        inp.type = 'password';
-        ico.className = 'fa fa-eye';
-      }
-    });
-
-    // Login form
-    document.getElementById('loginForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const user = document.getElementById('adminUser').value.trim();
-      const pass = document.getElementById('adminPass').value.trim();
-      const errorBox = document.getElementById('loginError');
-      const errorMsg = document.getElementById('loginErrorMsg');
-      const btn      = document.getElementById('loginBtn');
-
-      btn.innerHTML = '<i class="fa fa-circle-notch fa-spin"></i> Verifying...';
-      btn.disabled  = true;
-
-      setTimeout(() => {
-        if (user === ADMIN_USER && pass === ADMIN_PASS) {
-          // Set session
-          sessionStorage.setItem('swiftglobal_admin', 'authenticated');
-          sessionStorage.setItem('swiftglobal_admin_time', Date.now());
-          window.location.href = 'dashboard.html';
+      // Password toggle
+      document.getElementById("passToggle").addEventListener("click", () => {
+        const inp = document.getElementById("adminPass");
+        const ico = document.querySelector("#passToggle i");
+        if (inp.type === "password") {
+          inp.type = "text";
+          ico.className = "fa fa-eye-slash";
         } else {
-          errorBox.style.display = 'flex';
-          errorMsg.textContent = 'Invalid username or password. Please try again.';
-          btn.innerHTML = '<i class="fa fa-right-to-bracket"></i> Login to Admin Panel';
-          btn.disabled  = false;
-          document.getElementById('adminPass').value = '';
-          document.getElementById('adminPass').focus();
+          inp.type = "password";
+          ico.className = "fa fa-eye";
         }
-      }, 900);
-    });
+      });
 
-    // If already logged in, redirect
-    if (sessionStorage.getItem('swiftglobal_admin') === 'authenticated') {
-      window.location.href = 'dashboard.html';
-    }
-  </script>
+      // Login form
+      document.getElementById("loginForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const user = document.getElementById("adminUser").value.trim();
+        const pass = document.getElementById("adminPass").value.trim();
+        const errorBox = document.getElementById("loginError");
+        const errorMsg = document.getElementById("loginErrorMsg");
+        const btn = document.getElementById("loginBtn");
 
-</body>
+        btn.innerHTML =
+          '<i class="fa fa-circle-notch fa-spin"></i> Verifying...';
+        btn.disabled = true;
+
+        setTimeout(() => {
+          if (user === ADMIN_USER && pass === ADMIN_PASS) {
+            // Set session
+            sessionStorage.setItem("swiftglobal_admin", "authenticated");
+            sessionStorage.setItem("swiftglobal_admin_time", Date.now());
+            window.location.href = "dashboard.html";
+          } else {
+            errorBox.style.display = "flex";
+            errorMsg.textContent =
+              "Invalid username or password. Please try again.";
+            btn.innerHTML =
+              '<i class="fa fa-right-to-bracket"></i> Login to Admin Panel';
+            btn.disabled = false;
+            document.getElementById("adminPass").value = "";
+            document.getElementById("adminPass").focus();
+          }
+        }, 900);
+      });
+
+      // If already logged in, redirect
+      if (sessionStorage.getItem("swiftglobal_admin") === "authenticated") {
+        window.location.href = "dashboard.html";
+      }
+    </script>
+  </body>
 </html>
