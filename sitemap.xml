@@ -3,7 +3,7 @@
 
   <!-- Homepage -->
   <url>
-    <loc>https://www.swiftgloballogistics.com/</loc>
+    <loc>https://www.swiftglobalogistics.com/</loc>
     <lastmod>2025-05-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -11,7 +11,7 @@
 
   <!-- About -->
   <url>
-    <loc>https://www.swiftgloballogistics.com/about.html</loc>
+    <loc>https://www.swiftglobalogistics.com/about.html</loc>
     <lastmod>2025-05-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -19,7 +19,7 @@
 
   <!-- Services -->
   <url>
-    <loc>https://www.swiftgloballogistics.com/services.html</loc>
+    <loc>https://www.swiftglobalogistics.com/services.html</loc>
     <lastmod>2025-05-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -27,7 +27,7 @@
 
   <!-- Tracking -->
   <url>
-    <loc>https://www.swiftgloballogistics.com/tracking.html</loc>
+    <loc>https://www.swiftglobalogistics.com/tracking.html</loc>
     <lastmod>2025-05-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -35,7 +35,7 @@
 
   <!-- Contact -->
   <url>
-    <loc>https://www.swiftgloballogistics.com/contact.html</loc>
+    <loc>https://www.swiftglobalogistics.com/contact.html</loc>
     <lastmod>2025-05-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -43,7 +43,7 @@
 
   <!-- News -->
   <url>
-    <loc>https://www.swiftgloballogistics.com/news.html</loc>
+    <loc>https://www.swiftglobalogistics.com/news.html</loc>
     <lastmod>2025-05-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -51,37 +51,37 @@
 
   <!-- Service Pages -->
   <url>
-    <loc>https://www.swiftgloballogistics.com/pages/sea-freight.html</loc>
+    <loc>https://www.swiftglobalogistics.com/pages/sea-freight.html</loc>
     <lastmod>2025-05-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swiftgloballogistics.com/pages/air-freight.html</loc>
+    <loc>https://www.swiftglobalogistics.com/pages/air-freight.html</loc>
     <lastmod>2025-05-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swiftgloballogistics.com/pages/land-freight.html</loc>
+    <loc>https://www.swiftglobalogistics.com/pages/land-freight.html</loc>
     <lastmod>2025-05-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swiftgloballogistics.com/pages/customs.html</loc>
+    <loc>https://www.swiftglobalogistics.com/pages/customs.html</loc>
     <lastmod>2025-05-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swiftgloballogistics.com/pages/warehousing.html</loc>
+    <loc>https://www.swiftglobalogistics.com/pages/warehousing.html</loc>
     <lastmod>2025-05-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.swiftgloballogistics.com/pages/project-cargo.html</loc>
+    <loc>https://www.swiftglobalogistics.com/pages/project-cargo.html</loc>
     <lastmod>2025-05-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

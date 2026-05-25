@@ -19,7 +19,7 @@ A professional logistics and freight company website with integrated real-time u
 - Deployed on GitHub Pages
 
 ## Live Site
-https://www.swiftgloballogistics.com
+https://www.swiftglobalogistics.com
 
 ## Local Development
 Open `index.html` with VS Code Live Server extension.

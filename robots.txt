@@ -5,4 +5,4 @@ Allow: /
 Disallow: /private/
 
 # Sitemap location
-Sitemap: https://www.swiftgloballogistics.com/sitemap.xml
+Sitemap: https://www.swiftglobalogistics.com/sitemap.xml

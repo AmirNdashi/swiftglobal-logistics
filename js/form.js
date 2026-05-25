@@ -17,7 +17,7 @@ const EMAIL_CONFIG = {
    ----------------------------------------- */
 const ADMIN_EMAILS = [
   'amiridirisu@gmail.com',
-  'info@swiftgloballogistics.com',   // replace with real business email when ready
+  'info@swiftglobalogistics.com',   
 ];
 
 /* ---------- INIT EMAILJS ---------- */
