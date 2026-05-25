@@ -1,8 +1,8 @@
 User-agent: *
 Allow: /
 
-# Disallow admin or private paths (none yet, but good practice)
-Disallow: /private/
+# Block admin panel from search engines
+Disallow: /admin/
 
 # Sitemap location
 Sitemap: https://www.swiftglobalogistics.com/sitemap.xml
