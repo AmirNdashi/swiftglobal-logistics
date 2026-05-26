@@ -579,46 +579,31 @@
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 
-    <!-- Tawk.to Live Chat -->
-  <script type="text/javascript">
-    var Tawk_API = Tawk_API || {};
-    var Tawk_LoadStart = new Date();
-
-    // Automated greeting when visitor lands on Contact page
-    Tawk_API.onLoad = function () {
-
-      // Set visitor context
-      Tawk_API.setAttributes({
-        name:  'Website Visitor',
-        email: '',
-      }, function (error) {});
-
-      // Send automated greeting after 10 seconds
-      setTimeout(function () {
-        if (typeof Tawk_API.sendMessage === 'function') {
-          Tawk_API.sendMessage(
-            "👋 Welcome to SwiftGlobal Logistics!\n\n" +
-            "Need a freight quote, help with customs, or have a question about our services? " +
-            "Our team is online and ready to assist you right now.\n\n" +
-            "Just type your question below! 🚀"
-          );
-        }
-      }, 10000);
-    };
-
-    (function () {
-      var s1 = document.createElement("script"),
-          s0 = document.getElementsByTagName("script")[0];
-      s1.async = true;
-      s1.src = 'https://embed.tawk.to/6a14de29ca67221c346bed33/1jpgo7l9s';
-      s1.charset = 'UTF-8';
-      s1.setAttribute('crossorigin', '*');
-      s0.parentNode.insertBefore(s1, s0);
-    })();
-  </script>
-  <!-- End Tawk.to -->
     <script src="js/main.js"></script>
     <script src="js/form.js"></script>
+
+<!-- Tawk.to Live Chat -->
+    <script type="text/javascript">
+      var Tawk_API = Tawk_API || {};
+      var Tawk_LoadStart = new Date();
+
+      Tawk_API.onLoad = function () {
+        setTimeout(function () {
+          Tawk_API.maximize();
+        }, 10000);
+      };
+
+      (function () {
+        var s1 = document.createElement("script"),
+            s0 = document.getElementsByTagName("script")[0];
+        s1.async = true;
+        s1.src = 'https://embed.tawk.to/6a14de29ca67221c346bed33/1jpgo7l9s';
+        s1.charset = 'UTF-8';
+        s1.setAttribute('crossorigin', '*');
+        s0.parentNode.insertBefore(s1, s0);
+      })();
+    </script>
+    <!-- End Tawk.to -->
     <script>
       document.getElementById("year").textContent = new Date().getFullYear();
       function toggleFaq(btn) {

@@ -747,41 +747,33 @@
     <!-- SCRIPTS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 
-    <!-- Tawk.to Live Chat -->
-  <script type="text/javascript">
-    var Tawk_API = Tawk_API || {};
-    var Tawk_LoadStart = new Date();
 
-    // Automated greeting when visitor lands on Tracking page
-    Tawk_API.onLoad = function () {
-
-      // Send automated greeting after 10 seconds
-      setTimeout(function () {
-        if (typeof Tawk_API.sendMessage === 'function') {
-          Tawk_API.sendMessage(
-            "👋 Hi there! Welcome to SwiftGlobal Logistics!\n\n" +
-            "Having trouble tracking your parcel? Enter your tracking number above " +
-            "and we support 1,200+ carriers worldwide.\n\n" +
-            "If you need extra help locating your shipment, our team is here — " +
-            "just type your question below! 📦"
-          );
-        }
-      }, 10000);
-    };
-
-    (function () {
-      var s1 = document.createElement("script"),
-          s0 = document.getElementsByTagName("script")[0];
-      s1.async = true;
-      s1.src = 'https://embed.tawk.to/6a14de29ca67221c346bed33/1jpgo7l9s';
-      s1.charset = 'UTF-8';
-      s1.setAttribute('crossorigin', '*');
-      s0.parentNode.insertBefore(s1, s0);
-    })();
-  </script>
-  <!-- End Tawk.to -->
     <script src="js/main.js"></script>
     <script src="js/tracking.js"></script>
+
+  <!-- Tawk.to Live Chat -->
+    <script type="text/javascript">
+      var Tawk_API = Tawk_API || {};
+      var Tawk_LoadStart = new Date();
+
+      Tawk_API.onLoad = function () {
+        setTimeout(function () {
+          Tawk_API.maximize();
+        }, 10000);
+      };
+
+      (function () {
+        var s1 = document.createElement("script"),
+            s0 = document.getElementsByTagName("script")[0];
+        s1.async = true;
+        s1.src = 'https://embed.tawk.to/6a14de29ca67221c346bed33/1jpgo7l9s';
+        s1.charset = 'UTF-8';
+        s1.setAttribute('crossorigin', '*');
+        s0.parentNode.insertBefore(s1, s0);
+      })();
+    </script>
+    <!-- End Tawk.to -->
+     
     <script>
       document.getElementById("year").textContent = new Date().getFullYear();
     </script>
