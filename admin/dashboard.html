@@ -38,6 +38,10 @@
           <i class="fa fa-file-invoice-dollar"></i> Quote Requests
           <span class="sidebar-badge-count" id="quoteBadge">0</span>
         </a>
+        <a href="#" class="sidebar-link" data-section="livechats">
+          <i class="fa fa-comments"></i> Live Chats
+          <span class="sidebar-badge-count" id="chatBadge">0</span>
+        </a>
       </nav>
 
       <div class="sidebar-footer">
@@ -253,6 +257,53 @@
         </div>
       </div>
     </div>
+
+    <!-- ============ LIVE CHATS SECTION ============ -->
+  <section class="admin-section" id="section-livechats">
+    <div class="admin-section-header">
+      <h2>Live Chats</h2>
+      <p>Human support chat sessions from website visitors.</p>
+    </div>
+
+    <div class="admin-toolbar">
+      <div class="admin-search-wrap">
+        <i class="fa fa-search"></i>
+        <input type="text" id="chatSearch" placeholder="Search chats..." oninput="filterChats()" />
+      </div>
+      <div class="admin-toolbar-actions">
+        <select id="chatStatusFilter" onchange="filterChats()" class="admin-select">
+          <option value="all">All Chats</option>
+          <option value="waiting">Waiting for Reply</option>
+          <option value="active">Active</option>
+          <option value="ai">AI Only</option>
+        </select>
+        <button class="admin-btn admin-btn-danger admin-btn-sm" onclick="clearAllChats()">
+          <i class="fa fa-trash"></i> Clear All
+        </button>
+      </div>
+    </div>
+
+    <!-- Chat layout -->
+    <div class="live-chat-layout" id="liveChatLayout">
+
+      <!-- Sessions List -->
+      <div class="chat-sessions-list" id="chatSessionsList">
+        <div class="admin-empty">
+          <i class="fa fa-comments"></i>
+          <p>No chat sessions yet. They appear here when visitors use the chat widget.</p>
+        </div>
+      </div>
+
+      <!-- Chat Conversation Panel -->
+      <div class="chat-convo-panel" id="chatConvoPanel">
+        <div class="chat-convo-empty">
+          <i class="fa fa-comment-dots"></i>
+          <p>Select a chat session to view the conversation</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
 
     <!-- ============ CONFIRM MODAL ============ -->
     <div class="admin-modal-overlay" id="confirmOverlay" style="display: none">
