@@ -67,28 +67,48 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Close sidebar when clicking outside on mobile
-  document.addEventListener('click', (e) => {
-    const sidebar = document.getElementById('adminSidebar');
-    const toggle  = document.getElementById('sidebarToggle');
-    if (
-      window.innerWidth <= 767 &&
-      sidebar.classList.contains('open') &&
-      !sidebar.contains(e.target) &&
-      !toggle.contains(e.target)
-    ) {
-      sidebar.classList.remove('open');
+document.addEventListener('click', (e) => {
+  const sidebar = document.getElementById('adminSidebar');
+  const toggle  = document.getElementById('sidebarToggle');
+  const overlay = document.getElementById('sidebarOverlay');
+
+  if (
+    window.innerWidth <= 767 &&
+    sidebar.classList.contains('open') &&
+    !sidebar.contains(e.target) &&
+    (!toggle || !toggle.contains(e.target))
+  ) {
+    sidebar.classList.remove('open');
+
+    if (overlay) {
+      overlay.style.display = 'none';
     }
-  });
+  }
+});
 
   // Close sidebar when nav link clicked on mobile
-  document.querySelectorAll('.sidebar-link[data-section]').forEach(link => {
-    link.addEventListener('click', () => {
-      if (window.innerWidth <= 767) {
-        document.getElementById('adminSidebar').classList.remove('open');
-      }
-    });
-  });
+ document.querySelectorAll('.sidebar-link[data-section]').forEach(link => {
+  link.addEventListener('click', () => {
+    if (window.innerWidth <= 767) {
+      document.getElementById('adminSidebar').classList.remove('open');
 
+      const overlay = document.getElementById('sidebarOverlay');
+
+      if (overlay) {
+        overlay.style.display = 'none';
+      }
+    }
+  });
+});
+
+const overlay = document.getElementById('sidebarOverlay');
+
+if (overlay) {
+  overlay.addEventListener('click', () => {
+    document.getElementById('adminSidebar').classList.remove('open');
+    overlay.style.display = 'none';
+  });
+}
   // Logout
   document.getElementById('logoutBtn').addEventListener('click', () => {
     sessionStorage.removeItem('swiftglobal_admin');
