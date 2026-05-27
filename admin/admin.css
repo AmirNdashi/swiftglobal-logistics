@@ -252,7 +252,7 @@ textarea {
   flex-direction: column;
   position: fixed;
   top: 0;
-  left: 0;
+  left: 0; 
   z-index: 999;
   transition: transform 0.3s ease;
   transform: translateX(0);
@@ -409,6 +409,8 @@ textarea {
   flex-direction: column;
   min-height: 100vh;
   transition: margin-left 0.3s ease;
+  position: relative;
+  z-index: 1;
 }
 
 .admin-main.expanded {
@@ -1025,13 +1027,17 @@ textarea {
 @media (max-width: 767px) {
   .admin-sidebar {
     transform: translateX(calc(-1 * var(--admin-sidebar-w)));
+    transition: transform 0.3s ease;
   }
+
   .admin-sidebar.open {
     transform: translateX(0);
   }
+
   .admin-main {
     margin-left: 0;
   }
+
   .stats-cards {
     grid-template-columns: 1fr 1fr;
   }
@@ -1072,7 +1078,7 @@ textarea {
   display: grid;
   grid-template-columns: 320px 1fr;
   gap: 20px;
-  height: calc(100vh - 220px);
+  height: 75dvh;
   min-height: 500px;
 }
 
@@ -1448,7 +1454,6 @@ textarea {
 
   /* Sidebar */
   .admin-sidebar {
-    transform: translateX(-260px) !important;
     z-index: 200 !important;
   }
 
@@ -1535,78 +1540,85 @@ textarea {
 
   /* Live chat full mobile fix */
   .live-chat-layout {
-    grid-template-columns: 1fr !important;
-    height: auto !important;
-    gap: 12px !important;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    height: auto;
+    min-height: auto;
   }
 
+  /* Chat sessions */
   .chat-sessions-list {
-    max-height: 220px !important;
-    min-height: 100px !important;
-    border-radius: var(--radius) !important;
+    width: 100%;
+    max-height: 220px;
+    overflow-y: auto;
+    flex-shrink: 0;
   }
 
-  .chat-session-item {
-    padding: 10px 12px !important;
-  }
-
-  .chat-session-name {
-    font-size: 0.85rem !important;
-  }
-
-  .chat-session-preview {
-    font-size: 0.78rem !important;
-  }
-
+  /* Chat panel */
   .chat-convo-panel {
-    min-height: 420px !important;
-    max-height: 70vh !important;
-    display: flex !important;
-    flex-direction: column !important;
-    border-radius: var(--radius) !important;
-  }
+  width: 100%;
+  height: calc(100vh - var(--admin-topbar-h) - 40px);
+  min-height: 420px;
 
-  .chat-convo-header {
-    padding: 10px 12px !important;
-    flex-wrap: wrap !important;
-    gap: 8px !important;
-    flex-shrink: 0 !important;
-  }
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.live-chat-layout {
+  padding-top: 0 !important;
+}
 
-  .chat-convo-name { font-size: 0.85rem !important; }
-  .chat-convo-meta { font-size: 0.68rem !important; }
+.admin-section.active {
+  overflow: hidden;
+}
 
+.chat-convo-messages {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+  /* Messages */
   .chat-convo-messages {
-    flex: 1 !important;
-    max-height: 260px !important;
-    min-height: 160px !important;
-    padding: 12px !important;
+    flex: 1;
+    overflow-y: auto;
+
+    min-height: 0;
+    max-height: none;
+
+    padding: 12px;
   }
 
-  .admin-chat-bubble {
-    max-width: 85% !important;
-    font-size: 0.82rem !important;
-    padding: 8px 11px !important;
-  }
-
+  /* Reply area */
   .chat-convo-reply {
-    padding: 8px 10px !important;
-    flex-shrink: 0 !important;
-    gap: 8px !important;
+    flex-shrink: 0;
+
+    padding: 10px;
+    gap: 8px;
   }
 
+  /* Input */
   .chat-convo-input {
-    font-size: 0.85rem !important;
-    padding: 9px 12px !important;
-    min-height: 38px !important;
+    min-height: 42px;
+    max-height: 120px;
+
+    font-size: 16px;
   }
 
+  /* Send button */
   .chat-convo-send {
-    width: 38px !important;
-    height: 38px !important;
-    font-size: 0.85rem !important;
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
   }
 
+  /* Bubbles */
+  .admin-chat-bubble {
+    max-width: 88%;
+    font-size: 0.83rem;
+  }
   /* Modals */
   .admin-modal {
     width: calc(100vw - 20px) !important;
@@ -1667,13 +1679,90 @@ textarea {
   .admin-section-header p {
     font-size: 0.8rem !important;
   }
+}
+/* =========================
+   SIDEBAR OVERLAY FIX
+========================= */
 
-  /* Overlay for sidebar on mobile */
- .sidebar-overlay {
+.sidebar-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.45);
+
   z-index: 998;
-  display: none;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
 }
+
+/* ACTIVE STATE */
+.sidebar-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* DESKTOP */
+@media (min-width: 768px) {
+  .sidebar-overlay {
+    display: none !important;
+  }
+}
+/* =========================================
+   FINAL LIVE CHAT TOPBAR MOBILE FIX
+========================================= */
+
+@media (max-width: 767px) {
+
+  .admin-topbar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    position: sticky !important;
+    top: 0 !important;
+
+    width: 100% !important;
+
+    z-index: 5000 !important;
+    background: #fff !important;
+  }
+
+  .admin-topbar-left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    flex: 1 !important;
+  }
+
+  .sidebar-toggle {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+
+    position: relative !important;
+    z-index: 6000 !important;
+  }
+
+  .admin-topbar-title {
+    display: block !important;
+  }
+
+  .admin-topbar-right {
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .live-chat-layout,
+  .chat-convo-panel,
+  .chat-convo-header,
+  .chat-convo-messages {
+    position: relative !important;
+    z-index: 1 !important;
+  }
 }

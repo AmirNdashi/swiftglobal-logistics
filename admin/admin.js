@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Close sidebar when clicking outside on mobile
+// Close sidebar when clicking outside on mobile
 document.addEventListener('click', (e) => {
   const sidebar = document.getElementById('adminSidebar');
   const toggle  = document.getElementById('sidebarToggle');
@@ -76,10 +76,11 @@ document.addEventListener('click', (e) => {
     window.innerWidth <= 767 &&
     sidebar.classList.contains('open') &&
     !sidebar.contains(e.target) &&
-    (!toggle || !toggle.contains(e.target))
+    !toggle.contains(e.target)
   ) {
     sidebar.classList.remove('open');
 
+    // HIDE OVERLAY
     if (overlay) {
       overlay.style.display = 'none';
     }
@@ -87,7 +88,7 @@ document.addEventListener('click', (e) => {
 });
 
   // Close sidebar when nav link clicked on mobile
- document.querySelectorAll('.sidebar-link[data-section]').forEach(link => {
+document.querySelectorAll('.sidebar-link[data-section]').forEach(link => {
   link.addEventListener('click', () => {
     if (window.innerWidth <= 767) {
       document.getElementById('adminSidebar').classList.remove('open');
