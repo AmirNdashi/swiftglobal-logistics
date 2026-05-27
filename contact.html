@@ -576,13 +576,15 @@
       </div>
     </div>
     <!-- EmailJS -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
 
-    <script src="js/main.js"></script>
-    <script src="js/chatbot.js"></script>
-    <script src="js/form.js"></script>
+   <!-- AOS Animation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" defer></script>
 
+    <!-- Our Scripts -->
+    <script src="js/main.js" defer></script>
+    <script src="js/tracking.js" defer></script>
+    <script src="js/chatbot.js" defer></script>
     <script>
       document.getElementById("year").textContent = new Date().getFullYear();
       function toggleFaq(btn) {

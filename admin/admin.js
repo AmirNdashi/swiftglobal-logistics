@@ -43,16 +43,34 @@ document.addEventListener('DOMContentLoaded', () => {
   initNotificationSound();
 
   // Sidebar toggle
-  document.getElementById('sidebarToggle').addEventListener('click', () => {
-    const sidebar = document.getElementById('adminSidebar');
-    const main    = document.querySelector('.admin-main');
-    if (window.innerWidth <= 767) {
-      sidebar.classList.toggle('open');
-    } else {
-      sidebar.classList.toggle('collapsed');
-      main.classList.toggle('expanded');
-    }
-  });
+const sidebar = document.getElementById('adminSidebar');
+const main = document.querySelector('.admin-main');
+const sidebarToggle = document.getElementById('sidebarToggle');
+const sidebarClose = document.getElementById('sidebarClose');
+
+sidebarToggle.addEventListener('click', () => {
+
+  // Mobile
+  if (window.innerWidth <= 767) {
+    sidebar.classList.toggle('open');
+  }
+
+  // Desktop
+  else {
+    sidebar.classList.toggle('collapsed');
+    main.classList.toggle('expanded');
+  }
+});
+
+// Mobile close button
+sidebarClose.addEventListener('click', () => {
+  sidebar.classList.remove('open');
+});
+
+// Close sidebar on mobile
+document.getElementById('sidebarClose').addEventListener('click', () => {
+  document.getElementById('adminSidebar').classList.remove('open');
+});
 
   // Logout
   document.getElementById('logoutBtn').addEventListener('click', () => {

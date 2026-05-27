@@ -3611,3 +3611,141 @@ p {
     height: 240px;
   }
 }
+
+/* ============================================
+   CRITICAL MOBILE OVERFLOW FIXES
+   ============================================ */
+
+/* Prevent ALL horizontal overflow globally */
+html, body {
+  overflow-x: hidden !important;
+  width: 100% !important;
+}
+
+/* Hero section mobile fix */
+@media (max-width: 767px) {
+  .hero {
+    height: 100svh !important;
+    min-height: 500px !important;
+    max-height: 100svh !important;
+  }
+
+  .hero-content {
+    padding: 0 16px !important;
+    max-width: 100% !important;
+  }
+
+  .hero-content h1 {
+    font-size: 1.8rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .hero-content p {
+    font-size: 0.92rem !important;
+  }
+
+  .hero-buttons {
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 10px !important;
+  }
+
+  .hero-buttons .btn {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* Stats grid fix */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0 !important;
+  }
+
+  .stat-item {
+    border-right: 1px solid rgba(255,255,255,0.08) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+    padding: 24px 16px !important;
+  }
+
+  /* Tracking strip fix */
+  .tracking-strip-inner {
+    flex-direction: column !important;
+    gap: 12px !important;
+    padding: 16px 0 !important;
+  }
+
+  .tracking-strip-form {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  .tracking-strip-form input,
+  .tracking-strip-form .btn {
+    width: 100% !important;
+  }
+
+  /* Section padding */
+  .section { padding: 50px 0 !important; }
+  .section-sm { padding: 40px 0 !important; }
+
+  /* Container width */
+  .container { width: 92% !important; }
+
+  /* Footer grid */
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 30px !important;
+  }
+
+  /* CTA buttons */
+  .cta-buttons {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 12px !important;
+  }
+
+  .cta-buttons .btn {
+    width: 100% !important;
+    max-width: 320px !important;
+    justify-content: center !important;
+  }
+
+  /* Why layout */
+  .why-layout {
+    grid-template-columns: 1fr !important;
+    gap: 30px !important;
+  }
+
+  .why-image img {
+    height: 250px !important;
+  }
+
+  /* Tracking highlight */
+  .tracking-highlight-layout {
+    grid-template-columns: 1fr !important;
+    gap: 30px !important;
+  }
+
+  /* Testimonials */
+  .testimonials-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* News grid */
+  .news-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Service cards */
+  .services-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+}
+
+/* Small phones */
+@media (max-width: 380px) {
+  .hero-content h1 { font-size: 1.5rem !important; }
+  .stat-number { font-size: 1.8rem !important; }
+  .btn { padding: 11px 18px !important; font-size: 0.85rem !important; }
+}

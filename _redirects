@@ -1,0 +1,6 @@
+# Redirect non-www to www
+http://swiftglobalogistics.com/* https://www.swiftglobalogistics.com/:splat 301!
+https://swiftglobalogistics.com/* https://www.swiftglobalogistics.com/:splat 301!
+
+# 404 page
+/* /404.html 404

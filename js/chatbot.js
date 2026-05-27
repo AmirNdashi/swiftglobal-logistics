@@ -5,8 +5,8 @@
 
 /* ---------- CONFIG ---------- */
 const CHATBOT_CONFIG = {
-  apiKey:    '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',
-  model:     'claude-sonnet-4-20250514',
+  apiKey:    'AIzaSyALH2li9Vxi6SzkW6VzRJxTYqIarqwIRz8',
+  model:     'gemini-2.5-flash',
   maxTokens: 500,
 };
 
@@ -165,7 +165,7 @@ function buildChatHTML() {
 
       <!-- Footer -->
       <div class="chat-footer">
-        <span id="chatFooterText">Powered by <a href="https://www.anthropic.com" target="_blank">Claude AI</a></span>
+        <span id="chatFooterText">Powered by <a href="https://ai.google.dev" target="_blank">Gemini AI</a></span>
         &nbsp;·&nbsp; SwiftGlobal Logistics
       </div>
 
@@ -388,8 +388,8 @@ function switchBackToAI() {
   document.getElementById('chatHeaderName').textContent   = 'SwiftBot AI';
   document.getElementById('chatHeaderStatus').textContent = 'Online — SwiftGlobal Logistics';
   document.getElementById('chatHumanBanner').style.display = 'none';
-  document.getElementById('chatFooterText').innerHTML =
-    'Powered by <a href="https://www.anthropic.com" target="_blank">Claude AI</a>';
+ document.getElementById('chatFooterText').innerHTML =
+    'Powered by <a href="https://ai.google.dev" target="_blank">Gemini AI</a>';
 
   document.getElementById('chatHandoffBar').innerHTML = `
     <span class="chat-handoff-label">
@@ -512,48 +512,74 @@ async function sendMessage() {
   chatHistory.push({ role: 'user', content: text });
   aiResponseCount++;
 
-  if (CHATBOT_CONFIG.apiKey === 'YOUR_ANTHROPIC_API_KEY') {
+  if (!CHATBOT_CONFIG.apiKey || CHATBOT_CONFIG.apiKey === 'YOUR_API_KEY') {
     addMessage('bot',
-      'SwiftBot is not configured yet. Please add your Anthropic API key to js/chatbot.js',
+      'SwiftBot is not configured yet. Please add your Gemini API key to js/chatbot.js',
       QUICK_REPLIES.general
     );
     return;
   }
 
-  isTyping = true;
+isTyping = true;
   sendBtn.disabled = true;
   showTyping(false);
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type':      'application/json',
-        'x-api-key':         CHATBOT_CONFIG.apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-allow-browser': 'true',
+    /* ---- Build Gemini conversation history ---- */
+    const geminiMessages = chatHistory.map(m => ({
+      role:  m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.content }],
+    }));
+
+    const geminiBody = JSON.stringify({
+      system_instruction: {
+        parts: [{ text: SYSTEM_PROMPT }],
       },
-      body: JSON.stringify({
-        model:      CHATBOT_CONFIG.model,
-        max_tokens: CHATBOT_CONFIG.maxTokens,
-        system:     SYSTEM_PROMPT,
-        messages:   chatHistory,
-      }),
+      contents: geminiMessages,
+      generationConfig: {
+        maxOutputTokens: CHATBOT_CONFIG.maxTokens,
+        temperature:     0.7,
+      },
     });
+
+    const geminiURL = `https://generativelanguage.googleapis.com/v1beta/models/${CHATBOT_CONFIG.model}:generateContent?key=${CHATBOT_CONFIG.apiKey}`;
+
+    let response = await fetch(geminiURL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    geminiBody,
+    });
+
+    /* ---- Handle rate limit with one auto retry ---- */
+    if (response.status === 429) {
+      hideTyping();
+      addMessage('bot',
+        '⏳ One moment please — I\'m receiving a lot of requests. Retrying in 10 seconds...',
+        [], true
+      );
+      await new Promise(resolve => setTimeout(resolve, 10000));
+      showTyping(false);
+      response = await fetch(geminiURL, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    geminiBody,
+      });
+    }
 
     if (!response.ok) throw new Error(`API ${response.status}`);
 
     const data  = await response.json();
-    const reply = data.content?.[0]?.text ||
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text ||
       'I apologize, I could not process that. Please try again.';
 
     chatHistory.push({ role: 'assistant', content: reply });
     if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
 
-    // Smart quick replies
-    let qr = QUICK_REPLIES.general;
+    /* ---- Smart quick replies ---- */
+    let qr   = QUICK_REPLIES.general;
     const lo = (text + reply).toLowerCase();
-    if (lo.includes('track'))  qr = QUICK_REPLIES.tracking;
+    if (lo.includes('track'))
+      qr = QUICK_REPLIES.tracking;
     else if (lo.includes('quote') || lo.includes('price') || lo.includes('cost'))
       qr = QUICK_REPLIES.quote;
 
@@ -561,17 +587,24 @@ async function sendMessage() {
     addMessage('bot', reply, qr);
 
   } catch (err) {
-    console.error('AI error:', err);
+    console.error('Gemini error:', err);
     hideTyping();
-    addMessage('bot',
-      err.message.includes('401')
-        ? 'There\'s an API key issue. Contact us at info@swiftglobalogistics.com 📧'
-        : 'I\'m having a small issue right now. Please try again or use the **Talk to a Human** button below! 🙂',
-      QUICK_REPLIES.general
-    );
+
+    let errMsg = 'I\'m having a small issue right now. Please try again or use the **Talk to a Human** button below! 🙂';
+
+    if (err.message.includes('400'))
+      errMsg = '❌ There\'s a configuration issue. Please contact us at info@swiftglobalogistics.com 📧';
+    else if (err.message.includes('403'))
+      errMsg = '❌ API access denied. Please contact us at info@swiftglobalogistics.com 📧';
+    else if (err.message.includes('429'))
+      errMsg = '⏳ Too many requests right now. Please wait a moment and try again, or click **Talk to a Human**!';
+    else if (err.message.includes('404'))
+      errMsg = '❌ AI model not found. Please contact the site administrator.';
+
+    addMessage('bot', errMsg, QUICK_REPLIES.general);
   }
 
-  isTyping = false;
+  isTyping         = false;
   sendBtn.disabled = false;
   input.focus();
 }
