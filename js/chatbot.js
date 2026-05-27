@@ -10,8 +10,9 @@
    ----------------------------------------- */
 /* ---------- CONFIG ---------- */
 const CHATBOT_CONFIG = {
-  apiKey:    'AIzaSyCwtT1QXBxHn1KB4VIcygxJ_fxIRbrdHtM',
+  apiKey:    'AIzaSyBi7Byv1Zma4Y5kvETWuYkUyyeiWJ1SOCA',
   maxTokens: 500,
+  model:    'gemini-2.5-flash',
 };
 
 /* ---------- STORAGE KEYS ---------- */
