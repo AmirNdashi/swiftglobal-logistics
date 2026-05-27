@@ -8,9 +8,10 @@
    The chatbot calls our serverless function
    instead of Gemini directly.
    ----------------------------------------- */
+/* ---------- CONFIG ---------- */
 const CHATBOT_CONFIG = {
-  functionURL: '/.netlify/functions/chat',
-  maxTokens:   500,
+  apiKey:    'AIzaSyCwtT1QXBxHn1KB4VIcygxJ_fxIRbrdHtM',
+  maxTokens: 500,
 };
 
 /* ---------- STORAGE KEYS ---------- */
@@ -521,23 +522,31 @@ isTyping = true;
   showTyping(false);
 
   try {
-    /* ---- Build message history for function ---- */
+    /* ---- Build Gemini conversation history ---- */
     const geminiMessages = chatHistory.map(m => ({
       role:  m.role === 'assistant' ? 'model' : 'user',
       parts: [{ text: m.content }],
     }));
 
-    /* ---- Call our secure Netlify function ---- */
-    const response = await fetch(CHATBOT_CONFIG.functionURL, {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        messages:     geminiMessages,
-        systemPrompt: SYSTEM_PROMPT,
-      }),
+    const geminiURL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${CHATBOT_CONFIG.apiKey}`;
+
+    const geminiBody = JSON.stringify({
+      system_instruction: {
+        parts: [{ text: SYSTEM_PROMPT }],
+      },
+      contents: geminiMessages,
+      generationConfig: {
+        maxOutputTokens: CHATBOT_CONFIG.maxTokens,
+        temperature:     0.7,
+      },
     });
 
-    /* ---- Handle rate limit ---- */
+    const response = await fetch(geminiURL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    geminiBody,
+    });
+
     if (response.status === 429) {
       hideTyping();
       addMessage('bot',
@@ -549,16 +558,15 @@ isTyping = true;
       return;
     }
 
-    if (!response.ok) throw new Error(`Function error: ${response.status}`);
+    if (!response.ok) throw new Error(`API ${response.status}`);
 
     const data  = await response.json();
-    const reply = data.reply ||
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text ||
       'I apologize, I could not process that. Please try again.';
 
     chatHistory.push({ role: 'assistant', content: reply });
     if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
 
-    /* ---- Smart quick replies ---- */
     let qr   = QUICK_REPLIES.general;
     const lo = (text + reply).toLowerCase();
     if (lo.includes('track'))
