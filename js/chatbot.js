@@ -3,11 +3,14 @@
    Powered by Claude AI + Live Human Handoff
    ============================================ */
 
-/* ---------- CONFIG ---------- */
+/* ---------- CONFIG ----------
+   API key is now stored securely on Netlify.
+   The chatbot calls our serverless function
+   instead of Gemini directly.
+   ----------------------------------------- */
 const CHATBOT_CONFIG = {
-  apiKey:    'AIzaSyALH2li9Vxi6SzkW6VzRJxTYqIarqwIRz8',
-  model:     'gemini-2.5-flash',
-  maxTokens: 500,
+  functionURL: '/.netlify/functions/chat',
+  maxTokens:   500,
 };
 
 /* ---------- STORAGE KEYS ---------- */
@@ -512,64 +515,44 @@ async function sendMessage() {
   chatHistory.push({ role: 'user', content: text });
   aiResponseCount++;
 
-  if (!CHATBOT_CONFIG.apiKey || CHATBOT_CONFIG.apiKey === 'YOUR_API_KEY') {
-    addMessage('bot',
-      'SwiftBot is not configured yet. Please add your Gemini API key to js/chatbot.js',
-      QUICK_REPLIES.general
-    );
-    return;
-  }
 
 isTyping = true;
   sendBtn.disabled = true;
   showTyping(false);
 
   try {
-    /* ---- Build Gemini conversation history ---- */
+    /* ---- Build message history for function ---- */
     const geminiMessages = chatHistory.map(m => ({
       role:  m.role === 'assistant' ? 'model' : 'user',
       parts: [{ text: m.content }],
     }));
 
-    const geminiBody = JSON.stringify({
-      system_instruction: {
-        parts: [{ text: SYSTEM_PROMPT }],
-      },
-      contents: geminiMessages,
-      generationConfig: {
-        maxOutputTokens: CHATBOT_CONFIG.maxTokens,
-        temperature:     0.7,
-      },
-    });
-
-    const geminiURL = `https://generativelanguage.googleapis.com/v1beta/models/${CHATBOT_CONFIG.model}:generateContent?key=${CHATBOT_CONFIG.apiKey}`;
-
-    let response = await fetch(geminiURL, {
+    /* ---- Call our secure Netlify function ---- */
+    const response = await fetch(CHATBOT_CONFIG.functionURL, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    geminiBody,
+      body: JSON.stringify({
+        messages:     geminiMessages,
+        systemPrompt: SYSTEM_PROMPT,
+      }),
     });
 
-    /* ---- Handle rate limit with one auto retry ---- */
+    /* ---- Handle rate limit ---- */
     if (response.status === 429) {
       hideTyping();
       addMessage('bot',
-        '⏳ One moment please — I\'m receiving a lot of requests. Retrying in 10 seconds...',
-        [], true
+        '⏳ I\'m receiving a lot of requests right now. Please wait a moment and try again, or click **Talk to a Human**!',
+        QUICK_REPLIES.general
       );
-      await new Promise(resolve => setTimeout(resolve, 10000));
-      showTyping(false);
-      response = await fetch(geminiURL, {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    geminiBody,
-      });
+      isTyping         = false;
+      sendBtn.disabled = false;
+      return;
     }
 
-    if (!response.ok) throw new Error(`API ${response.status}`);
+    if (!response.ok) throw new Error(`Function error: ${response.status}`);
 
     const data  = await response.json();
-    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text ||
+    const reply = data.reply ||
       'I apologize, I could not process that. Please try again.';
 
     chatHistory.push({ role: 'assistant', content: reply });
@@ -587,21 +570,12 @@ isTyping = true;
     addMessage('bot', reply, qr);
 
   } catch (err) {
-    console.error('Gemini error:', err);
+    console.error('Chatbot error:', err);
     hideTyping();
-
-    let errMsg = 'I\'m having a small issue right now. Please try again or use the **Talk to a Human** button below! 🙂';
-
-    if (err.message.includes('400'))
-      errMsg = '❌ There\'s a configuration issue. Please contact us at info@swiftglobalogistics.com 📧';
-    else if (err.message.includes('403'))
-      errMsg = '❌ API access denied. Please contact us at info@swiftglobalogistics.com 📧';
-    else if (err.message.includes('429'))
-      errMsg = '⏳ Too many requests right now. Please wait a moment and try again, or click **Talk to a Human**!';
-    else if (err.message.includes('404'))
-      errMsg = '❌ AI model not found. Please contact the site administrator.';
-
-    addMessage('bot', errMsg, QUICK_REPLIES.general);
+    addMessage('bot',
+      'I\'m having a small issue right now. Please try again or click **Talk to a Human** for immediate help! 🙂',
+      QUICK_REPLIES.general
+    );
   }
 
   isTyping         = false;
