@@ -521,63 +521,86 @@ isTyping = true;
   sendBtn.disabled = true;
   showTyping(false);
 
-  try {
-    /* ---- Build Gemini conversation history ---- */
-    const geminiMessages = chatHistory.map(m => ({
-      role:  m.role === 'assistant' ? 'model' : 'user',
-      parts: [{ text: m.content }],
-    }));
+try {
 
-const response = await fetch(
-  'https://swiftglobal-ai.yourname.workers.dev',
-  {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      systemPrompt: SYSTEM_PROMPT,
-      messages: chatHistory.map(m => ({
-        role: m.role === 'assistant'
-          ? 'assistant'
-          : 'user',
-        content: m.content,
-      })),
-    }),
+  const response = await fetch(
+    CHATBOT_CONFIG.apiURL,
+    {
+      method: 'POST',
+
+      headers: {
+        'Content-Type': 'application/json',
+      },
+
+      body: JSON.stringify({
+
+        systemPrompt: SYSTEM_PROMPT,
+
+        messages: chatHistory.map(m => ({
+          role: m.role === 'assistant'
+            ? 'assistant'
+            : 'user',
+
+          content: m.content,
+        })),
+      }),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`API ${response.status}`);
   }
-);
 
-if (!response.ok) {
-  throw new Error(`API ${response.status}`);
+  const data = await response.json();
+
+  console.log(data);
+
+  const reply =
+    data.choices?.[0]?.message?.content ||
+    'I could not process that request.';
+
+  chatHistory.push({
+    role: 'assistant',
+    content: reply,
+  });
+
+  if (chatHistory.length > 20) {
+    chatHistory = chatHistory.slice(-20);
+  }
+
+  let qr = QUICK_REPLIES.general;
+
+  const lo = (text + reply).toLowerCase();
+
+  if (lo.includes('track')) {
+    qr = QUICK_REPLIES.tracking;
+  }
+
+  else if (
+    lo.includes('quote') ||
+    lo.includes('price') ||
+    lo.includes('cost')
+  ) {
+    qr = QUICK_REPLIES.quote;
+  }
+
+  hideTyping();
+
+  addMessage('bot', reply, qr);
+
 }
+catch (err) {
 
-const data = await response.json();
+  console.error('Chatbot error:', err);
 
-const reply =
-  data.choices?.[0]?.message?.content ||
-  'I could not process that request.';
+  hideTyping();
 
-    chatHistory.push({ role: 'assistant', content: reply });
-    if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
-
-    let qr   = QUICK_REPLIES.general;
-    const lo = (text + reply).toLowerCase();
-    if (lo.includes('track'))
-      qr = QUICK_REPLIES.tracking;
-    else if (lo.includes('quote') || lo.includes('price') || lo.includes('cost'))
-      qr = QUICK_REPLIES.quote;
-
-    hideTyping();
-    addMessage('bot', reply, qr);
-
-  } catch (err) {
-    console.error('Chatbot error:', err);
-    hideTyping();
-    addMessage('bot',
-      'I\'m having a small issue right now. Please try again or click **Talk to a Human** for immediate help! 🙂',
-      QUICK_REPLIES.general
-    );
-  }
+  addMessage(
+    'bot',
+    'I\'m having a small issue right now. Please try again or click **Talk to a Human** for immediate help! 🙂',
+    QUICK_REPLIES.general
+  );
+}
 
   isTyping         = false;
   sendBtn.disabled = false;
