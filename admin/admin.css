@@ -1415,9 +1415,8 @@ textarea {
    ADMIN LIVE CHAT MOBILE FIXES
    ============================================ */
 
+/* Tablet */
 @media (max-width: 991px) {
-
-  /* Live chat layout stacks vertically */
   .live-chat-layout {
     grid-template-columns: 1fr !important;
     height: auto !important;
@@ -1425,66 +1424,86 @@ textarea {
   }
 
   .chat-sessions-list {
-    max-height: 280px !important;
+    max-height: 260px !important;
     overflow-y: auto !important;
+    border-radius: var(--radius) !important;
   }
 
   .chat-convo-panel {
-    min-height: 450px !important;
+    min-height: 480px !important;
     height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
   }
 
   .chat-convo-messages {
-    max-height: 300px !important;
+    flex: 1 !important;
+    max-height: 280px !important;
+    min-height: 180px !important;
   }
 }
 
+/* Mobile */
 @media (max-width: 767px) {
 
-  /* Admin sidebar fully hidden on mobile */
+  /* Sidebar */
   .admin-sidebar {
     transform: translateX(-260px) !important;
-    transition: transform 0.3s ease !important;
+    z-index: 200 !important;
   }
 
   .admin-sidebar.open {
     transform: translateX(0) !important;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.3) !important;
   }
 
   .admin-main {
     margin-left: 0 !important;
     width: 100% !important;
+    overflow-x: hidden !important;
   }
 
-  /* Admin topbar */
+  /* Topbar */
   .admin-topbar {
     padding: 0 12px !important;
+    gap: 10px !important;
   }
 
   .admin-time { display: none !important; }
 
-  /* Admin sections */
+  .admin-user-badge {
+    padding: 5px 10px !important;
+    font-size: 0.78rem !important;
+  }
+
+  /* Sections */
   .admin-section {
     padding: 16px 12px !important;
   }
 
-  /* Stats cards — 2 columns on mobile */
+  .admin-section-header h2 {
+    font-size: 1.1rem !important;
+  }
+
+  /* Stats */
   .stats-cards {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 12px !important;
+    gap: 10px !important;
   }
 
   .stat-card {
-    padding: 16px 12px !important;
+    padding: 14px 12px !important;
+    gap: 12px !important;
   }
 
-  .stat-card-num { font-size: 1.4rem !important; }
-  .stat-card-label { font-size: 0.72rem !important; }
+  .stat-card-num   { font-size: 1.3rem !important; }
+  .stat-card-label { font-size: 0.7rem !important; }
+  .stat-card-icon  { width: 38px !important; height: 38px !important; font-size: 1rem !important; }
 
   /* Message rows */
   .message-row {
     grid-template-columns: 36px 1fr !important;
-    padding: 12px 14px !important;
+    padding: 12px !important;
     gap: 10px !important;
   }
 
@@ -1494,78 +1513,118 @@ textarea {
   .admin-toolbar {
     flex-direction: column !important;
     gap: 10px !important;
+    align-items: stretch !important;
   }
 
-  .admin-search-wrap { width: 100% !important; }
-  .admin-toolbar-actions { width: 100% !important; justify-content: space-between !important; }
+  .admin-search-wrap {
+    width: 100% !important;
+    min-width: unset !important;
+  }
 
-  /* Live chat on mobile */
+  .admin-toolbar-actions {
+    width: 100% !important;
+    justify-content: space-between !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  .admin-select {
+    flex: 1 !important;
+    font-size: 0.82rem !important;
+  }
+
+  /* Live chat full mobile fix */
   .live-chat-layout {
     grid-template-columns: 1fr !important;
     height: auto !important;
+    gap: 12px !important;
   }
 
   .chat-sessions-list {
-    max-height: 240px !important;
+    max-height: 220px !important;
+    min-height: 100px !important;
+    border-radius: var(--radius) !important;
+  }
+
+  .chat-session-item {
+    padding: 10px 12px !important;
+  }
+
+  .chat-session-name {
+    font-size: 0.85rem !important;
+  }
+
+  .chat-session-preview {
+    font-size: 0.78rem !important;
   }
 
   .chat-convo-panel {
-    min-height: 400px !important;
-  }
-
-  .chat-convo-messages {
-    max-height: 250px !important;
-    min-height: 200px !important;
+    min-height: 420px !important;
+    max-height: 70vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    border-radius: var(--radius) !important;
   }
 
   .chat-convo-header {
     padding: 10px 12px !important;
     flex-wrap: wrap !important;
     gap: 8px !important;
+    flex-shrink: 0 !important;
   }
 
   .chat-convo-name { font-size: 0.85rem !important; }
   .chat-convo-meta { font-size: 0.68rem !important; }
 
-  .chat-convo-reply {
-    padding: 8px 10px !important;
+  .chat-convo-messages {
+    flex: 1 !important;
+    max-height: 260px !important;
+    min-height: 160px !important;
+    padding: 12px !important;
   }
 
-  /* Admin modal */
+  .admin-chat-bubble {
+    max-width: 85% !important;
+    font-size: 0.82rem !important;
+    padding: 8px 11px !important;
+  }
+
+  .chat-convo-reply {
+    padding: 8px 10px !important;
+    flex-shrink: 0 !important;
+    gap: 8px !important;
+  }
+
+  .chat-convo-input {
+    font-size: 0.85rem !important;
+    padding: 9px 12px !important;
+    min-height: 38px !important;
+  }
+
+  .chat-convo-send {
+    width: 38px !important;
+    height: 38px !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Modals */
   .admin-modal {
-    width: calc(100vw - 24px) !important;
-    max-height: 90vh !important;
+    width: calc(100vw - 20px) !important;
+    max-height: 88vh !important;
     overflow-y: auto !important;
+    margin: 0 auto !important;
+  }
+
+  .admin-modal-header {
+    padding: 14px 16px !important;
   }
 
   .admin-modal-body {
-    padding: 16px !important;
+    padding: 14px 16px !important;
   }
 
-  .modal-detail-row {
-    flex-direction: column !important;
-    gap: 4px !important;
-  }
-
-  .modal-detail-label { min-width: unset !important; }
-}
-
-@media (max-width: 480px) {
-
-  /* Stats single column on very small */
-  .stats-cards {
-    grid-template-columns: 1fr 1fr !important;
-  }
-
-  .stat-card-icon { display: none !important; }
-
-  /* Chat session items */
-  .chat-session-item {
-    padding: 10px 12px !important;
-  }
-
-  /* Admin modal footer */
   .admin-modal-footer {
+    padding: 12px 16px !important;
     flex-wrap: wrap !important;
     gap: 8px !important;
   }
@@ -1573,5 +1632,48 @@ textarea {
   .admin-modal-footer .admin-btn {
     flex: 1 !important;
     justify-content: center !important;
+    min-width: 100px !important;
+  }
+
+  .modal-detail-row {
+    flex-direction: column !important;
+    gap: 4px !important;
+    font-size: 0.85rem !important;
+  }
+
+  .modal-detail-label {
+    min-width: unset !important;
+    font-size: 0.78rem !important;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .stats-cards {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  .stat-card-icon { display: none !important; }
+
+  .chat-convo-panel {
+    min-height: 380px !important;
+  }
+
+  .chat-convo-messages {
+    max-height: 220px !important;
+  }
+
+  .admin-section-header p {
+    font-size: 0.8rem !important;
+  }
+
+  /* Overlay for sidebar on mobile */
+  .sidebar-overlay {
+    display: block !important;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 199;
   }
 }

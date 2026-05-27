@@ -42,35 +42,52 @@ document.addEventListener('DOMContentLoaded', () => {
   startNotificationPolling();
   initNotificationSound();
 
-  // Sidebar toggle
-const sidebar = document.getElementById('adminSidebar');
-const main = document.querySelector('.admin-main');
-const sidebarToggle = document.getElementById('sidebarToggle');
-const sidebarClose = document.getElementById('sidebarClose');
+// Sidebar toggle (hamburger button)
+  document.getElementById('sidebarToggle').addEventListener('click', () => {
+    const sidebar = document.getElementById('adminSidebar');
+    const main    = document.querySelector('.admin-main');
+    const overlay = document.getElementById('sidebarOverlay');
+    if (window.innerWidth <= 767) {
+      const isOpen = sidebar.classList.toggle('open');
+      if (overlay) overlay.style.display = isOpen ? 'block' : 'none';
+    } else {
+      sidebar.classList.toggle('collapsed');
+      main.classList.toggle('expanded');
+    }
+  });
 
-sidebarToggle.addEventListener('click', () => {
-
-  // Mobile
-  if (window.innerWidth <= 767) {
-    sidebar.classList.toggle('open');
+  // Sidebar close button (mobile X button)
+  const sidebarClose = document.getElementById('sidebarClose');
+  if (sidebarClose) {
+    sidebarClose.addEventListener('click', () => {
+      document.getElementById('adminSidebar').classList.remove('open');
+      const overlay = document.getElementById('sidebarOverlay');
+      if (overlay) overlay.style.display = 'none';
+    });
   }
 
-  // Desktop
-  else {
-    sidebar.classList.toggle('collapsed');
-    main.classList.toggle('expanded');
-  }
-});
+  // Close sidebar when clicking outside on mobile
+  document.addEventListener('click', (e) => {
+    const sidebar = document.getElementById('adminSidebar');
+    const toggle  = document.getElementById('sidebarToggle');
+    if (
+      window.innerWidth <= 767 &&
+      sidebar.classList.contains('open') &&
+      !sidebar.contains(e.target) &&
+      !toggle.contains(e.target)
+    ) {
+      sidebar.classList.remove('open');
+    }
+  });
 
-// Mobile close button
-sidebarClose.addEventListener('click', () => {
-  sidebar.classList.remove('open');
-});
-
-// Close sidebar on mobile
-document.getElementById('sidebarClose').addEventListener('click', () => {
-  document.getElementById('adminSidebar').classList.remove('open');
-});
+  // Close sidebar when nav link clicked on mobile
+  document.querySelectorAll('.sidebar-link[data-section]').forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 767) {
+        document.getElementById('adminSidebar').classList.remove('open');
+      }
+    });
+  });
 
   // Logout
   document.getElementById('logoutBtn').addEventListener('click', () => {

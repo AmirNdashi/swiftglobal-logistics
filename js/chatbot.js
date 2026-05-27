@@ -169,7 +169,7 @@ function buildChatHTML() {
 
       <!-- Footer -->
       <div class="chat-footer">
-        <span id="chatFooterText">Powered by <a href="https://ai.google.dev" target="_blank">Gemini AI</a></span>
+        <span id="chatFooterText">Powered by <a href="https://ai.google.dev" target="_blank">Groq AI</a></span>
         &nbsp;·&nbsp; SwiftGlobal Logistics
       </div>
 
