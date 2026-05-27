@@ -10,9 +10,8 @@
    ----------------------------------------- */
 /* ---------- CONFIG ---------- */
 const CHATBOT_CONFIG = {
-  apiKey:    'AIzaSyBi7Byv1Zma4Y5kvETWuYkUyyeiWJ1SOCA',
+  apiURL: 'https://swiftglobal-ai.swiftglobal.workers.dev',
   maxTokens: 500,
-  model:    'gemini-2.5-flash',
 };
 
 /* ---------- STORAGE KEYS ---------- */
@@ -529,41 +528,34 @@ isTyping = true;
       parts: [{ text: m.content }],
     }));
 
-    const geminiURL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${CHATBOT_CONFIG.apiKey}`;
+const response = await fetch(
+  'https://swiftglobal-ai.yourname.workers.dev',
+  {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      systemPrompt: SYSTEM_PROMPT,
+      messages: chatHistory.map(m => ({
+        role: m.role === 'assistant'
+          ? 'assistant'
+          : 'user',
+        content: m.content,
+      })),
+    }),
+  }
+);
 
-    const geminiBody = JSON.stringify({
-      system_instruction: {
-        parts: [{ text: SYSTEM_PROMPT }],
-      },
-      contents: geminiMessages,
-      generationConfig: {
-        maxOutputTokens: CHATBOT_CONFIG.maxTokens,
-        temperature:     0.7,
-      },
-    });
+if (!response.ok) {
+  throw new Error(`API ${response.status}`);
+}
 
-    const response = await fetch(geminiURL, {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    geminiBody,
-    });
+const data = await response.json();
 
-    if (response.status === 429) {
-      hideTyping();
-      addMessage('bot',
-        '⏳ I\'m receiving a lot of requests right now. Please wait a moment and try again, or click **Talk to a Human**!',
-        QUICK_REPLIES.general
-      );
-      isTyping         = false;
-      sendBtn.disabled = false;
-      return;
-    }
-
-    if (!response.ok) throw new Error(`API ${response.status}`);
-
-    const data  = await response.json();
-    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text ||
-      'I apologize, I could not process that. Please try again.';
+const reply =
+  data.choices?.[0]?.message?.content ||
+  'I could not process that request.';
 
     chatHistory.push({ role: 'assistant', content: reply });
     if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
