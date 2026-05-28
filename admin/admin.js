@@ -238,6 +238,9 @@ function switchSection(name) {
   if (name === 'livechats') {
     renderChatSessions();
   }
+  if (name === 'shipments') {
+    renderShipments();
+  }
 }
 
 /* ---------- LOAD DATA ---------- */

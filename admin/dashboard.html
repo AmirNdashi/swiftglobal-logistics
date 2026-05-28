@@ -19,18 +19,19 @@
     <link rel="stylesheet" href="admin.css" />
   </head>
   <body class="admin-body">
+
     <!-- ============ SIDEBAR ============ -->
     <aside class="admin-sidebar" id="adminSidebar">
 
-  <!-- Sidebar Close Button -->
-  <button class="sidebar-close" id="sidebarClose">
-    <i class="fa fa-times"></i>
-  </button>
+      <!-- Sidebar Close Button -->
+      <button class="sidebar-close" id="sidebarClose">
+        <i class="fa fa-times"></i>
+      </button>
 
-  <div class="sidebar-logo">
-    <span>Swift<span>Global</span></span>
-    <span class="sidebar-badge">Admin</span>
-  </div>
+      <div class="sidebar-logo">
+        <span>Swift<span>Global</span></span>
+        <span class="sidebar-badge">Admin</span>
+      </div>
 
       <nav class="sidebar-nav">
         <a href="#" class="sidebar-link active" data-section="dashboard">
@@ -48,6 +49,10 @@
           <i class="fa fa-comments"></i> Live Chats
           <span class="sidebar-badge-count" id="chatBadge">0</span>
         </a>
+        <a href="#" class="sidebar-link" data-section="shipments">
+          <i class="fa fa-box"></i> Shipments
+          <span class="sidebar-badge-count" id="shipmentBadge">0</span>
+        </a>
       </nav>
 
       <div class="sidebar-footer">
@@ -59,19 +64,16 @@
         </button>
       </div>
     </aside>
-    
-   <!-- Mobile sidebar overlay -->
+
+    <!-- Mobile sidebar overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay" style="display:none;"></div>
 
     <!-- ============ MAIN ============ -->
     <div class="admin-main">
+
       <!-- Top Bar -->
       <header class="admin-topbar">
-        <button
-          class="sidebar-toggle"
-          id="sidebarToggle"
-          aria-label="Toggle sidebar"
-        >
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
           <i class="fa fa-bars"></i>
         </button>
         <div class="admin-topbar-title" id="pageTitle">Dashboard</div>
@@ -100,18 +102,14 @@
             </div>
           </div>
           <div class="stat-card stat-card--amber">
-            <div class="stat-card-icon">
-              <i class="fa fa-envelope-open"></i>
-            </div>
+            <div class="stat-card-icon"><i class="fa fa-envelope-open"></i></div>
             <div class="stat-card-info">
               <span class="stat-card-num" id="statUnread">0</span>
               <span class="stat-card-label">Unread Messages</span>
             </div>
           </div>
           <div class="stat-card stat-card--green">
-            <div class="stat-card-icon">
-              <i class="fa fa-file-invoice-dollar"></i>
-            </div>
+            <div class="stat-card-icon"><i class="fa fa-file-invoice-dollar"></i></div>
             <div class="stat-card-info">
               <span class="stat-card-num" id="statQuotes">0</span>
               <span class="stat-card-label">Quote Requests</span>
@@ -130,20 +128,14 @@
         <div class="admin-card" style="margin-top: 32px">
           <div class="admin-card-header">
             <h3><i class="fa fa-clock-rotate-left"></i> Recent Messages</h3>
-            <button
-              class="admin-btn admin-btn-sm"
-              onclick="switchSection('messages')"
-            >
+            <button class="admin-btn admin-btn-sm" onclick="switchSection('messages')">
               View All <i class="fa fa-arrow-right"></i>
             </button>
           </div>
           <div id="recentMessages">
             <div class="admin-empty">
               <i class="fa fa-inbox"></i>
-              <p>
-                No messages yet. They'll appear here once the contact form is
-                submitted.
-              </p>
+              <p>No messages yet. They'll appear here once the contact form is submitted.</p>
             </div>
           </div>
         </div>
@@ -155,37 +147,22 @@
           <h2>All Messages</h2>
           <p>All contact form submissions from the website.</p>
         </div>
-
-        <!-- Toolbar -->
         <div class="admin-toolbar">
           <div class="admin-search-wrap">
             <i class="fa fa-search"></i>
-            <input
-              type="text"
-              id="messageSearch"
-              placeholder="Search messages..."
-              oninput="filterMessages()"
-            />
+            <input type="text" id="messageSearch" placeholder="Search messages..." oninput="filterMessages()" />
           </div>
           <div class="admin-toolbar-actions">
-            <select
-              id="messageFilter"
-              onchange="filterMessages()"
-              class="admin-select"
-            >
+            <select id="messageFilter" onchange="filterMessages()" class="admin-select">
               <option value="all">All Messages</option>
               <option value="unread">Unread Only</option>
               <option value="read">Read Only</option>
             </select>
-            <button
-              class="admin-btn admin-btn-danger admin-btn-sm"
-              onclick="deleteAllMessages()"
-            >
+            <button class="admin-btn admin-btn-danger admin-btn-sm" onclick="deleteAllMessages()">
               <i class="fa fa-trash"></i> Clear All
             </button>
           </div>
         </div>
-
         <div id="messagesList"></div>
       </section>
 
@@ -193,27 +170,15 @@
       <section class="admin-section" id="section-quotes">
         <div class="admin-section-header">
           <h2>Quote Requests</h2>
-          <p>
-            All contact form submissions where a specific service was selected.
-          </p>
+          <p>All contact form submissions where a specific service was selected.</p>
         </div>
-
         <div class="admin-toolbar">
           <div class="admin-search-wrap">
             <i class="fa fa-search"></i>
-            <input
-              type="text"
-              id="quoteSearch"
-              placeholder="Search quote requests..."
-              oninput="filterQuotes()"
-            />
+            <input type="text" id="quoteSearch" placeholder="Search quote requests..." oninput="filterQuotes()" />
           </div>
           <div class="admin-toolbar-actions">
-            <select
-              id="quoteServiceFilter"
-              onchange="filterQuotes()"
-              class="admin-select"
-            >
+            <select id="quoteServiceFilter" onchange="filterQuotes()" class="admin-select">
               <option value="all">All Services</option>
               <option value="sea">Sea Freight</option>
               <option value="air">Air Freight</option>
@@ -223,140 +188,440 @@
               <option value="project">Project Cargo</option>
               <option value="other">Other</option>
             </select>
-            <button
-              class="admin-btn admin-btn-danger admin-btn-sm"
-              onclick="deleteAllQuotes()"
-            >
+            <button class="admin-btn admin-btn-danger admin-btn-sm" onclick="deleteAllQuotes()">
               <i class="fa fa-trash"></i> Clear All
             </button>
           </div>
         </div>
-
         <div id="quotesList"></div>
       </section>
 
-<!-- ============ LIVE CHATS SECTION ============ -->
-<section class="admin-section" id="section-livechats">
-  <div class="admin-section-header">
-    <h2>Live Chats</h2>
-    <p>Human support chat sessions from website visitors.</p>
-  </div>
-
-  <div class="admin-toolbar">
-    <div class="admin-search-wrap">
-      <i class="fa fa-search"></i>
-      <input
-        type="text"
-        id="chatSearch"
-        placeholder="Search chats..."
-        oninput="filterChats()"
-      />
-    </div>
-
-    <div class="admin-toolbar-actions">
-      <select
-        id="chatStatusFilter"
-        onchange="filterChats()"
-        class="admin-select"
-      >
-        <option value="all">All Chats</option>
-        <option value="waiting">Waiting for Reply</option>
-        <option value="active">Active</option>
-        <option value="ai">AI Only</option>
-      </select>
-
-      <button
-        class="admin-btn admin-btn-danger admin-btn-sm"
-        onclick="clearAllChats()"
-      >
-        <i class="fa fa-trash"></i> Clear All
-      </button>
-    </div>
-  </div>
-
-  <div class="live-chat-layout" id="liveChatLayout">
-
-    <div class="chat-sessions-list" id="chatSessionsList">
-      <div class="admin-empty">
-        <i class="fa fa-comments"></i>
-        <p>
-          No chat sessions yet. They appear here when visitors use the chat widget.
-        </p>
-      </div>
-    </div>
-
-    <div class="chat-convo-panel" id="chatConvoPanel">
-      <div class="chat-convo-empty">
-        <i class="fa fa-comment-dots"></i>
-        <p>Select a chat session to view the conversation</p>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-</div>
-    <!-- ============ MESSAGE MODAL ============ -->
-    <div class="admin-modal-overlay" id="modalOverlay" style="display: none">
-      <div class="admin-modal">
-        <div class="admin-modal-header">
-          <h3 id="modalTitle">Message Detail</h3>
-          <button class="admin-modal-close" onclick="closeModal()">
-            <i class="fa fa-times"></i>
-          </button>
+      <!-- ============ LIVE CHATS SECTION ============ -->
+      <section class="admin-section" id="section-livechats">
+        <div class="admin-section-header">
+          <h2>Live Chats</h2>
+          <p>Human support chat sessions from website visitors.</p>
         </div>
-        <div class="admin-modal-body" id="modalBody"></div>
-        <div class="admin-modal-footer">
-          <button class="admin-btn admin-btn-sm" onclick="toggleReadModal()">
-            <i class="fa fa-envelope-open" id="modalReadIcon"></i>
-            <span id="modalReadText">Mark as Read</span>
-          </button>
-          <button
-            class="admin-btn admin-btn-danger admin-btn-sm"
-            onclick="deleteFromModal()"
-          >
-            <i class="fa fa-trash"></i> Delete
-          </button>
-          <button
-            class="admin-btn admin-btn-secondary admin-btn-sm"
-            onclick="closeModal()"
-          >
-            <i class="fa fa-times"></i> Close
-          </button>
+        <div class="admin-toolbar">
+          <div class="admin-search-wrap">
+            <i class="fa fa-search"></i>
+            <input type="text" id="chatSearch" placeholder="Search chats..." oninput="filterChats()" />
+          </div>
+          <div class="admin-toolbar-actions">
+            <select id="chatStatusFilter" onchange="filterChats()" class="admin-select">
+              <option value="all">All Chats</option>
+              <option value="waiting">Waiting for Reply</option>
+              <option value="active">Active</option>
+              <option value="ai">AI Only</option>
+            </select>
+            <button class="admin-btn admin-btn-danger admin-btn-sm" onclick="clearAllChats()">
+              <i class="fa fa-trash"></i> Clear All
+            </button>
+          </div>
         </div>
-      </div>
+        <div class="live-chat-layout" id="liveChatLayout">
+          <div class="chat-sessions-list" id="chatSessionsList">
+            <div class="admin-empty">
+              <i class="fa fa-comments"></i>
+              <p>No chat sessions yet. They appear here when visitors use the chat widget.</p>
+            </div>
+          </div>
+          <div class="chat-convo-panel" id="chatConvoPanel">
+            <div class="chat-convo-empty">
+              <i class="fa fa-comment-dots"></i>
+              <p>Select a chat session to view the conversation</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    </div>
+      <!-- ============ SHIPMENTS SECTION ============
+           FIX: This section was previously placed OUTSIDE .admin-main,
+           causing it to render at body level and overlap the topbar.
+           It now lives correctly inside .admin-main like all other sections.
+      -->
+      <section class="admin-section" id="section-shipments">
+        <div class="admin-section-header">
+          <h2>Shipment Management</h2>
+          <p>Create and manage custom shipment tracking numbers for your clients.</p>
+        </div>
+        <div class="admin-toolbar">
+          <div class="admin-search-wrap">
+            <i class="fa fa-search"></i>
+            <input type="text" id="shipmentSearch"
+              placeholder="Search by tracking number, name, or destination..."
+              oninput="filterShipments()" />
+          </div>
+          <div class="admin-toolbar-actions">
+            <select id="shipmentStatusFilter" onchange="filterShipments()" class="admin-select">
+              <option value="all">All Statuses</option>
+              <option value="pending">Pending</option>
+              <option value="pickup">Picked Up</option>
+              <option value="in_transit">In Transit</option>
+              <option value="customs">Customs Clearance</option>
+              <option value="out_for_delivery">Out for Delivery</option>
+              <option value="delivered">Delivered</option>
+              <option value="exception">Exception</option>
+            </select>
+            <button class="admin-btn admin-btn-primary" onclick="openCreateShipment()">
+              <i class="fa fa-plus"></i> Create Shipment
+            </button>
+          </div>
+        </div>
+        <div id="shipmentsList"></div>
+      </section>
 
-    <!-- ============ CONFIRM MODAL ============ -->
-    <div class="admin-modal-overlay" id="confirmOverlay" style="display: none">
-      <div class="admin-modal admin-modal--sm">
-        <div class="admin-modal-header">
-          <h3>
-            <i
-              class="fa fa-triangle-exclamation"
-              style="color: var(--admin-danger)"
-            ></i>
-            Confirm Delete
-          </h3>
-        </div>
-        <div class="admin-modal-body">
-          <p id="confirmMsg">Are you sure you want to delete this?</p>
-        </div>
-        <div class="admin-modal-footer">
-          <button class="admin-btn admin-btn-danger" id="confirmYes">
-            <i class="fa fa-trash"></i> Yes, Delete
-          </button>
-          <button
-            class="admin-btn admin-btn-secondary"
-            onclick="closeConfirm()"
-          >
-            Cancel
-          </button>
+      <!-- ============ MESSAGE MODAL ============ -->
+      <div class="admin-modal-overlay" id="modalOverlay" style="display: none">
+        <div class="admin-modal">
+          <div class="admin-modal-header">
+            <h3 id="modalTitle">Message Detail</h3>
+            <button class="admin-modal-close" onclick="closeModal()">
+              <i class="fa fa-times"></i>
+            </button>
+          </div>
+          <div class="admin-modal-body" id="modalBody"></div>
+          <div class="admin-modal-footer">
+            <button class="admin-btn admin-btn-sm" onclick="toggleReadModal()">
+              <i class="fa fa-envelope-open" id="modalReadIcon"></i>
+              <span id="modalReadText">Mark as Read</span>
+            </button>
+            <button class="admin-btn admin-btn-danger admin-btn-sm" onclick="deleteFromModal()">
+              <i class="fa fa-trash"></i> Delete
+            </button>
+            <button class="admin-btn admin-btn-secondary admin-btn-sm" onclick="closeModal()">
+              <i class="fa fa-times"></i> Close
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+
+      <!-- ============ CREATE/EDIT SHIPMENT MODAL ============ -->
+      <div class="admin-modal-overlay" id="shipmentModalOverlay" style="display:none;">
+        <div class="admin-modal shipment-modal">
+          <div class="admin-modal-header">
+            <h3 id="shipmentModalTitle">
+              <i class="fa fa-box"></i> Create New Shipment
+            </h3>
+            <button class="admin-modal-close" onclick="closeShipmentModal()">
+              <i class="fa fa-times"></i>
+            </button>
+          </div>
+          <div class="admin-modal-body shipment-modal-body">
+
+            <!-- Tracking Number Display -->
+            <div class="tracking-num-display" id="trackingNumDisplay">
+              <span class="tnd-label">Tracking Number</span>
+              <span class="tnd-number" id="trackingNumValue">—</span>
+              <button class="tnd-copy" onclick="copyTrackingNum()" title="Copy">
+                <i class="fa fa-copy"></i>
+              </button>
+            </div>
+
+            <!-- Form Tabs -->
+            <div class="shipment-tabs">
+              <button class="shipment-tab active" onclick="switchShipmentTab('details', this)">
+                <i class="fa fa-info-circle"></i> Shipment Details
+              </button>
+              <button class="shipment-tab" onclick="switchShipmentTab('events', this)">
+                <i class="fa fa-timeline"></i> Tracking Events
+              </button>
+              <button class="shipment-tab" onclick="switchShipmentTab('route', this)">
+                <i class="fa fa-map"></i> Route & Map
+              </button>
+            </div>
+
+            <!-- TAB 1: DETAILS -->
+            <div class="shipment-tab-content active" id="tab-details">
+              <div class="shipment-form-grid">
+
+                <!-- Sender Info -->
+                <div class="shipment-form-section">
+                  <h4><i class="fa fa-user"></i> Sender Information</h4>
+                  <div class="form-row-2">
+                    <div class="admin-form-group">
+                      <label>Sender Name *</label>
+                      <input type="text" id="senderName" placeholder="Full name or company" />
+                    </div>
+                    <div class="admin-form-group">
+                      <label>Sender Phone</label>
+                      <input type="text" id="senderPhone" placeholder="+1 000 000 0000" />
+                    </div>
+                  </div>
+                  <div class="admin-form-group">
+                    <label>Sender Email</label>
+                    <input type="email" id="senderEmail" placeholder="sender@example.com" />
+                  </div>
+                  <div class="admin-form-group">
+                    <label>Sender Address *</label>
+                    <input type="text" id="senderAddress" placeholder="Street address, City, Country" />
+                  </div>
+                </div>
+
+                <!-- Receiver Info -->
+                <div class="shipment-form-section">
+                  <h4><i class="fa fa-user-check"></i> Receiver Information</h4>
+                  <div class="form-row-2">
+                    <div class="admin-form-group">
+                      <label>Receiver Name *</label>
+                      <input type="text" id="receiverName" placeholder="Full name or company" />
+                    </div>
+                    <div class="admin-form-group">
+                      <label>Receiver Phone</label>
+                      <input type="text" id="receiverPhone" placeholder="+1 000 000 0000" />
+                    </div>
+                  </div>
+                  <div class="admin-form-group">
+                    <label>Receiver Email</label>
+                    <input type="email" id="receiverEmail" placeholder="receiver@example.com" />
+                  </div>
+                  <div class="admin-form-group">
+                    <label>Receiver Address *</label>
+                    <input type="text" id="receiverAddress" placeholder="Street address, City, Country" />
+                  </div>
+                </div>
+
+                <!-- Package Info -->
+                <div class="shipment-form-section">
+                  <h4><i class="fa fa-box"></i> Package Details</h4>
+                  <div class="form-row-3">
+                    <div class="admin-form-group">
+                      <label>Weight (kg)</label>
+                      <input type="number" id="shipPkgWeight" placeholder="e.g. 5.2" min="0" step="0.1" />
+                    </div>
+                    <div class="admin-form-group">
+                      <label>Dimensions (cm)</label>
+                      <input type="text" id="shipPkgDimensions" placeholder="L x W x H" />
+                    </div>
+                    <div class="admin-form-group">
+                      <label>Package Count</label>
+                      <input type="number" id="pkgCount" placeholder="1" min="1" value="1" />
+                    </div>
+                  </div>
+                  <div class="form-row-2">
+                    <div class="admin-form-group">
+                      <label>Declared Value (USD)</label>
+                      <input type="number" id="pkgValue" placeholder="e.g. 500" min="0" step="0.01" />
+                    </div>
+                    <div class="admin-form-group">
+                      <label>Package Type</label>
+                      <select id="pkgType">
+                        <option value="">— Select type —</option>
+                        <option value="Box">Box</option>
+                        <option value="Pallet">Pallet</option>
+                        <option value="Crate">Crate</option>
+                        <option value="Envelope">Envelope</option>
+                        <option value="Drum">Drum</option>
+                        <option value="Bag">Bag</option>
+                        <option value="Roll">Roll</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-row-2">
+                    <div class="admin-form-group">
+                      <label>Service Type *</label>
+                      <select id="serviceType">
+                        <option value="">— Select service —</option>
+                        <option value="Sea Freight">Sea Freight</option>
+                        <option value="Air Freight">Air Freight</option>
+                        <option value="Land Freight">Land Freight</option>
+                        <option value="Express Delivery">Express Delivery</option>
+                        <option value="Standard Delivery">Standard Delivery</option>
+                        <option value="Project Cargo">Project Cargo</option>
+                      </select>
+                    </div>
+                    <div class="admin-form-group">
+                      <label>Current Status *</label>
+                      <select id="shipmentStatus">
+                        <option value="pending">Pending</option>
+                        <option value="pickup">Picked Up</option>
+                        <option value="in_transit">In Transit</option>
+                        <option value="customs">Customs Clearance</option>
+                        <option value="out_for_delivery">Out for Delivery</option>
+                        <option value="delivered">Delivered</option>
+                        <option value="exception">Exception</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-row-2">
+                    <div class="admin-form-group">
+                      <label>Ship Date</label>
+                      <input type="datetime-local" id="shipDate" />
+                    </div>
+                    <div class="admin-form-group">
+                      <label>Estimated Delivery</label>
+                      <input type="date" id="estDelivery" />
+                    </div>
+                  </div>
+                  <div class="admin-form-group">
+                    <label>Package Description</label>
+                    <input type="text" id="pkgDescription"
+                      placeholder="e.g. Electronics, Clothing, Industrial Equipment" />
+                  </div>
+                  <div class="admin-form-group">
+                    <label>Special Instructions</label>
+                    <textarea id="pkgInstructions" rows="2"
+                      placeholder="Fragile, Keep refrigerated, Handle with care..."></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- TAB 2: EVENTS -->
+            <div class="shipment-tab-content" id="tab-events">
+              <div class="events-header">
+                <h4><i class="fa fa-timeline"></i> Tracking Events</h4>
+                <button class="admin-btn admin-btn-primary admin-btn-sm" onclick="addEvent()">
+                  <i class="fa fa-plus"></i> Add Event
+                </button>
+              </div>
+              <div id="eventsList" class="events-list">
+                <div class="admin-empty" style="padding:30px;">
+                  <i class="fa fa-timeline"></i>
+                  <p>No events yet. Click "Add Event" to add the first tracking update.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB 3: ROUTE -->
+            <div class="shipment-tab-content" id="tab-route">
+              <div class="shipment-form-section">
+                <h4><i class="fa fa-map-location-dot"></i> Route Information</h4>
+                <p style="font-size:0.85rem;color:var(--admin-text-mid);margin-bottom:16px;">
+                  Enter the origin and destination cities/countries. These will be shown on the map on the tracking page.
+                </p>
+                <div class="form-row-2">
+                  <div class="admin-form-group">
+                    <label><i class="fa fa-circle" style="color:var(--admin-success);font-size:0.7rem;"></i> Origin City/Country *</label>
+                    <input type="text" id="routeOrigin" placeholder="e.g. Douala, Cameroon" />
+                  </div>
+                  <div class="admin-form-group">
+                    <label><i class="fa fa-location-dot" style="color:var(--admin-danger);font-size:0.8rem;"></i> Destination City/Country *</label>
+                    <input type="text" id="routeDestination" placeholder="e.g. Paris, France" />
+                  </div>
+                </div>
+                <div class="admin-form-group">
+                  <label><i class="fa fa-route"></i> Transit Stops (optional)</label>
+                  <p style="font-size:0.8rem;color:var(--admin-text-light);margin-bottom:8px;">
+                    Add intermediate stops separated by | (pipe)
+                  </p>
+                  <input type="text" id="routeStops"
+                    placeholder="e.g. Lagos, Nigeria | Frankfurt, Germany | Dubai, UAE" />
+                </div>
+                <div class="admin-form-group">
+                  <label><i class="fa fa-map-pin"></i> Current Location</label>
+                  <input type="text" id="routeCurrent"
+                    placeholder="e.g. Frankfurt Hub, Germany (where the package is right now)" />
+                </div>
+                <!-- Map Preview -->
+                <div class="map-preview-wrap">
+                  <button class="admin-btn admin-btn-primary admin-btn-sm"
+                    onclick="previewMap()" style="margin-bottom:12px;">
+                    <i class="fa fa-map"></i> Preview Map
+                  </button>
+                  <div id="mapPreviewContainer" style="display:none;">
+                    <iframe id="mapPreviewFrame"
+                      width="100%"
+                      height="300"
+                      style="border:0;border-radius:8px;"
+                      allowfullscreen=""
+                      loading="lazy">
+                    </iframe>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="admin-modal-footer">
+            <button class="admin-btn admin-btn-primary" onclick="saveShipment()">
+              <i class="fa fa-floppy-disk"></i> Save Shipment
+            </button>
+            <button class="admin-btn admin-btn-secondary" onclick="closeShipmentModal()">
+              <i class="fa fa-times"></i> Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ ADD EVENT MODAL ============ -->
+      <div class="admin-modal-overlay" id="eventModalOverlay" style="display:none;">
+        <div class="admin-modal admin-modal--sm">
+          <div class="admin-modal-header">
+            <h3><i class="fa fa-plus-circle"></i> <span id="eventModalTitle">Add Tracking Event</span></h3>
+            <button class="admin-modal-close" onclick="closeEventModal()">
+              <i class="fa fa-times"></i>
+            </button>
+          </div>
+          <div class="admin-modal-body">
+            <div class="admin-form-group">
+              <label>Status *</label>
+              <select id="eventStatus">
+                <option value="pending">Pending</option>
+                <option value="pickup">Picked Up</option>
+                <option value="in_transit">In Transit</option>
+                <option value="customs">Customs Clearance</option>
+                <option value="out_for_delivery">Out for Delivery</option>
+                <option value="delivered">Delivered</option>
+                <option value="exception">Exception / Alert</option>
+              </select>
+            </div>
+            <div class="admin-form-group">
+              <label>Description *</label>
+              <input type="text" id="eventDescription"
+                placeholder="e.g. Package arrived at Frankfurt sorting facility" />
+            </div>
+            <div class="admin-form-group">
+              <label>Location *</label>
+              <input type="text" id="eventLocation"
+                placeholder="e.g. Frankfurt Hub, Germany" />
+            </div>
+            <div class="admin-form-group">
+              <label>Date & Time *</label>
+              <input type="datetime-local" id="eventDateTime" />
+            </div>
+            <input type="hidden" id="editingEventIndex" value="-1" />
+          </div>
+          <div class="admin-modal-footer">
+            <button class="admin-btn admin-btn-primary" onclick="saveEvent()">
+              <i class="fa fa-floppy-disk"></i> Save Event
+            </button>
+            <button class="admin-btn admin-btn-secondary" onclick="closeEventModal()">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ CONFIRM MODAL ============ -->
+      <div class="admin-modal-overlay" id="confirmOverlay" style="display: none">
+        <div class="admin-modal admin-modal--sm">
+          <div class="admin-modal-header">
+            <h3>
+              <i class="fa fa-triangle-exclamation" style="color: var(--admin-danger)"></i>
+              Confirm Delete
+            </h3>
+          </div>
+          <div class="admin-modal-body">
+            <p id="confirmMsg">Are you sure you want to delete this?</p>
+          </div>
+          <div class="admin-modal-footer">
+            <button class="admin-btn admin-btn-danger" id="confirmYes">
+              <i class="fa fa-trash"></i> Yes, Delete
+            </button>
+            <button class="admin-btn admin-btn-secondary" onclick="closeConfirm()">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- END .admin-main -->
 
     <script src="admin.js"></script>
+    <script src="shipments.js"></script>
   </body>
 </html>
