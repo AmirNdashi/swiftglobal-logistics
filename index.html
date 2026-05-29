@@ -1235,35 +1235,34 @@
     <!-- Our Scripts -->
     <script src="js/main.js"></script>
 
-    <!--
-      FIREBASE BRIDGE
-      This single module block loads Firebase and puts the helpers
-      that chatbot.js needs onto window.__sgChat.
-      It MUST come before chatbot.js loads.
-    -->
+
+    <!-- Firebase bridge for chatbot -->
     <script type="module">
       import {
-        saveSession,
-        updateSession,
-        appendSessionMessage,
-        addReply,
-        listenReplies
-      } from "./admin/firebase.js";
+        saveSession, updateSession, appendSessionMessage,
+        listenReplies, addReply
+      } from './admin/firebase.js';
 
       window.__sgChat = {
         saveSession,
         updateSession,
         appendSessionMessage,
-        addReply,
         listenReplies,
+        addReply,
       };
+      window.dispatchEvent(new Event('firebaseReady'));
     </script>
-
-    <!-- tracking.js needs type="module" because it imports from firebase.js -->
+    <script src="js/chatbot.js" defer></script>
+    
+      <!-- Firebase bridge for tracking page -->
+  <script type="module">
+    import { getShipmentByTracking } from './admin/firebase.js';
+    window.__sgFirebase = { getShipmentByTracking };
+  </script>
     <script type="module" src="js/tracking.js"></script>
 
-    <!-- chatbot.js reads window.__sgChat set above -->
-    <script src="js/chatbot.js" defer></script>
+    <script type="module" src="js/tracking.js"></script>
+
 
     <script>
       // Set current year in footer

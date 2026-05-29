@@ -7,18 +7,6 @@
    - Removed random "message received" spam
    - "Connecting to agent" resolves once session is saved
 
-   HOW TO LOAD ON PUBLIC PAGES:
-   <script type="module">
-     import { saveSession, updateSession, appendSessionMessage, addReply, listenReplies }
-       from "./admin/firebase.js";
-     window.__sgChat = { saveSession, updateSession, appendSessionMessage, addReply, listenReplies };
-   </script>
-   <script src="js/chatbot.js" defer></script>
-
-   Adjust the import path if the page is in a subfolder:
-     from "../admin/firebase.js"
-   ============================================ */
-
 /* ---------- CONFIG ---------- */
 const CHATBOT_CONFIG = {
   apiURL:    "https://swiftglobal-ai.swiftglobal.workers.dev",
@@ -290,10 +278,17 @@ function setHumanUI() {
 }
 
 /* ---------- REQUEST HUMAN ---------- */
+/* ---------- REQUEST HUMAN ---------- */
 async function requestHuman() {
   if (isHumanMode) return;
 
-  const name = prompt("Please enter your name so our agent can assist you:");
+  /* Wait for Firebase to be ready */
+  for (let i = 0; i < 30; i++) {
+    if (window.__sgChat) break;
+    await new Promise(r => setTimeout(r, 100));
+  }
+
+  const name = prompt('Please enter your name so our agent can assist you:');
   if (!name?.trim()) return;
 
   visitorName  = name.trim();
@@ -303,54 +298,71 @@ async function requestHuman() {
 
   setHumanUI();
 
-  /* Confirmation message to visitor */
-  addMessage("bot",
+  addMessage('bot',
     `✅ **You're now connected to human support!**\n\nHi **${escHtml(visitorName)}**! A member of our team will be with you shortly. You can also reach us at **info@swiftglobalogistics.com** 📧`,
     [], false, false
   );
 
-  /* Collect ONLY user messages from rendered chat (not bot/system) */
-  const historyMsgs = sessionMessages.filter(m => m.role === "user" || m.role === "agent");
+  /* Collect ALL messages shown so far for history */
+  const historyMsgs = sessionMessages.filter(m =>
+    m.role === 'user' || m.role === 'bot' || m.role === 'agent'
+  );
 
-  /* Save session to Firestore */
-  if (fb()) {
-    await fb().saveSession(sessionId, {
-      id:          sessionId,
-      visitorName: visitorName,
-      page:        window.location.pathname,
-      startTime:   new Date().toISOString(),
-      lastActive:  new Date().toISOString(),
-      isHuman:     true,
-      status:      "waiting",
-      messages:    historyMsgs,
-      unread:      historyMsgs.filter(m => m.role === "user").length,
-    });
+  const sessionData = {
+    id:          sessionId,
+    visitorName: visitorName,
+    page:        window.location.pathname,
+    startTime:   new Date().toISOString(),
+    lastActive:  new Date().toISOString(),
+    isHuman:     true,
+    status:      'waiting',
+    messages:    historyMsgs,
+    unread:      historyMsgs.filter(m => m.role === 'user').length,
+    newRequest:  true,
+  };
+
+  /* Save to Firebase */
+  if (window.__sgChat) {
+    try {
+      await window.__sgChat.saveSession(sessionId, sessionData);
+      console.log('Session saved to Firebase ✅');
+    } catch (err) {
+      console.error('Could not save session:', err);
+    }
   }
 
   persistState();
-
-  /* Start Firestore reply listener */
   startReplyListener();
 }
-
 window.requestHuman = requestHuman;
 
 /* ---------- REPLY LISTENER (Firestore onSnapshot) ---------- */
+/* ---------- REPLY LISTENER ---------- */
 function startReplyListener() {
   stopReplyListener();
-  if (!fb() || !sessionId) return;
+  if (!window.__sgChat || !sessionId) return;
 
-  unsubReplies = fb().listenReplies(sessionId, replyStartMs, replies => {
+  console.log('Starting reply listener for session:', sessionId);
+
+  unsubReplies = window.__sgChat.listenReplies(sessionId, replyStartMs, replies => {
     replies.forEach(reply => {
+      if (!reply.content) return;
+
       hideTyping();
-      document.getElementById("chatHeaderStatus").textContent = "Connected — Human Support";
+      document.getElementById('chatHeaderStatus').textContent = 'Connected — Human Support';
 
-      /* Add agent reply to UI and persist it */
-      const msgObj = { role: "agent", content: reply.content, time: getTime(), id: Date.now() + Math.random() };
+      const msgObj = {
+        role:    'agent',
+        content: reply.content,
+        time:    getTime(),
+        id:      Date.now() + Math.random(),
+      };
+
+      /* Add to session messages for persistence */
       sessionMessages.push(msgObj);
+      replyStartMs = reply.timestampMs || Date.now();
 
-      addMessage("agent", reply.content, [], false, true /* skip double-save */);
-      replyStartMs = reply.timestampMs;
+      addMessage('agent', reply.content, [], false, true);
       persistState();
     });
   });
@@ -406,27 +418,26 @@ async function sendMessage() {
   input.value        = "";
   input.style.height = "auto";
 
-  /* ── HUMAN MODE ── */
+ /* ── HUMAN MODE ── */
   if (isHumanMode && sessionId) {
-    /* Build message object */
     const msgObj = {
-      role:    "user",
+      role:    'user',
       content: text,
       time:    getTime(),
       id:      Date.now() + Math.random(),
     };
 
-    /* Append to Firestore session atomically so admin sees it immediately */
-    if (fb()) {
+    /* Save to Firebase immediately */
+    if (window.__sgChat) {
       try {
-        await fb().appendSessionMessage(sessionId, msgObj);
-        /* Also update status back to waiting so admin badge lights up */
-        await fb().updateSession(sessionId, {
-          status:    "waiting",
-          unread:    999, /* admin resets this to 0 when they open the session */
+        await window.__sgChat.appendSessionMessage(sessionId, msgObj);
+        await window.__sgChat.updateSession(sessionId, {
+          status:    'waiting',
+          unread:    999,
+          lastActive: new Date().toISOString(),
         });
       } catch (err) {
-        console.warn("Could not save message to Firestore:", err);
+        console.warn('Could not save message:', err);
       }
     }
 
