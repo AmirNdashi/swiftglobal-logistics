@@ -22,39 +22,34 @@
 
     <!-- ============ SIDEBAR ============ -->
     <aside class="admin-sidebar" id="adminSidebar">
-
-      <!-- Sidebar Close Button -->
       <button class="sidebar-close" id="sidebarClose">
         <i class="fa fa-times"></i>
       </button>
-
       <div class="sidebar-logo">
         <span>Swift<span>Global</span></span>
         <span class="sidebar-badge">Admin</span>
       </div>
-
       <nav class="sidebar-nav">
         <a href="#" class="sidebar-link active" data-section="dashboard">
           <i class="fa fa-gauge-high"></i> Dashboard
         </a>
         <a href="#" class="sidebar-link" data-section="messages">
           <i class="fa fa-envelope"></i> Messages
-          <span class="sidebar-badge-count" id="unreadBadge">0</span>
+          <span class="sidebar-badge-count" id="unreadBadge"></span>
         </a>
         <a href="#" class="sidebar-link" data-section="quotes">
           <i class="fa fa-file-invoice-dollar"></i> Quote Requests
-          <span class="sidebar-badge-count" id="quoteBadge">0</span>
+          <span class="sidebar-badge-count" id="quoteBadge"></span>
         </a>
         <a href="#" class="sidebar-link" data-section="livechats">
           <i class="fa fa-comments"></i> Live Chats
-          <span class="sidebar-badge-count" id="chatBadge">0</span>
+          <span class="sidebar-badge-count" id="chatBadge"></span>
         </a>
         <a href="#" class="sidebar-link" data-section="shipments">
           <i class="fa fa-box"></i> Shipments
-          <span class="sidebar-badge-count" id="shipmentBadge">0</span>
+          <span class="sidebar-badge-count" id="shipmentBadge"></span>
         </a>
       </nav>
-
       <div class="sidebar-footer">
         <a href="../index.html" target="_blank" class="sidebar-link">
           <i class="fa fa-globe"></i> View Website
@@ -65,13 +60,11 @@
       </div>
     </aside>
 
-    <!-- Mobile sidebar overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay" style="display:none;"></div>
 
     <!-- ============ MAIN ============ -->
     <div class="admin-main">
 
-      <!-- Top Bar -->
       <header class="admin-topbar">
         <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
           <i class="fa fa-bars"></i>
@@ -79,8 +72,14 @@
         <div class="admin-topbar-title" id="pageTitle">Dashboard</div>
         <div class="admin-topbar-right">
           <span class="admin-time" id="adminClock"></span>
+          <!-- Real-time sync indicator -->
+          <div class="sync-indicator" id="syncIndicator" title="Live sync active">
+            <span class="sync-dot"></span>
+            <span class="sync-label">Live</span>
+          </div>
           <div class="admin-user-badge">
-            <i class="fa fa-user-shield"></i> Admin
+            <i class="fa fa-user-shield"></i>
+            <span id="adminEmailDisplay">Admin</span>
           </div>
         </div>
       </header>
@@ -89,43 +88,40 @@
       <section class="admin-section active" id="section-dashboard">
         <div class="admin-section-header">
           <h2>Dashboard Overview</h2>
-          <p>Welcome back, Admin. Here's a summary of all site activity.</p>
+          <p>Welcome back. Here's a live summary of all site activity.</p>
         </div>
-
-        <!-- Stats Cards -->
         <div class="stats-cards">
           <div class="stat-card stat-card--blue">
             <div class="stat-card-icon"><i class="fa fa-envelope"></i></div>
             <div class="stat-card-info">
-              <span class="stat-card-num" id="statTotal">0</span>
+              <span class="stat-card-num" id="statTotal">—</span>
               <span class="stat-card-label">Total Messages</span>
             </div>
           </div>
           <div class="stat-card stat-card--amber">
             <div class="stat-card-icon"><i class="fa fa-envelope-open"></i></div>
             <div class="stat-card-info">
-              <span class="stat-card-num" id="statUnread">0</span>
+              <span class="stat-card-num" id="statUnread">—</span>
               <span class="stat-card-label">Unread Messages</span>
             </div>
           </div>
           <div class="stat-card stat-card--green">
             <div class="stat-card-icon"><i class="fa fa-file-invoice-dollar"></i></div>
             <div class="stat-card-info">
-              <span class="stat-card-num" id="statQuotes">0</span>
+              <span class="stat-card-num" id="statQuotes">—</span>
               <span class="stat-card-label">Quote Requests</span>
             </div>
           </div>
           <div class="stat-card stat-card--purple">
             <div class="stat-card-icon"><i class="fa fa-trash"></i></div>
             <div class="stat-card-info">
-              <span class="stat-card-num" id="statDeleted">0</span>
+              <span class="stat-card-num" id="statDeleted">—</span>
               <span class="stat-card-label">Deleted Messages</span>
             </div>
           </div>
         </div>
 
-        <!-- Recent Messages Preview -->
-        <div class="admin-card" style="margin-top: 32px">
+        <div class="admin-card" style="margin-top:32px;">
           <div class="admin-card-header">
             <h3><i class="fa fa-clock-rotate-left"></i> Recent Messages</h3>
             <button class="admin-btn admin-btn-sm" onclick="switchSection('messages')">
@@ -135,7 +131,7 @@
           <div id="recentMessages">
             <div class="admin-empty">
               <i class="fa fa-inbox"></i>
-              <p>No messages yet. They'll appear here once the contact form is submitted.</p>
+              <p>Loading messages…</p>
             </div>
           </div>
         </div>
@@ -145,12 +141,12 @@
       <section class="admin-section" id="section-messages">
         <div class="admin-section-header">
           <h2>All Messages</h2>
-          <p>All contact form submissions from the website.</p>
+          <p>All contact form submissions — updates in real-time.</p>
         </div>
         <div class="admin-toolbar">
           <div class="admin-search-wrap">
             <i class="fa fa-search"></i>
-            <input type="text" id="messageSearch" placeholder="Search messages..." oninput="filterMessages()" />
+            <input type="text" id="messageSearch" placeholder="Search messages…" oninput="filterMessages()" />
           </div>
           <div class="admin-toolbar-actions">
             <select id="messageFilter" onchange="filterMessages()" class="admin-select">
@@ -170,12 +166,12 @@
       <section class="admin-section" id="section-quotes">
         <div class="admin-section-header">
           <h2>Quote Requests</h2>
-          <p>All contact form submissions where a specific service was selected.</p>
+          <p>Contact form submissions with a selected service.</p>
         </div>
         <div class="admin-toolbar">
           <div class="admin-search-wrap">
             <i class="fa fa-search"></i>
-            <input type="text" id="quoteSearch" placeholder="Search quote requests..." oninput="filterQuotes()" />
+            <input type="text" id="quoteSearch" placeholder="Search quotes…" oninput="filterQuotes()" />
           </div>
           <div class="admin-toolbar-actions">
             <select id="quoteServiceFilter" onchange="filterQuotes()" class="admin-select">
@@ -200,12 +196,12 @@
       <section class="admin-section" id="section-livechats">
         <div class="admin-section-header">
           <h2>Live Chats</h2>
-          <p>Human support chat sessions from website visitors.</p>
+          <p>Human support sessions — updates in real-time.</p>
         </div>
         <div class="admin-toolbar">
           <div class="admin-search-wrap">
             <i class="fa fa-search"></i>
-            <input type="text" id="chatSearch" placeholder="Search chats..." oninput="filterChats()" />
+            <input type="text" id="chatSearch" placeholder="Search chats…" oninput="filterChats()" />
           </div>
           <div class="admin-toolbar-actions">
             <select id="chatStatusFilter" onchange="filterChats()" class="admin-select">
@@ -223,7 +219,7 @@
           <div class="chat-sessions-list" id="chatSessionsList">
             <div class="admin-empty">
               <i class="fa fa-comments"></i>
-              <p>No chat sessions yet. They appear here when visitors use the chat widget.</p>
+              <p>No chat sessions yet.</p>
             </div>
           </div>
           <div class="chat-convo-panel" id="chatConvoPanel">
@@ -235,21 +231,17 @@
         </div>
       </section>
 
-      <!-- ============ SHIPMENTS SECTION ============
-           FIX: This section was previously placed OUTSIDE .admin-main,
-           causing it to render at body level and overlap the topbar.
-           It now lives correctly inside .admin-main like all other sections.
-      -->
+      <!-- ============ SHIPMENTS SECTION ============ -->
       <section class="admin-section" id="section-shipments">
         <div class="admin-section-header">
           <h2>Shipment Management</h2>
-          <p>Create and manage custom shipment tracking numbers for your clients.</p>
+          <p>Create and manage tracking numbers — synced across all devices.</p>
         </div>
         <div class="admin-toolbar">
           <div class="admin-search-wrap">
             <i class="fa fa-search"></i>
             <input type="text" id="shipmentSearch"
-              placeholder="Search by tracking number, name, or destination..."
+              placeholder="Search by tracking number, name, or destination…"
               oninput="filterShipments()" />
           </div>
           <div class="admin-toolbar-actions">
@@ -272,7 +264,7 @@
       </section>
 
       <!-- ============ MESSAGE MODAL ============ -->
-      <div class="admin-modal-overlay" id="modalOverlay" style="display: none">
+      <div class="admin-modal-overlay" id="modalOverlay" style="display:none;">
         <div class="admin-modal">
           <div class="admin-modal-header">
             <h3 id="modalTitle">Message Detail</h3>
@@ -284,7 +276,7 @@
           <div class="admin-modal-footer">
             <button class="admin-btn admin-btn-sm" onclick="toggleReadModal()">
               <i class="fa fa-envelope-open" id="modalReadIcon"></i>
-              <span id="modalReadText">Mark as Read</span>
+              <span id="modalReadText">Mark as Unread</span>
             </button>
             <button class="admin-btn admin-btn-danger admin-btn-sm" onclick="deleteFromModal()">
               <i class="fa fa-trash"></i> Delete
@@ -300,16 +292,13 @@
       <div class="admin-modal-overlay" id="shipmentModalOverlay" style="display:none;">
         <div class="admin-modal shipment-modal">
           <div class="admin-modal-header">
-            <h3 id="shipmentModalTitle">
-              <i class="fa fa-box"></i> Create New Shipment
-            </h3>
+            <h3 id="shipmentModalTitle"><i class="fa fa-box"></i> Create New Shipment</h3>
             <button class="admin-modal-close" onclick="closeShipmentModal()">
               <i class="fa fa-times"></i>
             </button>
           </div>
           <div class="admin-modal-body shipment-modal-body">
 
-            <!-- Tracking Number Display -->
             <div class="tracking-num-display" id="trackingNumDisplay">
               <span class="tnd-label">Tracking Number</span>
               <span class="tnd-number" id="trackingNumValue">—</span>
@@ -318,7 +307,6 @@
               </button>
             </div>
 
-            <!-- Form Tabs -->
             <div class="shipment-tabs">
               <button class="shipment-tab active" onclick="switchShipmentTab('details', this)">
                 <i class="fa fa-info-circle"></i> Shipment Details
@@ -335,7 +323,6 @@
             <div class="shipment-tab-content active" id="tab-details">
               <div class="shipment-form-grid">
 
-                <!-- Sender Info -->
                 <div class="shipment-form-section">
                   <h4><i class="fa fa-user"></i> Sender Information</h4>
                   <div class="form-row-2">
@@ -358,7 +345,6 @@
                   </div>
                 </div>
 
-                <!-- Receiver Info -->
                 <div class="shipment-form-section">
                   <h4><i class="fa fa-user-check"></i> Receiver Information</h4>
                   <div class="form-row-2">
@@ -381,7 +367,6 @@
                   </div>
                 </div>
 
-                <!-- Package Info -->
                 <div class="shipment-form-section">
                   <h4><i class="fa fa-box"></i> Package Details</h4>
                   <div class="form-row-3">
@@ -456,13 +441,11 @@
                   </div>
                   <div class="admin-form-group">
                     <label>Package Description</label>
-                    <input type="text" id="pkgDescription"
-                      placeholder="e.g. Electronics, Clothing, Industrial Equipment" />
+                    <input type="text" id="pkgDescription" placeholder="e.g. Electronics, Clothing" />
                   </div>
                   <div class="admin-form-group">
                     <label>Special Instructions</label>
-                    <textarea id="pkgInstructions" rows="2"
-                      placeholder="Fragile, Keep refrigerated, Handle with care..."></textarea>
+                    <textarea id="pkgInstructions" rows="2" placeholder="Fragile, Handle with care…"></textarea>
                   </div>
                 </div>
 
@@ -490,44 +473,34 @@
               <div class="shipment-form-section">
                 <h4><i class="fa fa-map-location-dot"></i> Route Information</h4>
                 <p style="font-size:0.85rem;color:var(--admin-text-mid);margin-bottom:16px;">
-                  Enter the origin and destination cities/countries. These will be shown on the map on the tracking page.
+                  Enter origin and destination — shown on the map on the tracking page.
                 </p>
                 <div class="form-row-2">
                   <div class="admin-form-group">
-                    <label><i class="fa fa-circle" style="color:var(--admin-success);font-size:0.7rem;"></i> Origin City/Country *</label>
+                    <label><i class="fa fa-circle" style="color:var(--admin-success);font-size:0.7rem;"></i> Origin *</label>
                     <input type="text" id="routeOrigin" placeholder="e.g. Douala, Cameroon" />
                   </div>
                   <div class="admin-form-group">
-                    <label><i class="fa fa-location-dot" style="color:var(--admin-danger);font-size:0.8rem;"></i> Destination City/Country *</label>
+                    <label><i class="fa fa-location-dot" style="color:var(--admin-danger);font-size:0.8rem;"></i> Destination *</label>
                     <input type="text" id="routeDestination" placeholder="e.g. Paris, France" />
                   </div>
                 </div>
                 <div class="admin-form-group">
                   <label><i class="fa fa-route"></i> Transit Stops (optional)</label>
-                  <p style="font-size:0.8rem;color:var(--admin-text-light);margin-bottom:8px;">
-                    Add intermediate stops separated by | (pipe)
-                  </p>
-                  <input type="text" id="routeStops"
-                    placeholder="e.g. Lagos, Nigeria | Frankfurt, Germany | Dubai, UAE" />
+                  <p style="font-size:0.8rem;color:var(--admin-text-light);margin-bottom:8px;">Separate stops with | (pipe)</p>
+                  <input type="text" id="routeStops" placeholder="e.g. Lagos, Nigeria | Frankfurt, Germany" />
                 </div>
                 <div class="admin-form-group">
                   <label><i class="fa fa-map-pin"></i> Current Location</label>
-                  <input type="text" id="routeCurrent"
-                    placeholder="e.g. Frankfurt Hub, Germany (where the package is right now)" />
+                  <input type="text" id="routeCurrent" placeholder="e.g. Frankfurt Hub, Germany" />
                 </div>
-                <!-- Map Preview -->
                 <div class="map-preview-wrap">
-                  <button class="admin-btn admin-btn-primary admin-btn-sm"
-                    onclick="previewMap()" style="margin-bottom:12px;">
+                  <button class="admin-btn admin-btn-primary admin-btn-sm" onclick="previewMap()" style="margin-bottom:12px;">
                     <i class="fa fa-map"></i> Preview Map
                   </button>
                   <div id="mapPreviewContainer" style="display:none;">
-                    <iframe id="mapPreviewFrame"
-                      width="100%"
-                      height="300"
-                      style="border:0;border-radius:8px;"
-                      allowfullscreen=""
-                      loading="lazy">
+                    <iframe id="mapPreviewFrame" width="100%" height="300"
+                      style="border:0;border-radius:8px;" allowfullscreen="" loading="lazy">
                     </iframe>
                   </div>
                 </div>
@@ -552,9 +525,7 @@
         <div class="admin-modal admin-modal--sm">
           <div class="admin-modal-header">
             <h3><i class="fa fa-plus-circle"></i> <span id="eventModalTitle">Add Tracking Event</span></h3>
-            <button class="admin-modal-close" onclick="closeEventModal()">
-              <i class="fa fa-times"></i>
-            </button>
+            <button class="admin-modal-close" onclick="closeEventModal()"><i class="fa fa-times"></i></button>
           </div>
           <div class="admin-modal-body">
             <div class="admin-form-group">
@@ -571,13 +542,11 @@
             </div>
             <div class="admin-form-group">
               <label>Description *</label>
-              <input type="text" id="eventDescription"
-                placeholder="e.g. Package arrived at Frankfurt sorting facility" />
+              <input type="text" id="eventDescription" placeholder="e.g. Package arrived at Frankfurt facility" />
             </div>
             <div class="admin-form-group">
               <label>Location *</label>
-              <input type="text" id="eventLocation"
-                placeholder="e.g. Frankfurt Hub, Germany" />
+              <input type="text" id="eventLocation" placeholder="e.g. Frankfurt Hub, Germany" />
             </div>
             <div class="admin-form-group">
               <label>Date & Time *</label>
@@ -589,19 +558,17 @@
             <button class="admin-btn admin-btn-primary" onclick="saveEvent()">
               <i class="fa fa-floppy-disk"></i> Save Event
             </button>
-            <button class="admin-btn admin-btn-secondary" onclick="closeEventModal()">
-              Cancel
-            </button>
+            <button class="admin-btn admin-btn-secondary" onclick="closeEventModal()">Cancel</button>
           </div>
         </div>
       </div>
 
       <!-- ============ CONFIRM MODAL ============ -->
-      <div class="admin-modal-overlay" id="confirmOverlay" style="display: none">
+      <div class="admin-modal-overlay" id="confirmOverlay" style="display:none;">
         <div class="admin-modal admin-modal--sm">
           <div class="admin-modal-header">
             <h3>
-              <i class="fa fa-triangle-exclamation" style="color: var(--admin-danger)"></i>
+              <i class="fa fa-triangle-exclamation" style="color:var(--admin-danger)"></i>
               Confirm Delete
             </h3>
           </div>
@@ -612,16 +579,51 @@
             <button class="admin-btn admin-btn-danger" id="confirmYes">
               <i class="fa fa-trash"></i> Yes, Delete
             </button>
-            <button class="admin-btn admin-btn-secondary" onclick="closeConfirm()">
-              Cancel
-            </button>
+            <button class="admin-btn admin-btn-secondary" onclick="closeConfirm()">Cancel</button>
           </div>
         </div>
       </div>
 
     </div><!-- END .admin-main -->
 
-    <script src="admin.js"></script>
-    <script src="shipments.js"></script>
+    <!--
+      IMPORTANT: Both scripts use type="module" so they can import from firebase.js.
+      The order matters — admin.js first, then shipments.js.
+      Both are in the same /admin/ folder as firebase.js.
+    -->
+    <script type="module" src="admin.js"></script>
+    <script type="module" src="shipments.js"></script>
+
+    <!-- Sync indicator style (tiny addition — add to admin.css if preferred) -->
+    <style>
+      .sync-indicator {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--admin-success);
+        background: rgba(56,161,105,0.1);
+        padding: 4px 10px;
+        border-radius: 50px;
+        border: 1px solid rgba(56,161,105,0.25);
+      }
+      .sync-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--admin-success);
+        animation: syncPulse 2s ease-in-out infinite;
+        flex-shrink: 0;
+      }
+      @keyframes syncPulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50%       { opacity: 0.4; transform: scale(0.85); }
+      }
+      @media (max-width: 480px) {
+        .sync-indicator { display: none; }
+      }
+    </style>
+
   </body>
 </html>
