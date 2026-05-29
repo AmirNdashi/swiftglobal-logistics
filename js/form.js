@@ -1,10 +1,27 @@
 /* ============================================
-   SWIFTGLOBAL LOGISTICS — CONTACT FORM JS
-   EmailJS + Firebase Firestore Integration
-   Messages now sync across all devices
-   ============================================ */
+   SWIFTGLOBAL LOGISTICS — CONTACT FORM
+   v2 — Firebase write via inline module tag
+   
+   HOW TO USE ON YOUR CONTACT PAGE:
+   Replace your existing script tags with:
 
-import { addMessage } from "../admin/firebase.js";
+   <script type="module">
+     // Inline bootstrap — loads Firebase then contact logic
+     import { addMessage } from "./admin/firebase.js";
+     window.__sgAddMessage = addMessage;
+   </script>
+   <script src="js/contact.js" defer></script>
+
+   OR if contact page is in a subfolder (e.g. pages/contact.html):
+   <script type="module">
+     import { addMessage } from "../admin/firebase.js";
+     window.__sgAddMessage = addMessage;
+   </script>
+   <script src="../js/contact.js" defer></script>
+
+   This pattern avoids the ES-module import inside contact.js itself,
+   which broke when the page didn't set type="module" on the script tag.
+   ============================================ */
 
 /* ---------- EMAILJS CONFIG ---------- */
 const EMAIL_CONFIG = {
@@ -57,8 +74,7 @@ function validateForm() {
   const emailEl  = document.getElementById("email");
   const emailErr = document.getElementById("emailError");
   if (emailEl && emailErr) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!re.test(emailEl.value.trim())) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim())) {
       emailErr.textContent      = "Please enter a valid email address.";
       emailEl.style.borderColor = "var(--error)";
       valid = false;
@@ -72,7 +88,7 @@ function validateForm() {
 
 /* ---------- SUBMIT ---------- */
 async function submitForm() {
-  const btn = document.getElementById("submitBtn");
+  const btn     = document.getElementById("submitBtn");
   btn.disabled  = true;
   btn.innerHTML = '<i class="fa fa-circle-notch fa-spin"></i> Sending...';
 
@@ -89,10 +105,18 @@ async function submitForm() {
   const fromName = `${data.firstName} ${data.lastName}`.trim();
 
   try {
-    /* STEP 1: Save to Firestore — syncs to admin panel on all devices */
-    await addMessage(data);
+    /* ---- STEP 1: Save to Firestore via the global helper ---- */
+    if (typeof window.__sgAddMessage === "function") {
+      await window.__sgAddMessage(data);
+    } else {
+      /* Fallback: still save to localStorage so message isn't lost */
+      console.warn("Firebase not loaded — saving to localStorage as fallback");
+      const existing = JSON.parse(localStorage.getItem("swiftglobal_messages") || "[]");
+      existing.unshift({ ...data, id: Date.now().toString(), read: false, date: new Date().toISOString() });
+      localStorage.setItem("swiftglobal_messages", JSON.stringify(existing));
+    }
 
-    /* STEP 2: Send emails to admins */
+    /* ---- STEP 2: Send admin emails ---- */
     if (typeof emailjs !== "undefined") {
       for (const adminEmail of ADMIN_EMAILS) {
         await emailjs.send(EMAIL_CONFIG.serviceId, EMAIL_CONFIG.templateContact, {
@@ -105,7 +129,7 @@ async function submitForm() {
           to_email:   adminEmail,
         });
       }
-      /* STEP 3: Auto-reply to sender */
+      /* ---- STEP 3: Auto-reply to sender ---- */
       await emailjs.send(EMAIL_CONFIG.serviceId, EMAIL_CONFIG.templateReply, {
         from_name:  fromName,
         from_email: data.email,
@@ -118,8 +142,7 @@ async function submitForm() {
     showSuccess();
   } catch (err) {
     console.error("Form submit error:", err);
-    /* Message saved to Firestore even if email fails */
-    showSuccess();
+    showSuccess(); /* Message saved — show success anyway */
   }
 
   btn.disabled  = false;

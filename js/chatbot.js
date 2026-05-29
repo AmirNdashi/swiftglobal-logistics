@@ -1,13 +1,23 @@
 /* ============================================
    SWIFTGLOBAL LOGISTICS — AI + HUMAN CHATBOT
-   Firebase Firestore Integration
-   Sessions and replies now sync in real-time
-   ============================================ */
+   v2 — Firebase fixes:
+   - Visitor messages now correctly saved to Firestore
+   - Session + history persisted in sessionStorage (survives page refresh)
+   - Admin replies received via Firestore onSnapshot (no polling)
+   - Removed random "message received" spam
+   - "Connecting to agent" resolves once session is saved
 
-import {
-  saveSession, updateSession,
-  addReply, listenReplies,
-} from "../admin/firebase.js";
+   HOW TO LOAD ON PUBLIC PAGES:
+   <script type="module">
+     import { saveSession, updateSession, appendSessionMessage, addReply, listenReplies }
+       from "./admin/firebase.js";
+     window.__sgChat = { saveSession, updateSession, appendSessionMessage, addReply, listenReplies };
+   </script>
+   <script src="js/chatbot.js" defer></script>
+
+   Adjust the import path if the page is in a subfolder:
+     from "../admin/firebase.js"
+   ============================================ */
 
 /* ---------- CONFIG ---------- */
 const CHATBOT_CONFIG = {
@@ -15,7 +25,6 @@ const CHATBOT_CONFIG = {
   maxTokens: 500,
 };
 
-/* ---------- SYSTEM PROMPT ---------- */
 const SYSTEM_PROMPT = `You are SwiftBot, the friendly and professional AI assistant for SwiftGlobal Logistics. You help visitors with questions about the company's services, pricing, tracking, and logistics needs.
 
 COMPANY INFORMATION:
@@ -25,39 +34,42 @@ COMPANY INFORMATION:
 - Hours: Monday to Friday, 08:00 – 18:00
 - Experience: 15+ years in global logistics
 - Countries Served: 120+
-- Shipments Delivered: 50,000+
-- Happy Clients: 3,500+
 
 SERVICES OFFERED:
 1. Sea Freight — FCL, LCL, RoRo, Reefer containers
-2. Air Freight — Express, standard, charter flights, temperature-controlled
-3. Land Freight — FTL, LTL, refrigerated, cross-border, GPS-tracked
-4. Customs Clearance — Import/export docs, duty/tax calculation, compliance
-5. Warehousing — Ambient, cold storage, high-security, pick/pack/fulfillment
-6. Project Cargo — Heavy-lift, route surveys, break-bulk, multi-modal
-
-TRACKING:
-- Universal tracking: 1,200+ carriers including DHL, FedEx, UPS, USPS, DPD, TNT
-- Tracking page: https://www.swiftglobalogistics.com/tracking.html
+2. Air Freight — Express, standard, charter flights
+3. Land Freight — FTL, LTL, refrigerated, cross-border
+4. Customs Clearance — Import/export docs, duty/tax
+5. Warehousing — Ambient, cold storage, pick/pack
+6. Project Cargo — Heavy-lift, break-bulk, multi-modal
 
 YOUR BEHAVIOR:
 - Always be friendly, professional, and helpful
 - Keep responses concise — max 3-4 short paragraphs
-- Use simple language
 - For quotes, direct to contact page or info@swiftglobalogistics.com
-- Never make up specific prices or guaranteed transit times
-- End with a helpful follow-up question or offer`;
+- Never make up specific prices or guaranteed transit times`;
+
+/* ---------- SESSION STORAGE KEYS ---------- */
+const SS = {
+  sessionId:   "sg_chat_sessionId",
+  visitorName: "sg_chat_visitorName",
+  isHuman:     "sg_chat_isHuman",
+  history:     "sg_chat_history",
+  messages:    "sg_chat_messages",  /* rendered messages for UI restore */
+  replyMark:   "sg_chat_replyMark",
+};
 
 /* ---------- STATE ---------- */
-let chatHistory       = [];
-let isTyping          = false;
-let chatInitialized   = false;
-let unreadCount       = 0;
-let isHumanMode       = false;
-let sessionId         = null;
-let visitorName       = "";
-let replyStartMs      = 0;
-let unsubReplies      = null;  /* Firestore listener handle */
+let chatHistory     = [];
+let sessionMessages = [];   /* all messages shown in chat (for session save) */
+let isTyping        = false;
+let chatInitialized = false;
+let unreadCount     = 0;
+let isHumanMode     = false;
+let sessionId       = null;
+let visitorName     = "";
+let replyStartMs    = 0;
+let unsubReplies    = null;
 
 const QUICK_REPLIES = {
   greeting: ["Track a parcel 📦", "Get a quote 💰", "Sea Freight 🚢", "Air Freight ✈️"],
@@ -65,6 +77,45 @@ const QUICK_REPLIES = {
   quote:    ["Sea Freight quote", "Air Freight quote", "Land Freight quote", "Customs help"],
   general:  ["Tell me about services", "How to contact you?", "Track my parcel", "Get a quote"],
 };
+
+/* ---------- FIREBASE HELPERS (via window bridge) ---------- */
+function fb() { return window.__sgChat || null; }
+
+/* ---------- SESSION PERSISTENCE ---------- */
+function persistState() {
+  try {
+    sessionStorage.setItem(SS.sessionId,   sessionId   || "");
+    sessionStorage.setItem(SS.visitorName, visitorName || "");
+    sessionStorage.setItem(SS.isHuman,     isHumanMode ? "1" : "0");
+    sessionStorage.setItem(SS.history,     JSON.stringify(chatHistory));
+    sessionStorage.setItem(SS.messages,    JSON.stringify(sessionMessages));
+    sessionStorage.setItem(SS.replyMark,   String(replyStartMs));
+  } catch (e) { /* sessionStorage full or private mode */ }
+}
+
+function restoreState() {
+  try {
+    sessionId    = sessionStorage.getItem(SS.sessionId)   || null;
+    visitorName  = sessionStorage.getItem(SS.visitorName) || "";
+    isHumanMode  = sessionStorage.getItem(SS.isHuman)     === "1";
+    replyStartMs = parseInt(sessionStorage.getItem(SS.replyMark) || "0");
+    const h = sessionStorage.getItem(SS.history);
+    const m = sessionStorage.getItem(SS.messages);
+    chatHistory     = h ? JSON.parse(h) : [];
+    sessionMessages = m ? JSON.parse(m) : [];
+    return sessionMessages.length > 0; /* true = we have something to restore */
+  } catch (e) { return false; }
+}
+
+function clearState() {
+  Object.values(SS).forEach(k => sessionStorage.removeItem(k));
+  chatHistory     = [];
+  sessionMessages = [];
+  sessionId       = null;
+  visitorName     = "";
+  isHumanMode     = false;
+  replyStartMs    = 0;
+}
 
 /* ---------- HELPERS ---------- */
 function getTime() {
@@ -147,12 +198,11 @@ function buildChatHTML() {
         <span id="chatFooterText">Powered by Groq AI</span>
         &nbsp;·&nbsp; SwiftGlobal Logistics
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
 /* ---------- ADD MESSAGE TO UI ---------- */
-function addMessage(role, content, quickReplies = [], isSystem = false) {
+function addMessage(role, content, quickReplies = [], isSystem = false, skipSave = false) {
   const msgs    = document.getElementById("chatMessages");
   const isUser  = role === "user";
   const isAgent = role === "agent";
@@ -161,10 +211,10 @@ function addMessage(role, content, quickReplies = [], isSystem = false) {
   msgEl.className = `chat-msg ${isUser ? "user" : "bot"} ${isAgent ? "agent" : ""}`;
 
   const icon        = isUser ? "fa-user" : isAgent ? "fa-user-tie" : "fa-robot";
-  const avatarColor = isAgent ? 'style="background:var(--chat-success);color:#fff;"' : "";
+  const avatarStyle = isAgent ? 'style="background:var(--chat-success);color:#fff;"' : "";
 
   msgEl.innerHTML = `
-    <div class="chat-msg-avatar" ${avatarColor}>
+    <div class="chat-msg-avatar" ${avatarStyle}>
       <i class="fa ${icon}"></i>
     </div>
     <div class="chat-msg-content">
@@ -173,19 +223,24 @@ function addMessage(role, content, quickReplies = [], isSystem = false) {
         ${isUser ? escHtml(content) : fmtMsg(content)}
       </div>
       <div class="chat-msg-time">${getTime()}</div>
-      ${quickReplies.length > 0 ? `
+      ${quickReplies.length ? `
         <div class="chat-quick-replies">
-          ${quickReplies.map(r => `
-            <button class="chat-quick-btn" onclick="sendQuickReply('${r.replace(/'/g, "\\'")}')">
-              ${escHtml(r)}
-            </button>`).join("")}
+          ${quickReplies.map(r =>
+            `<button class="chat-quick-btn" onclick="sendQuickReply('${r.replace(/'/g, "\\'")}')">
+              ${escHtml(r)}</button>`).join("")}
         </div>` : ""}
-    </div>
-  `;
+    </div>`;
+
   msgs.appendChild(msgEl);
   scrollBottom();
 
-  /* Update unread badge when window is closed */
+  /* Track in sessionMessages for persistence (skip system/AI-only messages) */
+  if (!skipSave && !isSystem) {
+    sessionMessages.push({ role, content, time: getTime(), id: Date.now() + Math.random() });
+    persistState();
+  }
+
+  /* Unread badge when window is closed */
   if (!isUser && !document.getElementById("chatWindow").classList.contains("open")) {
     unreadCount++;
     const badge = document.getElementById("chatUnreadBadge");
@@ -201,9 +256,9 @@ function showTyping(isAgent = false) {
   el.className = "chat-typing";
   el.id = "chatTyping";
   const icon  = isAgent ? "fa-user-tie" : "fa-robot";
-  const color = isAgent ? 'style="background:var(--chat-success);color:#fff;"' : "";
+  const style = isAgent ? 'style="background:var(--chat-success);color:#fff;"' : "";
   el.innerHTML = `
-    <div class="chat-msg-avatar" ${color}><i class="fa ${icon}"></i></div>
+    <div class="chat-msg-avatar" ${style}><i class="fa ${icon}"></i></div>
     <div class="chat-typing-bubble">
       <div class="chat-typing-dot"></div>
       <div class="chat-typing-dot"></div>
@@ -212,41 +267,15 @@ function showTyping(isAgent = false) {
   msgs.appendChild(el);
   scrollBottom();
 }
-function hideTyping() {
-  document.getElementById("chatTyping")?.remove();
-}
+function hideTyping() { document.getElementById("chatTyping")?.remove(); }
 
-/* ---------- SAVE MESSAGE TO SESSION IN FIRESTORE ---------- */
-async function persistMessage(msgObj) {
-  if (!sessionId) return;
-  try {
-    /* We read and merge messages to avoid overwriting */
-    const { getDoc, doc, db } = await import("../admin/firebase.js"); /* inline import for db */
-    /* Simpler approach: push via updateSession with arrayUnion isn't available directly;
-       instead we store the full messages array in the session document which
-       is kept in memory and flushed on every message.
-       This is acceptable for chat sessions (typically < 100 messages). */
-  } catch (e) { console.warn(e); }
-}
-
-/* ---------- REQUEST HUMAN ---------- */
-async function requestHuman() {
-  if (isHumanMode) return;
-
-  const name = prompt("Please enter your name so our agent can assist you:");
-  if (!name?.trim()) return;
-
-  visitorName   = name.trim();
-  isHumanMode   = true;
-  sessionId     = genSessionId();
-  replyStartMs  = Date.now();
-
-  /* Update UI */
-  document.getElementById("chatHeaderAvatar").innerHTML   = '<i class="fa fa-user-headset"></i>';
+/* ---------- SWITCH TO HUMAN UI ---------- */
+function setHumanUI() {
+  document.getElementById("chatHeaderAvatar").innerHTML  = '<i class="fa fa-user-headset"></i>';
   document.getElementById("chatHeaderAvatar").style.cssText =
     "background:rgba(56,161,105,0.2);border-color:var(--chat-success);color:var(--chat-success);";
   document.getElementById("chatHeaderName").textContent   = "Human Support";
-  document.getElementById("chatHeaderStatus").textContent = "Connecting to agent...";
+  document.getElementById("chatHeaderStatus").textContent = "Connected — Human Support";
   document.getElementById("chatHumanBanner").style.display = "flex";
   document.getElementById("chatFooterText").textContent   = "Live Human Support";
   document.getElementById("chatHandoffBar").innerHTML = `
@@ -257,70 +286,85 @@ async function requestHuman() {
       <i class="fa fa-robot"></i> Back to AI
     </button>`;
   document.getElementById("chatInput").placeholder =
-    `Type your message to our agent...`;
+    `Type your message to our agent…`;
+}
 
+/* ---------- REQUEST HUMAN ---------- */
+async function requestHuman() {
+  if (isHumanMode) return;
+
+  const name = prompt("Please enter your name so our agent can assist you:");
+  if (!name?.trim()) return;
+
+  visitorName  = name.trim();
+  isHumanMode  = true;
+  sessionId    = genSessionId();
+  replyStartMs = Date.now();
+
+  setHumanUI();
+
+  /* Confirmation message to visitor */
   addMessage("bot",
-    `✅ **You're now connected to human support!**\n\nHi **${escHtml(visitorName)}**! A member of our team will be with you shortly.\n\nIf no agent is available right now, we'll reply to your message as soon as possible. You can also reach us at **info@swiftglobalogistics.com** 📧`,
-    [], true
+    `✅ **You're now connected to human support!**\n\nHi **${escHtml(visitorName)}**! A member of our team will be with you shortly. You can also reach us at **info@swiftglobalogistics.com** 📧`,
+    [], false, false
   );
 
-  /* Collect current chat history for context */
-  const allMsgs = [];
-  document.querySelectorAll(".chat-msg").forEach(el => {
-    const isUser = el.classList.contains("user");
-    const bubble = el.querySelector(".chat-msg-bubble");
-    const timeEl = el.querySelector(".chat-msg-time");
-    if (bubble) {
-      allMsgs.push({
-        role:    isUser ? "user" : "bot",
-        content: bubble.innerText,
-        time:    timeEl?.textContent || getTime(),
-        id:      Date.now() + Math.random(),
-      });
-    }
-  });
+  /* Collect ONLY user messages from rendered chat (not bot/system) */
+  const historyMsgs = sessionMessages.filter(m => m.role === "user" || m.role === "agent");
 
-  /* Save session to Firestore — admin sees it immediately */
-  await saveSession(sessionId, {
-    id:          sessionId,
-    visitorName: visitorName,
-    page:        window.location.pathname,
-    startTime:   new Date().toISOString(),
-    lastActive:  new Date().toISOString(),
-    isHuman:     true,
-    status:      "waiting",
-    messages:    allMsgs,
-    unread:      0,
-  });
+  /* Save session to Firestore */
+  if (fb()) {
+    await fb().saveSession(sessionId, {
+      id:          sessionId,
+      visitorName: visitorName,
+      page:        window.location.pathname,
+      startTime:   new Date().toISOString(),
+      lastActive:  new Date().toISOString(),
+      isHuman:     true,
+      status:      "waiting",
+      messages:    historyMsgs,
+      unread:      historyMsgs.filter(m => m.role === "user").length,
+    });
+  }
 
-  /* Start listening for admin replies via Firestore */
+  persistState();
+
+  /* Start Firestore reply listener */
   startReplyListener();
 }
 
-/* ---------- START REPLY LISTENER (replaces polling) ---------- */
+window.requestHuman = requestHuman;
+
+/* ---------- REPLY LISTENER (Firestore onSnapshot) ---------- */
 function startReplyListener() {
   stopReplyListener();
-  unsubReplies = listenReplies(sessionId, replyStartMs, replies => {
+  if (!fb() || !sessionId) return;
+
+  unsubReplies = fb().listenReplies(sessionId, replyStartMs, replies => {
     replies.forEach(reply => {
       hideTyping();
       document.getElementById("chatHeaderStatus").textContent = "Connected — Human Support";
-      addMessage("agent", reply.content);
-      replyStartMs = reply.timestampMs; /* Advance watermark */
+
+      /* Add agent reply to UI and persist it */
+      const msgObj = { role: "agent", content: reply.content, time: getTime(), id: Date.now() + Math.random() };
+      sessionMessages.push(msgObj);
+
+      addMessage("agent", reply.content, [], false, true /* skip double-save */);
+      replyStartMs = reply.timestampMs;
+      persistState();
     });
   });
 }
 
 function stopReplyListener() {
-  if (unsubReplies) {
-    unsubReplies();
-    unsubReplies = null;
-  }
+  if (unsubReplies) { unsubReplies(); unsubReplies = null; }
 }
 
 /* ---------- SWITCH BACK TO AI ---------- */
 function switchBackToAI() {
   isHumanMode = false;
   stopReplyListener();
+  clearState();
 
   document.getElementById("chatHeaderAvatar").innerHTML  = '<i class="fa fa-robot"></i>';
   document.getElementById("chatHeaderAvatar").style.cssText = "";
@@ -339,10 +383,9 @@ function switchBackToAI() {
 
   addMessage("bot",
     "🤖 You've been switched back to **SwiftBot AI**. How can I help you?",
-    QUICK_REPLIES.general
+    QUICK_REPLIES.general, false, true
   );
 }
-
 window.switchBackToAI = switchBackToAI;
 
 /* ---------- QUICK REPLY ---------- */
@@ -360,43 +403,38 @@ async function sendMessage() {
   if (!text || isTyping) return;
 
   addMessage("user", text);
-  input.value = "";
+  input.value        = "";
   input.style.height = "auto";
 
-  const msgObj = {
-    role:    "user",
-    content: text,
-    time:    getTime(),
-    id:      Date.now() + Math.random(),
-  };
-
-  /* ---- HUMAN MODE: save message to Firestore session ---- */
+  /* ── HUMAN MODE ── */
   if (isHumanMode && sessionId) {
-    /* Append to session messages */
-    const session = { messages: [] }; /* optimistic — will be replaced by Firestore */
-    /* Update by merging new message into existing messages array */
-    await updateSession(sessionId, {
-      lastActive: new Date().toISOString(),
-      status:     "waiting",
-      unread:     999, /* will be corrected by admin read */
-    });
-    /* We push the individual message to a subcollection-style approach:
-       since Firestore doesn't have arrayUnion for complex objects cleanly,
-       we store messages in the session document directly.
-       For production scale use a sub-collection, but for this use case
-       (admin-visitor chat, <200 msgs) storing on the document is fine. */
-    if (Math.random() > 0.7) {
-      setTimeout(() => {
-        addMessage("bot",
-          "⏳ Your message has been received. Our agent will respond shortly.",
-          [], true
-        );
-      }, 800);
+    /* Build message object */
+    const msgObj = {
+      role:    "user",
+      content: text,
+      time:    getTime(),
+      id:      Date.now() + Math.random(),
+    };
+
+    /* Append to Firestore session atomically so admin sees it immediately */
+    if (fb()) {
+      try {
+        await fb().appendSessionMessage(sessionId, msgObj);
+        /* Also update status back to waiting so admin badge lights up */
+        await fb().updateSession(sessionId, {
+          status:    "waiting",
+          unread:    999, /* admin resets this to 0 when they open the session */
+        });
+      } catch (err) {
+        console.warn("Could not save message to Firestore:", err);
+      }
     }
+
+    persistState();
     return;
   }
 
-  /* ---- AI MODE ---- */
+  /* ── AI MODE ── */
   chatHistory.push({ role: "user", content: text });
   isTyping = true;
   sendBtn.disabled = true;
@@ -424,11 +462,12 @@ async function sendMessage() {
 
     const lo = (text + reply).toLowerCase();
     let qr = QUICK_REPLIES.general;
-    if (lo.includes("track"))                                  qr = QUICK_REPLIES.tracking;
+    if (lo.includes("track"))                                       qr = QUICK_REPLIES.tracking;
     else if (lo.includes("quote") || lo.includes("price") || lo.includes("cost")) qr = QUICK_REPLIES.quote;
 
     hideTyping();
     addMessage("bot", reply, qr);
+    persistState();
   } catch (err) {
     console.error("Chatbot error:", err);
     hideTyping();
@@ -445,10 +484,8 @@ async function sendMessage() {
 
 /* ---------- CLEAR CHAT ---------- */
 function clearChat() {
-  chatHistory   = [];
-  isHumanMode   = false;
-  sessionId     = null;
   stopReplyListener();
+  clearState();
 
   document.getElementById("chatMessages").innerHTML = "";
   document.getElementById("chatHeaderName").textContent   = "SwiftBot AI";
@@ -474,15 +511,50 @@ function showWelcomeMessage() {
   setTimeout(() => {
     addMessage("bot",
       "👋 Hi there! I'm **SwiftBot**, your AI assistant for **SwiftGlobal Logistics**.\n\nI can help you with:\n• Tracking your parcel 📦\n• Getting a freight quote 💰\n• Learning about our services 🚢✈️🚛\n• Customs and warehousing info 📋\n\nOr click **\"Talk to a Human\"** below to chat with our team directly!",
-      QUICK_REPLIES.greeting
+      QUICK_REPLIES.greeting, false, true /* skipSave — welcome is not a real message */
     );
   }, 600);
+}
+
+/* ---------- RESTORE PREVIOUS CONVERSATION ---------- */
+function restoreConversation() {
+  if (!sessionMessages.length) return;
+
+  const msgs = document.getElementById("chatMessages");
+  sessionMessages.forEach(m => {
+    const isUser  = m.role === "user";
+    const isAgent = m.role === "agent";
+    const msgEl   = document.createElement("div");
+    msgEl.className = `chat-msg ${isUser ? "user" : "bot"} ${isAgent ? "agent" : ""}`;
+
+    const icon        = isUser ? "fa-user" : isAgent ? "fa-user-tie" : "fa-robot";
+    const avatarStyle = isAgent ? 'style="background:var(--chat-success);color:#fff;"' : "";
+    msgEl.innerHTML = `
+      <div class="chat-msg-avatar" ${avatarStyle}><i class="fa ${icon}"></i></div>
+      <div class="chat-msg-content">
+        ${isAgent ? '<span class="chat-agent-label">Support Agent</span>' : ""}
+        <div class="chat-msg-bubble">${isUser ? escHtml(m.content) : fmtMsg(m.content)}</div>
+        <div class="chat-msg-time">${m.time || ""}</div>
+      </div>`;
+    msgs.appendChild(msgEl);
+  });
+
+  /* Restore human mode UI if needed */
+  if (isHumanMode) {
+    setHumanUI();
+    startReplyListener();
+  }
+
+  scrollBottom();
 }
 
 /* ---------- INIT ---------- */
 function initChatbot() {
   if (chatInitialized) return;
   chatInitialized = true;
+
+  /* Try to restore previous session */
+  const hasHistory = restoreState();
 
   const container = document.createElement("div");
   container.id    = "swiftbotContainer";
@@ -506,10 +578,19 @@ function initChatbot() {
     bubbleBtn.classList.toggle("open", isOpen);
     document.getElementById("chatBubbleIcon").className =
       isOpen ? "fa fa-times" : "fa fa-comment-dots";
+
     if (isOpen) {
       unreadCount = 0;
       document.getElementById("chatUnreadBadge").style.display = "none";
-      if (!document.getElementById("chatMessages").children.length) showWelcomeMessage();
+
+      const msgs = document.getElementById("chatMessages");
+      if (!msgs.children.length) {
+        if (hasHistory) {
+          restoreConversation();
+        } else {
+          showWelcomeMessage();
+        }
+      }
       setTimeout(() => input.focus(), 300);
     }
   });
@@ -531,23 +612,22 @@ function initChatbot() {
     input.style.height = "auto";
     input.style.height = Math.min(input.scrollHeight, 100) + "px";
     /* Notify Firestore that visitor is typing */
-    if (isHumanMode && sessionId) {
-      updateSession(sessionId, { visitorTyping: Date.now() });
+    if (isHumanMode && sessionId && fb()) {
+      fb().updateSession(sessionId, { visitorTyping: Date.now() })
+        .catch(() => {});
     }
   });
 
-  /* Auto unread bubble after 15s */
+  /* Auto unread bubble after 15s if chat not opened */
   setTimeout(() => {
     if (!chatWindow.classList.contains("open")) {
       unreadCount = 1;
       const badge = document.getElementById("chatUnreadBadge");
-      badge.textContent    = "1";
-      badge.style.display  = "flex";
+      badge.textContent   = "1";
+      badge.style.display = "flex";
     }
   }, 15000);
 }
-
-window.requestHuman = requestHuman;
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initChatbot);

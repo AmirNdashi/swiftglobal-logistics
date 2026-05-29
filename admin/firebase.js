@@ -1,32 +1,18 @@
 /* ============================================
    SWIFTGLOBAL LOGISTICS — FIREBASE CORE
-   Shared across admin panel + public pages
+   v2 — self-contained, no relative path issues
+   Place at: admin/firebase.js
    ============================================ */
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { initializeApp }          from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import {
-  getAuth,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import {
-  getFirestore,
-  collection,
-  doc,
-  addDoc,
-  setDoc,
-  updateDoc,
-  deleteDoc,
-  getDoc,
-  getDocs,
-  onSnapshot,
-  query,
-  orderBy,
-  limit,
-  where,
-  serverTimestamp,
-  increment,
+  getFirestore, collection, doc,
+  addDoc, setDoc, updateDoc, deleteDoc,
+  getDoc, getDocs, onSnapshot,
+  query, orderBy, where,
+  serverTimestamp, increment, arrayUnion,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 /* ---------- CONFIG ---------- */
@@ -39,7 +25,6 @@ const firebaseConfig = {
   appId:             "1:718647705041:web:5b4976a5944ab48515b4f0",
 };
 
-/* ---------- INIT ---------- */
 const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
@@ -53,31 +38,15 @@ const COLS = {
   meta:         collection(db, "meta"),
 };
 
-/* ============================================
-   AUTH HELPERS
-   ============================================ */
-
+/* ── AUTH ───────────────────────────────── */
 async function adminLogin(email, password) {
   return signInWithEmailAndPassword(auth, email, password);
 }
+async function adminLogout() { return signOut(auth); }
+function onAuthReady(cb)     { return onAuthStateChanged(auth, cb); }
+function currentUser()       { return auth.currentUser; }
 
-async function adminLogout() {
-  return signOut(auth);
-}
-
-function onAuthReady(callback) {
-  return onAuthStateChanged(auth, callback);
-}
-
-function currentUser() {
-  return auth.currentUser;
-}
-
-/* ============================================
-   MESSAGES — contact form submissions
-   ============================================ */
-
-/** Write a new contact form message */
+/* ── MESSAGES ───────────────────────────── */
 async function addMessage(data) {
   return addDoc(COLS.messages, {
     ...data,
@@ -86,168 +55,113 @@ async function addMessage(data) {
     date:      new Date().toISOString(),
   });
 }
-
-/** Mark message read/unread */
 async function setMessageRead(id, read) {
   return updateDoc(doc(db, "messages", id), { read });
 }
-
-/** Delete a single message */
 async function deleteMessage(id) {
   await deleteDoc(doc(db, "messages", id));
-  // Increment deleted counter
-  await setDoc(doc(db, "meta", "stats"), { deletedCount: increment(1) }, { merge: true });
+  await setDoc(doc(db, "meta", "stats"),
+    { deletedCount: increment(1) }, { merge: true });
 }
-
-/** Batch delete messages by IDs */
 async function deleteMessagesBatch(ids) {
-  const ps = ids.map(id => deleteDoc(doc(db, "messages", id)));
-  await Promise.all(ps);
-  await setDoc(doc(db, "meta", "stats"), { deletedCount: increment(ids.length) }, { merge: true });
+  await Promise.all(ids.map(id => deleteDoc(doc(db, "messages", id))));
+  await setDoc(doc(db, "meta", "stats"),
+    { deletedCount: increment(ids.length) }, { merge: true });
 }
-
-/** Real-time listener: all messages, newest first */
-function listenMessages(callback) {
+function listenMessages(cb) {
   const q = query(COLS.messages, orderBy("createdAt", "desc"));
-  return onSnapshot(q, snap => {
-    const msgs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    callback(msgs);
-  });
+  return onSnapshot(q, snap =>
+    cb(snap.docs.map(d => ({ id: d.id, ...d.data() }))));
+}
+function listenDeletedCount(cb) {
+  return onSnapshot(doc(db, "meta", "stats"), snap =>
+    cb(snap.exists() ? (snap.data().deletedCount || 0) : 0));
 }
 
-/** Real-time listener: deleted count from meta */
-function listenDeletedCount(callback) {
-  return onSnapshot(doc(db, "meta", "stats"), snap => {
-    callback(snap.exists() ? (snap.data().deletedCount || 0) : 0);
-  });
-}
-
-/* ============================================
-   SHIPMENTS
-   ============================================ */
-
-/** Create a new shipment */
+/* ── SHIPMENTS ──────────────────────────── */
 async function addShipment(data) {
   const ref = doc(db, "shipments", data.id || Date.now().toString());
-  await setDoc(ref, {
-    ...data,
-    createdAt: serverTimestamp(),
-    updatedAt: serverTimestamp(),
-  });
+  await setDoc(ref, { ...data, createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
   return ref;
 }
-
-/** Update an existing shipment */
 async function updateShipment(id, data) {
-  return setDoc(doc(db, "shipments", id), {
-    ...data,
-    updatedAt: serverTimestamp(),
-  }, { merge: true });
+  return setDoc(doc(db, "shipments", id),
+    { ...data, updatedAt: serverTimestamp() }, { merge: true });
 }
+async function deleteShipment(id) { return deleteDoc(doc(db, "shipments", id)); }
 
-/** Delete a shipment */
-async function deleteShipment(id) {
-  return deleteDoc(doc(db, "shipments", id));
-}
-
-/** Fetch single shipment by tracking number (public tracking page) */
 async function getShipmentByTracking(trackingNumber) {
-  const q = query(
-    COLS.shipments,
-    where("trackingNumber", "==", trackingNumber.toUpperCase())
-  );
+  const q    = query(COLS.shipments,
+    where("trackingNumber", "==", trackingNumber.toUpperCase()));
   const snap = await getDocs(q);
   if (snap.empty) return null;
   return { id: snap.docs[0].id, ...snap.docs[0].data() };
 }
-
-/** Real-time listener: all shipments, newest first */
-function listenShipments(callback) {
+function listenShipments(cb) {
   const q = query(COLS.shipments, orderBy("createdAt", "desc"));
-  return onSnapshot(q, snap => {
-    const ships = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    callback(ships);
-  });
+  return onSnapshot(q, snap =>
+    cb(snap.docs.map(d => ({ id: d.id, ...d.data() }))));
 }
-
-/** Get all existing tracking numbers (for duplicate check) */
 async function getAllTrackingNumbers() {
   const snap = await getDocs(COLS.shipments);
   return new Set(snap.docs.map(d => d.data().trackingNumber));
 }
 
-/* ============================================
-   CHAT SESSIONS
-   ============================================ */
-
-/** Create or update a chat session */
+/* ── CHAT SESSIONS ──────────────────────── */
 async function saveSession(sessionId, data) {
-  const ref = doc(db, "chatSessions", sessionId);
-  return setDoc(ref, {
-    ...data,
-    updatedAt: serverTimestamp(),
-  }, { merge: true });
+  return setDoc(doc(db, "chatSessions", sessionId),
+    { ...data, updatedAt: serverTimestamp() }, { merge: true });
+}
+async function updateSession(sessionId, fields) {
+  return updateDoc(doc(db, "chatSessions", sessionId),
+    { ...fields, updatedAt: serverTimestamp() });
 }
 
-/** Update specific fields on a session */
-async function updateSession(sessionId, fields) {
+/**
+ * Append a single message object to the session's messages array atomically.
+ * Uses arrayUnion so concurrent writes don't overwrite each other.
+ * NOTE: arrayUnion deduplicates by deep equality — each message has a
+ * unique `id` field (Date.now()) so duplicates never occur.
+ */
+async function appendSessionMessage(sessionId, msgObj) {
   return updateDoc(doc(db, "chatSessions", sessionId), {
-    ...fields,
-    updatedAt: serverTimestamp(),
+    messages:   arrayUnion(msgObj),
+    updatedAt:  serverTimestamp(),
+    lastActive: new Date().toISOString(),
   });
 }
 
-/** Delete a single chat session */
 async function deleteSession(sessionId) {
   return deleteDoc(doc(db, "chatSessions", sessionId));
 }
-
-/** Delete ALL chat sessions and replies */
 async function clearAllSessions() {
-  const [sessSnap, repSnap] = await Promise.all([
-    getDocs(COLS.chatSessions),
-    getDocs(COLS.chatReplies),
+  const [s, r] = await Promise.all([
+    getDocs(COLS.chatSessions), getDocs(COLS.chatReplies),
   ]);
-  const ps = [
-    ...sessSnap.docs.map(d => deleteDoc(d.ref)),
-    ...repSnap.docs.map(d => deleteDoc(d.ref)),
-  ];
-  return Promise.all(ps);
+  return Promise.all([...s.docs, ...r.docs].map(d => deleteDoc(d.ref)));
 }
-
-/** Real-time listener: all sessions, most recent first */
-function listenSessions(callback) {
+function listenSessions(cb) {
   const q = query(COLS.chatSessions, orderBy("updatedAt", "desc"));
-  return onSnapshot(q, snap => {
-    const sessions = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    callback(sessions, snap.docChanges());
-  });
+  return onSnapshot(q, snap =>
+    cb(snap.docs.map(d => ({ id: d.id, ...d.data() })), snap.docChanges()));
 }
-
-/** Real-time listener: single session (for visitor reply polling) */
-function listenSession(sessionId, callback) {
+function listenSession(sessionId, cb) {
   return onSnapshot(doc(db, "chatSessions", sessionId), snap => {
-    if (snap.exists()) callback({ id: snap.id, ...snap.data() });
+    if (snap.exists()) cb({ id: snap.id, ...snap.data() });
   });
 }
 
-/* ============================================
-   CHAT REPLIES — admin → visitor
-   ============================================ */
-
-/** Admin sends a reply */
+/* ── CHAT REPLIES ───────────────────────── */
 async function addReply(sessionId, content) {
   return addDoc(COLS.chatReplies, {
     sessionId,
     content,
-    timestamp:  serverTimestamp(),
+    timestamp:   serverTimestamp(),
     timestampMs: Date.now(),
-    read:       false,
+    read:        false,
   });
 }
-
-/** Real-time listener: replies for a specific session (visitor side) */
-function listenReplies(sessionId, afterMs, callback) {
+function listenReplies(sessionId, afterMs, cb) {
   const q = query(
     COLS.chatReplies,
     where("sessionId", "==", sessionId),
@@ -257,24 +171,20 @@ function listenReplies(sessionId, afterMs, callback) {
     const fresh = snap.docs
       .map(d => ({ id: d.id, ...d.data() }))
       .filter(r => r.timestampMs > afterMs);
-    if (fresh.length > 0) callback(fresh);
+    if (fresh.length) cb(fresh);
   });
 }
 
-/* ============================================
-   EXPORTS — everything other files need
-   ============================================ */
+/* ── EXPORTS ────────────────────────────── */
 export {
-  /* auth */
-  auth, db, adminLogin, adminLogout, onAuthReady, currentUser,
-  /* messages */
-  addMessage, setMessageRead, deleteMessage, deleteMessagesBatch, listenMessages, listenDeletedCount,
-  /* shipments */
-  addShipment, updateShipment, deleteShipment, getShipmentByTracking, listenShipments, getAllTrackingNumbers,
-  /* sessions */
-  saveSession, updateSession, deleteSession, clearAllSessions, listenSessions, listenSession,
-  /* replies */
+  auth, db,
+  adminLogin, adminLogout, onAuthReady, currentUser,
+  addMessage, setMessageRead, deleteMessage, deleteMessagesBatch,
+  listenMessages, listenDeletedCount,
+  addShipment, updateShipment, deleteShipment,
+  getShipmentByTracking, listenShipments, getAllTrackingNumbers,
+  saveSession, updateSession, appendSessionMessage,
+  deleteSession, clearAllSessions, listenSessions, listenSession,
   addReply, listenReplies,
-  /* firestore primitives needed by callers */
   serverTimestamp,
 };

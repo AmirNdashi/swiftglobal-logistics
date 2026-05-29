@@ -1,15 +1,18 @@
 /* ============================================
    SWIFTGLOBAL LOGISTICS — ADMIN PANEL JS
-   Full Firebase Firestore + Auth Integration
-   Real-time listeners replace all localStorage
+   v2 — fixes:
+   - Chat panel no longer shows SwiftBot greeting messages
+   - Only user + agent messages shown to admin
+   - Session unread count correctly reset on open
+   - Admin email shown in topbar
    ============================================ */
 
 import {
-  adminLogout, onAuthReady,
+  adminLogout, onAuthReady, currentUser,
   listenMessages, listenDeletedCount,
   setMessageRead, deleteMessage, deleteMessagesBatch,
   listenSessions, updateSession, deleteSession, clearAllSessions,
-  addReply,
+  addReply, appendSessionMessage,
 } from "./firebase.js";
 
 /* ---------- STATE ---------- */
@@ -20,21 +23,23 @@ let currentMsgId     = null;
 let currentSessionId = null;
 let confirmCallback  = null;
 let notifySound      = null;
-let prevSessionIds   = new Set();   // track known sessions for new-arrival detection
+let prevSessionIds   = new Set();
 
-/* ---------- UNSUBSCRIBE HANDLES ---------- */
+/* ---------- UNSUB HANDLES ---------- */
 let unsubMessages = null;
 let unsubDeleted  = null;
 let unsubSessions = null;
 
 /* ============================================
-   BOOT — wait for Firebase Auth before anything
+   BOOT
    ============================================ */
 onAuthReady(user => {
-  if (!user) {
-    window.location.href = "index.html";
-    return;
-  }
+  if (!user) { window.location.href = "index.html"; return; }
+
+  /* Show admin email in topbar */
+  const el = document.getElementById("adminEmailDisplay");
+  if (el) el.textContent = user.email;
+
   initAdmin();
 });
 
@@ -47,7 +52,7 @@ function initAdmin() {
   attachSidebarEvents();
   attachModalEvents();
 
-  /* Start all real-time listeners */
+  /* Real-time listeners */
   unsubMessages = listenMessages(msgs => {
     allMessages = msgs;
     updateStats();
@@ -62,7 +67,7 @@ function initAdmin() {
   });
 
   unsubSessions = listenSessions((sessions, changes) => {
-    /* Detect brand-new sessions for notification */
+    /* Detect new human sessions for notification */
     changes.forEach(change => {
       if (change.type === "added") {
         const s = { id: change.doc.id, ...change.doc.data() };
@@ -73,7 +78,6 @@ function initAdmin() {
         prevSessionIds.add(s.id);
       }
     });
-    /* First load: populate prevSessionIds without notifying */
     sessions.forEach(s => prevSessionIds.add(s.id));
 
     allSessions = sessions;
@@ -84,10 +88,10 @@ function initAdmin() {
 }
 
 /* ============================================
-   SIDEBAR & LAYOUT
+   SIDEBAR
    ============================================ */
 function attachSidebarEvents() {
-  document.getElementById("sidebarToggle").addEventListener("click", () => {
+  document.getElementById("sidebarToggle")?.addEventListener("click", () => {
     const sidebar = document.getElementById("adminSidebar");
     const overlay = document.getElementById("sidebarOverlay");
     if (window.innerWidth <= 767) {
@@ -95,15 +99,11 @@ function attachSidebarEvents() {
       overlay.style.display = isOpen ? "block" : "none";
     } else {
       sidebar.classList.toggle("collapsed");
-      document.querySelector(".admin-main").classList.toggle("expanded");
+      document.querySelector(".admin-main")?.classList.toggle("expanded");
     }
   });
 
-  const sidebarClose = document.getElementById("sidebarClose");
-  if (sidebarClose) {
-    sidebarClose.addEventListener("click", closeSidebar);
-  }
-
+  document.getElementById("sidebarClose")?.addEventListener("click", closeSidebar);
   document.getElementById("sidebarOverlay")?.addEventListener("click", closeSidebar);
 
   document.addEventListener("click", e => {
@@ -111,9 +111,9 @@ function attachSidebarEvents() {
     const toggle  = document.getElementById("sidebarToggle");
     if (
       window.innerWidth <= 767 &&
-      sidebar.classList.contains("open") &&
+      sidebar?.classList.contains("open") &&
       !sidebar.contains(e.target) &&
-      !toggle.contains(e.target)
+      !toggle?.contains(e.target)
     ) closeSidebar();
   });
 
@@ -125,8 +125,7 @@ function attachSidebarEvents() {
     });
   });
 
-  document.getElementById("logoutBtn").addEventListener("click", async () => {
-    /* Clean up listeners before logging out */
+  document.getElementById("logoutBtn")?.addEventListener("click", async () => {
     unsubMessages?.();
     unsubDeleted?.();
     unsubSessions?.();
@@ -136,9 +135,9 @@ function attachSidebarEvents() {
 }
 
 function closeSidebar() {
-  document.getElementById("adminSidebar").classList.remove("open");
-  const overlay = document.getElementById("sidebarOverlay");
-  if (overlay) overlay.style.display = "none";
+  document.getElementById("adminSidebar")?.classList.remove("open");
+  const ov = document.getElementById("sidebarOverlay");
+  if (ov) ov.style.display = "none";
 }
 
 function attachModalEvents() {
@@ -154,9 +153,9 @@ function attachModalEvents() {
    CLOCK
    ============================================ */
 function startClock() {
-  const el = document.getElementById("adminClock");
+  const el   = document.getElementById("adminClock");
   const tick = () => {
-    el.textContent = new Date().toLocaleTimeString("en-GB", {
+    if (el) el.textContent = new Date().toLocaleTimeString("en-GB", {
       hour: "2-digit", minute: "2-digit", second: "2-digit",
     });
   };
@@ -169,8 +168,8 @@ function startClock() {
    ============================================ */
 function initNotificationSound() {
   try {
-    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    if (AudioCtx) notifySound = new AudioCtx();
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (Ctx) notifySound = new Ctx();
   } catch (e) {}
 }
 
@@ -186,7 +185,7 @@ function playNotificationSound() {
     gain.gain.setValueAtTime(0.3, notifySound.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, notifySound.currentTime + 0.4);
     osc.start(notifySound.currentTime);
-    osc.stop(notifySound.currentTime + 0.4);
+    osc.stop(notifySound.currentTime  + 0.4);
   } catch (e) {}
 }
 
@@ -197,8 +196,8 @@ function showNotifyToast(msg) {
   toast.innerHTML = `<i class="fa fa-comment-dots"></i> ${msg}`;
   document.body.appendChild(toast);
   setTimeout(() => {
-    toast.style.opacity   = "0";
-    toast.style.transform = "translateX(100%)";
+    toast.style.opacity    = "0";
+    toast.style.transform  = "translateX(100%)";
     toast.style.transition = "all 0.4s ease";
     setTimeout(() => toast.remove(), 400);
   }, 4000);
@@ -213,12 +212,10 @@ function switchSection(name) {
   document.getElementById(`section-${name}`)?.classList.add("active");
   document.querySelector(`.sidebar-link[data-section="${name}"]`)?.classList.add("active");
   document.getElementById("pageTitle").textContent =
-    name === "livechats" ? "Live Chats" : name.charAt(0).toUpperCase() + name.slice(1);
-
-  if (name === "shipments") renderShipments?.();
+    name === "livechats" ? "Live Chats" :
+    name.charAt(0).toUpperCase() + name.slice(1);
+  if (name === "shipments") window.renderShipments?.();
 }
-
-/* Make switchSection globally available (called from dashboard buttons) */
 window.switchSection = switchSection;
 
 /* ============================================
@@ -234,10 +231,10 @@ function updateStats() {
   document.getElementById("statQuotes").textContent  = quotes;
   document.getElementById("statDeleted").textContent = deletedCount;
 
-  const unreadBadge = document.getElementById("unreadBadge");
-  const quoteBadge  = document.getElementById("quoteBadge");
-  if (unreadBadge) unreadBadge.textContent = unread > 0 ? unread : "";
-  if (quoteBadge)  quoteBadge.textContent  = quotes > 0 ? quotes : "";
+  const ub = document.getElementById("unreadBadge");
+  const qb = document.getElementById("quoteBadge");
+  if (ub) ub.textContent = unread > 0 ? unread : "";
+  if (qb) qb.textContent = quotes > 0 ? quotes : "";
 }
 
 function updateChatBadge() {
@@ -247,12 +244,12 @@ function updateChatBadge() {
 }
 
 /* ============================================
-   FORMAT HELPERS
+   HELPERS
    ============================================ */
 function formatDate(iso) {
   if (!iso) return "—";
-  /* Handle Firestore Timestamps */
   const d = iso?.toDate ? iso.toDate() : new Date(iso);
+  if (isNaN(d)) return "—";
   return d.toLocaleString("en-GB", {
     day: "2-digit", month: "short", year: "numeric",
     hour: "2-digit", minute: "2-digit",
@@ -290,12 +287,12 @@ function serviceLabel(val) {
 }
 
 /* ============================================
-   MESSAGE ROW
+   MESSAGE ROWS
    ============================================ */
 function buildMessageRow(msg) {
-  const initials = getInitials(msg.firstName, msg.lastName);
-  const name     = `${msg.firstName || ""} ${msg.lastName || ""}`.trim();
-  const svc      = msg.service
+  const initials  = getInitials(msg.firstName, msg.lastName);
+  const name      = `${msg.firstName || ""} ${msg.lastName || ""}`.trim();
+  const svc       = msg.service
     ? `<span class="msg-service-tag">${serviceLabel(msg.service)}</span>` : "";
   const unreadDot = !msg.read ? `<div class="unread-dot"></div>` : "";
   const readIcon  = msg.read ? "fa-envelope" : "fa-envelope-open";
@@ -305,7 +302,7 @@ function buildMessageRow(msg) {
     <div class="message-row ${msg.read ? "" : "unread"}" id="row-${msg.id}"
          onclick="openModal('${msg.id}')">
       ${unreadDot}
-      <div class="msg-avatar">${initials}</div>
+      <div class="msg-avatar">${escHtml(initials)}</div>
       <div class="msg-body">
         <div class="msg-top">
           <span class="msg-name">${escHtml(name)}</span>${svc}
@@ -335,7 +332,6 @@ function buildMessageRow(msg) {
 function renderMessages() {
   const container = document.getElementById("messagesList");
   if (!container) return;
-
   const search = (document.getElementById("messageSearch")?.value || "").toLowerCase();
   const filter = document.getElementById("messageFilter")?.value || "all";
 
@@ -354,7 +350,6 @@ function renderMessages() {
 function renderQuotes() {
   const container = document.getElementById("quotesList");
   if (!container) return;
-
   const search    = (document.getElementById("quoteSearch")?.value || "").toLowerCase();
   const svcFilter = document.getElementById("quoteServiceFilter")?.value || "all";
 
@@ -378,24 +373,18 @@ function renderRecentMessages() {
     : recent.map(buildMessageRow).join("");
 }
 
-/* Expose filter functions called by inline oninput/onchange */
 window.filterMessages = () => renderMessages();
 window.filterQuotes   = () => renderQuotes();
 
 /* ============================================
-   TOGGLE READ
+   TOGGLE READ / DELETE
    ============================================ */
 async function toggleRead(id) {
   const msg = allMessages.find(m => m.id === id);
-  if (!msg) return;
-  await setMessageRead(id, !msg.read);
-  /* listenMessages will re-render automatically */
+  if (msg) await setMessageRead(id, !msg.read);
 }
 window.toggleRead = toggleRead;
 
-/* ============================================
-   DELETE MESSAGES
-   ============================================ */
 async function doDeleteMessage(id) {
   await deleteMessage(id);
   closeModal();
@@ -403,8 +392,7 @@ async function doDeleteMessage(id) {
 
 window.deleteAllMessages = () => {
   showConfirm("Delete ALL messages? This cannot be undone.", async () => {
-    const ids = allMessages.map(m => m.id);
-    await deleteMessagesBatch(ids);
+    await deleteMessagesBatch(allMessages.map(m => m.id));
   });
 };
 
@@ -445,8 +433,6 @@ function openModal(id) {
   const msg = allMessages.find(m => m.id === id);
   if (!msg) return;
   currentMsgId = id;
-
-  /* Auto-mark as read when opened */
   if (!msg.read) setMessageRead(id, true);
 
   document.getElementById("modalTitle").textContent =
@@ -495,14 +481,12 @@ function closeModal() {
   document.getElementById("modalOverlay").style.display = "none";
   currentMsgId = null;
 }
-
 function toggleReadModal() {
   if (!currentMsgId) return;
   const msg = allMessages.find(m => m.id === currentMsgId);
   if (msg) setMessageRead(currentMsgId, !msg.read);
   closeModal();
 }
-
 function deleteFromModal() {
   if (!currentMsgId) return;
   confirmDeleteMsg(currentMsgId);
@@ -514,7 +498,7 @@ window.toggleReadModal = toggleReadModal;
 window.deleteFromModal = deleteFromModal;
 
 /* ============================================
-   CHAT SESSIONS — RENDER LIST
+   CHAT SESSIONS LIST
    ============================================ */
 function renderChatSessions() {
   const container = document.getElementById("chatSessionsList");
@@ -527,15 +511,12 @@ function renderChatSessions() {
   if (statusF === "waiting") list = list.filter(s => s.isHuman && s.status === "waiting");
   if (statusF === "active")  list = list.filter(s => s.isHuman && s.status === "active");
   if (statusF === "ai")      list = list.filter(s => !s.isHuman);
+  if (search) list = list.filter(s =>
+    (s.visitorName || "").toLowerCase().includes(search) ||
+    (s.page || "").toLowerCase().includes(search)
+  );
 
-  if (search) {
-    list = list.filter(s =>
-      (s.visitorName || "").toLowerCase().includes(search) ||
-      (s.page || "").toLowerCase().includes(search)
-    );
-  }
-
-  if (list.length === 0) {
+  if (!list.length) {
     container.innerHTML = `
       <div class="admin-empty" style="padding:40px 20px;">
         <i class="fa fa-comments"></i>
@@ -545,10 +526,12 @@ function renderChatSessions() {
   }
 
   container.innerHTML = list.map(s => {
-    const lastMsg   = s.messages?.[s.messages.length - 1];
-    const preview   = lastMsg?.content?.substring(0, 50) || "No messages yet";
-    const timeAgo   = formatTimeAgo(s.updatedAt || s.startTime);
-    const unreadBadge = (s.unread || 0) > 0
+    /* FIX: only show user messages in preview, not bot greetings */
+    const userMsgs = (s.messages || []).filter(m => m.role === "user");
+    const lastMsg  = userMsgs[userMsgs.length - 1];
+    const preview  = lastMsg?.content?.substring(0, 50) || "No visitor messages yet";
+    const timeAgo  = formatTimeAgo(s.updatedAt || s.startTime);
+    const unread   = (s.unread || 0) > 0
       ? `<div class="chat-session-unread">${s.unread}</div>` : "";
     const statusCls = s.isHuman
       ? (s.status === "waiting" ? "status-waiting" : "status-active") : "status-ai";
@@ -560,7 +543,7 @@ function renderChatSessions() {
     return `
       <div class="chat-session-item ${isActive} ${hasUnread}"
            onclick="openChatSession('${s.id}')">
-        ${unreadBadge}
+        ${unread}
         <div class="chat-session-top">
           <span class="chat-session-name">
             <i class="fa fa-user" style="font-size:0.75rem;"></i>
@@ -581,11 +564,14 @@ function renderChatSessions() {
    ============================================ */
 function openChatSession(sessionId) {
   currentSessionId = sessionId;
-  const session = allSessions.find(s => s.id === sessionId);
+  const session    = allSessions.find(s => s.id === sessionId);
   if (!session) return;
 
-  /* Mark unread → 0 and status active */
-  updateSession(sessionId, { unread: 0, status: session.isHuman ? "active" : session.status });
+  /* Reset unread + mark active */
+  updateSession(sessionId, {
+    unread: 0,
+    status: session.isHuman ? "active" : session.status,
+  }).catch(() => {});
 
   const panel    = document.getElementById("chatConvoPanel");
   const initials = (session.visitorName || "V").charAt(0).toUpperCase();
@@ -593,7 +579,7 @@ function openChatSession(sessionId) {
   panel.innerHTML = `
     <div class="chat-convo-header">
       <div class="chat-convo-header-info">
-        <div class="chat-convo-avatar">${initials}</div>
+        <div class="chat-convo-avatar">${escHtml(initials)}</div>
         <div>
           <div class="chat-convo-name">${escHtml(session.visitorName || "Visitor")}</div>
           <div class="chat-convo-meta">
@@ -617,14 +603,15 @@ function openChatSession(sessionId) {
       ${renderConvoMessages(session.messages || [])}
     </div>
 
-    <div class="visitor-typing" id="visitorTypingIndicator" style="display:none;padding:0 16px 4px;">
+    <div class="visitor-typing" id="visitorTypingIndicator"
+         style="display:none;padding:0 16px 4px;">
       <i class="fa fa-ellipsis fa-beat"></i> Visitor is typing...
     </div>
 
     ${session.isHuman ? `
     <div class="chat-convo-reply">
       <textarea class="chat-convo-input" id="adminReplyInput"
-        placeholder="Type your reply to ${escHtml(session.visitorName || "visitor")}..."
+        placeholder="Type your reply to ${escHtml(session.visitorName || "visitor")}…"
         rows="1"></textarea>
       <button class="chat-convo-send" id="adminReplySendBtn"
         onclick="sendAdminReply('${sessionId}')">
@@ -645,8 +632,7 @@ function openChatSession(sessionId) {
     replyInput.addEventListener("input", () => {
       replyInput.style.height = "auto";
       replyInput.style.height = Math.min(replyInput.scrollHeight, 100) + "px";
-      /* Notify visitor that admin is typing */
-      updateSession(sessionId, { adminTyping: Date.now() });
+      updateSession(sessionId, { adminTyping: Date.now() }).catch(() => {});
     });
     replyInput.addEventListener("keydown", e => {
       if (e.key === "Enter" && !e.shiftKey) {
@@ -657,28 +643,39 @@ function openChatSession(sessionId) {
     replyInput.focus();
   }
 }
-
 window.openChatSession = openChatSession;
 
 /* ============================================
    RENDER CONVO MESSAGES
+   FIX: Only show user + agent messages.
+   Bot/system messages are visitor-facing only.
    ============================================ */
 function renderConvoMessages(messages) {
-  if (!messages || messages.length === 0) {
-    return `<div style="text-align:center;color:var(--admin-text-light);padding:30px;font-size:0.88rem;">
-      No messages in this conversation yet.</div>`;
+  /* Filter to only user and agent messages for admin view */
+  const adminVisible = (messages || []).filter(m =>
+    m.role === "user" || m.role === "agent"
+  );
+
+  if (!adminVisible.length) {
+    return `<div style="text-align:center;color:var(--admin-text-light);
+      padding:30px;font-size:0.88rem;">
+      No visitor messages yet — waiting for the visitor to type.
+    </div>`;
   }
-  return messages.map(m => {
+
+  return adminVisible.map(m => {
     const isUser  = m.role === "user";
     const isAgent = m.role === "agent";
-    const cls     = isUser ? "" : isAgent ? "admin-sent agent-msg" : "admin-sent";
-    const icon    = isUser ? "fa-user" : isAgent ? "fa-user-tie" : "fa-robot";
-    const roleLabel = isAgent ? "Support Agent" : m.role === "bot" ? "SwiftBot AI" : "";
+    const cls     = isAgent ? "admin-sent agent-msg" : "";
+    const icon    = isUser ? "fa-user" : "fa-user-tie";
+
     return `
       <div class="admin-chat-msg ${cls}">
-        <div class="admin-chat-avatar"><i class="fa ${icon}"></i></div>
+        <div class="admin-chat-avatar"${isAgent ? ' style="background:var(--admin-success);"' : ""}>
+          <i class="fa ${icon}"></i>
+        </div>
         <div>
-          ${roleLabel ? `<div class="admin-chat-role">${roleLabel}</div>` : ""}
+          ${isAgent ? `<div class="admin-chat-role">Support Agent</div>` : ""}
           <div class="admin-chat-bubble">${escHtml(m.content)}</div>
           <div class="admin-chat-time">${m.time || ""}</div>
         </div>
@@ -687,7 +684,7 @@ function renderConvoMessages(messages) {
 }
 
 /* ============================================
-   SEND ADMIN REPLY — writes to Firestore
+   SEND ADMIN REPLY
    ============================================ */
 async function sendAdminReply(sessionId) {
   const input   = document.getElementById("adminReplyInput");
@@ -697,25 +694,28 @@ async function sendAdminReply(sessionId) {
 
   sendBtn.disabled = true;
 
-  const session = allSessions.find(s => s.id === sessionId);
   const now     = new Date();
   const timeStr = now.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+  const msgObj  = { role: "agent", content: text, time: timeStr, id: Date.now() };
 
-  const newMsg = { role: "agent", content: text, time: timeStr, id: Date.now() };
+  try {
+    /* 1. Write to chatReplies — visitor's Firestore listener picks this up */
+    await addReply(sessionId, text);
 
-  /* 1. Push to chatReplies collection (visitor polls this) */
-  await addReply(sessionId, text);
+    /* 2. Append to session messages so it persists in the session doc */
+    await appendSessionMessage(sessionId, msgObj);
 
-  /* 2. Append to session messages array in Firestore */
-  const updatedMessages = [...(session?.messages || []), newMsg];
-  await updateSession(sessionId, {
-    messages:   updatedMessages,
-    lastActive: now.toISOString(),
-    adminTyping: null,
-  });
+    /* 3. Reset status to active (not waiting) after admin replies */
+    await updateSession(sessionId, {
+      status:     "active",
+      adminTyping: null,
+    });
+  } catch (err) {
+    console.error("Reply send error:", err);
+  }
 
-  /* 3. Optimistic UI update */
-  const msgs  = document.getElementById("convoMessages");
+  /* Optimistic UI update */
+  const msgs = document.getElementById("convoMessages");
   if (msgs) {
     const msgEl = document.createElement("div");
     msgEl.className = "admin-chat-msg admin-sent agent-msg";
@@ -737,21 +737,33 @@ async function sendAdminReply(sessionId) {
   sendBtn.disabled   = false;
   input.focus();
 }
-
 window.sendAdminReply = sendAdminReply;
 
 /* ============================================
-   REFRESH ACTIVE CONVO (visitor typing)
+   REFRESH ACTIVE CONVO (visitor typing indicator)
    ============================================ */
 function refreshActiveConvo() {
   if (!currentSessionId) return;
-  const session = allSessions.find(s => s.id === currentSessionId);
+  const session    = allSessions.find(s => s.id === currentSessionId);
   if (!session) return;
 
-  const indicator = document.getElementById("visitorTypingIndicator");
+  const indicator  = document.getElementById("visitorTypingIndicator");
   if (indicator && session.visitorTyping) {
     const diff = Date.now() - session.visitorTyping;
     indicator.style.display = diff < 4000 ? "flex" : "none";
+  }
+
+  /* Re-render messages if session updated while panel is open */
+  const msgs = document.getElementById("convoMessages");
+  if (msgs && session.messages) {
+    const rendered = msgs.querySelectorAll(".admin-chat-msg").length;
+    const visible  = (session.messages || []).filter(
+      m => m.role === "user" || m.role === "agent"
+    ).length;
+    if (visible > rendered) {
+      msgs.innerHTML  = renderConvoMessages(session.messages);
+      msgs.scrollTop  = msgs.scrollHeight;
+    }
   }
 }
 
@@ -769,7 +781,6 @@ async function doDeleteChatSession(sessionId) {
       </div>`;
   });
 }
-
 window.doDeleteChatSession = doDeleteChatSession;
 
 window.clearAllChats = () => {
@@ -785,3 +796,6 @@ window.clearAllChats = () => {
 };
 
 window.filterChats = () => renderChatSessions();
+
+/* expose showConfirm for shipments.js */
+window.__showConfirm = showConfirm;

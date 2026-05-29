@@ -1228,13 +1228,42 @@
     <!-- ============================================
        SCRIPTS
        ============================================ -->
-  <!-- AOS Animation Library -->
+
+    <!-- AOS Animation Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 
     <!-- Our Scripts -->
     <script src="js/main.js"></script>
+
+    <!--
+      FIREBASE BRIDGE
+      This single module block loads Firebase and puts the helpers
+      that chatbot.js needs onto window.__sgChat.
+      It MUST come before chatbot.js loads.
+    -->
+    <script type="module">
+      import {
+        saveSession,
+        updateSession,
+        appendSessionMessage,
+        addReply,
+        listenReplies
+      } from "./admin/firebase.js";
+
+      window.__sgChat = {
+        saveSession,
+        updateSession,
+        appendSessionMessage,
+        addReply,
+        listenReplies,
+      };
+    </script>
+
+    <!-- tracking.js needs type="module" because it imports from firebase.js -->
     <script type="module" src="js/tracking.js"></script>
-    <script type="module" src="js/chatbot.js"></script>
+
+    <!-- chatbot.js reads window.__sgChat set above -->
+    <script src="js/chatbot.js" defer></script>
 
     <script>
       // Set current year in footer
@@ -1247,20 +1276,16 @@
           window.location.href = `tracking.html?number=${encodeURIComponent(num)}`;
         } else {
           document.getElementById("quickTrackInput").focus();
-          document.getElementById("quickTrackInput").style.borderColor =
-            "var(--error)";
+          document.getElementById("quickTrackInput").style.borderColor = "var(--error)";
           setTimeout(() => {
             document.getElementById("quickTrackInput").style.borderColor = "";
           }, 2000);
         }
       }
 
-      // Allow Enter key on quick track input
-      document
-        .getElementById("quickTrackInput")
-        .addEventListener("keydown", (e) => {
-          if (e.key === "Enter") quickTrack();
-        });
+      document.getElementById("quickTrackInput").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") quickTrack();
+      });
     </script>
   </body>
 </html>

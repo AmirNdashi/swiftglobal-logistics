@@ -575,24 +575,74 @@
         </button>
       </div>
     </div>
+
+
+   <!-- ============================================
+     SCRIPTS 
+       ============================================ -->
+
     <!-- EmailJS -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
-   <!-- AOS Animation Library -->
+    <!-- AOS Animation Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 
     <!-- Our Scripts -->
     <script src="js/main.js"></script>
-    <script type="module" src="js/tracking.js"></script>
-    <script type="module" src="js/chatbot.js"></script>
+
+    <!--
+      FIREBASE BRIDGE
+      One module block that loads ALL Firebase helpers needed by
+      both the contact form AND the chatbot.
+      
+      IMPORTANT: This must come BEFORE contact.js and chatbot.js.
+      Both those files check window.__sgAddMessage and window.__sgChat
+      at the moment they run. The "defer" on the scripts below ensures
+      they wait until this module has finished loading.
+    -->
+    <script type="module">
+      import {
+        addMessage,
+        saveSession,
+        updateSession,
+        appendSessionMessage,
+        addReply,
+        listenReplies
+      } from "./admin/firebase.js";
+
+      /* For the contact form (contact.js / form.js) */
+      window.__sgAddMessage = addMessage;
+
+      /* For the chatbot */
+      window.__sgChat = {
+        saveSession,
+        updateSession,
+        appendSessionMessage,
+        addReply,
+        listenReplies,
+      };
+    </script>
+
+    <!--
+      NOTE: Your contact form logic is in js/contact.js (the file we gave you).
+      If you previously had it as js/form.js, rename form.js → contact.js
+      OR keep using form.js — just make sure it matches what's on disk.
+      
+      Do NOT use type="module" here — contact.js uses window.__sgAddMessage,
+      not ES module imports. Just use plain defer.
+    -->
+    <script src="js/form.js" defer></script>
+
+    <!-- chatbot.js reads window.__sgChat set above -->
+    <script src="js/chatbot.js" defer></script>
+
     <script>
       document.getElementById("year").textContent = new Date().getFullYear();
+
       function toggleFaq(btn) {
-        const item = btn.parentElement;
+        const item   = btn.parentElement;
         const isOpen = item.classList.contains("open");
-        document
-          .querySelectorAll(".faq-item")
-          .forEach((f) => f.classList.remove("open"));
+        document.querySelectorAll(".faq-item").forEach(f => f.classList.remove("open"));
         if (!isOpen) item.classList.add("open");
       }
     </script>
