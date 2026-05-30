@@ -447,6 +447,25 @@
                     <label>Special Instructions</label>
                     <textarea id="pkgInstructions" rows="2" placeholder="Fragile, Handle with care…"></textarea>
                   </div>
+                  <div class="admin-form-group">
+                    <label>Parcel Image</label>
+                    <div class="image-upload-wrapper">
+                      <input type="file" id="parcelImageInput" accept="image/*" onchange="previewParcelImage(this)" style="display:none;" />
+                      <button type="button" class="admin-btn admin-btn-secondary" onclick="document.getElementById('parcelImageInput').click()">
+                        <i class="fa fa-camera"></i> Upload Parcel Image
+                      </button>
+                      <button type="button" class="admin-btn admin-btn-danger admin-btn-sm" id="removeParcelImageBtn" onclick="removeParcelImage()" style="display:none;">
+                        <i class="fa fa-trash"></i> Remove
+                      </button>
+                    </div>
+                    <div id="parcelImagePreview" class="parcel-image-preview" style="display:none;">
+                      <img id="parcelImagePreviewImg" src="" alt="Parcel preview" />
+                      <button type="button" class="parcel-image-remove" onclick="removeParcelImage()">
+                        <i class="fa fa-times"></i>
+                      </button>
+                    </div>
+                    <input type="hidden" id="parcelImageUrl" />
+                  </div>
                 </div>
 
               </div>

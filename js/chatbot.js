@@ -1,12 +1,6 @@
+////////////// chatbot.js //////////////////////////////
 /* ============================================
    SWIFTGLOBAL LOGISTICS — AI + HUMAN CHATBOT
-   v2 — Firebase fixes:
-   - Visitor messages now correctly saved to Firestore
-   - Session + history persisted in sessionStorage (survives page refresh)
-   - Admin replies received via Firestore onSnapshot (no polling)
-   - Removed random "message received" spam
-   - "Connecting to agent" resolves once session is saved
-
 /* ---------- CONFIG ---------- */
 const CHATBOT_CONFIG = {
   apiURL:    "https://swiftglobal-ai.swiftglobal.workers.dev",
@@ -49,7 +43,7 @@ const SS = {
 
 /* ---------- STATE ---------- */
 let chatHistory     = [];
-let sessionMessages = [];   /* all messages shown in chat (for session save) */
+let sessionMessages = []; /* all messages shown in chat (for session save) */
 let isTyping        = false;
 let chatInitialized = false;
 let unreadCount     = 0;
@@ -67,7 +61,9 @@ const QUICK_REPLIES = {
 };
 
 /* ---------- FIREBASE HELPERS (via window bridge) ---------- */
-function fb() { return window.__sgChat || null; }
+function fb() { 
+  return window.__sgChat || null; 
+}
 
 /* ---------- SESSION PERSISTENCE ---------- */
 function persistState() {
@@ -91,8 +87,10 @@ function restoreState() {
     const m = sessionStorage.getItem(SS.messages);
     chatHistory     = h ? JSON.parse(h) : [];
     sessionMessages = m ? JSON.parse(m) : [];
-    return sessionMessages.length > 0; /* true = we have something to restore */
-  } catch (e) { return false; }
+    return sessionMessages.length > 0;
+  } catch (e) { 
+    return false; 
+  }
 }
 
 function clearState() {
@@ -109,18 +107,22 @@ function clearState() {
 function getTime() {
   return new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
 }
+
 function escHtml(t) {
   return String(t || "")
     .replace(/&/g, "&amp;").replace(/</g, "&lt;")
     .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
+
 function fmtMsg(text) {
   return text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>").replace(/\n/g, "<br>");
 }
+
 function scrollBottom() {
   const el = document.getElementById("chatMessages");
   if (el) el.scrollTop = el.scrollHeight;
 }
+
 function genSessionId() {
   return "sess_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9);
 }
@@ -175,8 +177,7 @@ function buildChatHTML() {
 
       <div class="chat-input-area">
         <textarea class="chat-input" id="chatInput"
-          placeholder="Ask me anything..." rows="1" aria-label="Type your message">
-        </textarea>
+          placeholder="Ask me anything..." rows="1" aria-label="Type your message"></textarea>
         <button class="chat-send-btn" id="chatSendBtn">
           <i class="fa fa-paper-plane"></i>
         </button>
@@ -184,20 +185,22 @@ function buildChatHTML() {
 
       <div class="chat-footer">
         <span id="chatFooterText">Powered by Groq AI</span>
-        &nbsp;·&nbsp; SwiftGlobal Logistics
+        &nbsp;·&nbsp;
+        SwiftGlobal Logistics
       </div>
     </div>`;
 }
 
 /* ---------- ADD MESSAGE TO UI ---------- */
-function addMessage(role, content, quickReplies = [], isSystem = false, skipSave = false) {
+function addMessage(role, content, quickReplies = [], isSystem = false, skipSave = false, msgId = null) {
   const msgs    = document.getElementById("chatMessages");
+  if (!msgs) return;
+
   const isUser  = role === "user";
   const isAgent = role === "agent";
 
   const msgEl = document.createElement("div");
   msgEl.className = `chat-msg ${isUser ? "user" : "bot"} ${isAgent ? "agent" : ""}`;
-
   const icon        = isUser ? "fa-user" : isAgent ? "fa-user-tie" : "fa-robot";
   const avatarStyle = isAgent ? 'style="background:var(--chat-success);color:#fff;"' : "";
 
@@ -218,28 +221,37 @@ function addMessage(role, content, quickReplies = [], isSystem = false, skipSave
               ${escHtml(r)}</button>`).join("")}
         </div>` : ""}
     </div>`;
-
+    
   msgs.appendChild(msgEl);
   scrollBottom();
 
-  /* Track in sessionMessages for persistence (skip system/AI-only messages) */
+  /* Track in sessionMessages using original DB ID or a stable fall-back to prevent cross-page duplication loop */
   if (!skipSave && !isSystem) {
-    sessionMessages.push({ role, content, time: getTime(), id: Date.now() + Math.random() });
+    sessionMessages.push({ 
+      role, 
+      content, 
+      time: getTime(), 
+      id: msgId || (Date.now() + Math.random()) 
+    });
     persistState();
   }
 
-  /* Unread badge when window is closed */
+  /* Unread badge logic when window is closed or tucked away */
   if (!isUser && !document.getElementById("chatWindow").classList.contains("open")) {
     unreadCount++;
     const badge = document.getElementById("chatUnreadBadge");
-    badge.textContent = unreadCount > 9 ? "9+" : unreadCount;
-    badge.style.display = "flex";
+    if (badge) {
+      badge.textContent = unreadCount > 9 ? "9+" : unreadCount;
+      badge.style.display = "flex";
+    }
   }
 }
 
 /* ---------- TYPING INDICATOR ---------- */
 function showTyping(isAgent = false) {
   const msgs = document.getElementById("chatMessages");
+  if (!msgs || document.getElementById("chatTyping")) return;
+  
   const el   = document.createElement("div");
   el.className = "chat-typing";
   el.id = "chatTyping";
@@ -255,34 +267,51 @@ function showTyping(isAgent = false) {
   msgs.appendChild(el);
   scrollBottom();
 }
-function hideTyping() { document.getElementById("chatTyping")?.remove(); }
+
+function hideTyping() { 
+  document.getElementById("chatTyping")?.remove(); 
+}
 
 /* ---------- SWITCH TO HUMAN UI ---------- */
 function setHumanUI() {
-  document.getElementById("chatHeaderAvatar").innerHTML  = '<i class="fa fa-user-headset"></i>';
-  document.getElementById("chatHeaderAvatar").style.cssText =
-    "background:rgba(56,161,105,0.2);border-color:var(--chat-success);color:var(--chat-success);";
-  document.getElementById("chatHeaderName").textContent   = "Human Support";
-  document.getElementById("chatHeaderStatus").textContent = "Connected — Human Support";
-  document.getElementById("chatHumanBanner").style.display = "flex";
-  document.getElementById("chatFooterText").textContent   = "Live Human Support";
-  document.getElementById("chatHandoffBar").innerHTML = `
-    <span class="chat-handoff-label" style="color:var(--chat-success);">
-      <i class="fa fa-user-headset"></i> Connected to Human Support
-    </span>
-    <button class="chat-handoff-btn chat-handoff-btn--ai" onclick="switchBackToAI()">
-      <i class="fa fa-robot"></i> Back to AI
-    </button>`;
-  document.getElementById("chatInput").placeholder =
-    `Type your message to our agent…`;
+  const avatar = document.getElementById("chatHeaderAvatar");
+  if (avatar) {
+    avatar.innerHTML = '<i class="fa fa-user-headset"></i>';
+    avatar.style.cssText = "background:rgba(56,161,105,0.2);border-color:var(--chat-success);color:var(--chat-success);";
+  }
+  
+  const headerName = document.getElementById("chatHeaderName");
+  if (headerName) headerName.textContent = "Human Support";
+  
+  const statusText = document.getElementById("chatHeaderStatus");
+  if (statusText) statusText.textContent = "Connected — Human Support";
+  
+  const banner = document.getElementById("chatHumanBanner");
+  if (banner) banner.style.display = "flex";
+  
+  const footerText = document.getElementById("chatFooterText");
+  if (footerText) footerText.textContent = "Live Human Support";
+  
+  const handoffBar = document.getElementById("chatHandoffBar");
+  if (handoffBar) {
+    handoffBar.innerHTML = `
+      <span class="chat-handoff-label" style="color:var(--chat-success);">
+        <i class="fa fa-user-headset"></i> Connected to Human Support
+      </span>
+      <button class="chat-handoff-btn chat-handoff-btn--ai" onclick="switchBackToAI()">
+        <i class="fa fa-robot"></i> Back to AI
+      </button>`;
+  }
+  
+  const input = document.getElementById("chatInput");
+  if (input) input.placeholder = `Type your message to our agent…`;
 }
 
-/* ---------- REQUEST HUMAN ---------- */
 /* ---------- REQUEST HUMAN ---------- */
 async function requestHuman() {
   if (isHumanMode) return;
 
-  /* Wait for Firebase to be ready */
+  /* Polling loop for async initialization safety */
   for (let i = 0; i < 30; i++) {
     if (window.__sgChat) break;
     await new Promise(r => setTimeout(r, 100));
@@ -295,7 +324,6 @@ async function requestHuman() {
   isHumanMode  = true;
   sessionId    = genSessionId();
   replyStartMs = Date.now();
-
   setHumanUI();
 
   addMessage('bot',
@@ -303,7 +331,6 @@ async function requestHuman() {
     [], false, false
   );
 
-  /* Collect ALL messages shown so far for history */
   const historyMsgs = sessionMessages.filter(m =>
     m.role === 'user' || m.role === 'bot' || m.role === 'agent'
   );
@@ -321,7 +348,6 @@ async function requestHuman() {
     newRequest:  true,
   };
 
-  /* Save to Firebase */
   if (window.__sgChat) {
     try {
       await window.__sgChat.saveSession(sessionId, sessionData);
@@ -336,7 +362,6 @@ async function requestHuman() {
 }
 window.requestHuman = requestHuman;
 
-/* ---------- REPLY LISTENER (Firestore onSnapshot) ---------- */
 /* ---------- REPLY LISTENER ---------- */
 function startReplyListener() {
   stopReplyListener();
@@ -344,32 +369,65 @@ function startReplyListener() {
 
   console.log('Starting reply listener for session:', sessionId);
 
-  unsubReplies = window.__sgChat.listenReplies(sessionId, replyStartMs, replies => {
-    replies.forEach(reply => {
-      if (!reply.content) return;
-
-      hideTyping();
-      document.getElementById('chatHeaderStatus').textContent = 'Connected — Human Support';
-
-      const msgObj = {
-        role:    'agent',
-        content: reply.content,
-        time:    getTime(),
-        id:      Date.now() + Math.random(),
-      };
-
-      /* Add to session messages for persistence */
-      sessionMessages.push(msgObj);
-      replyStartMs = reply.timestampMs || Date.now();
-
-      addMessage('agent', reply.content, [], false, true);
-      persistState();
-    });
+  /* Collect previously loaded message IDs to shield against UI repetition */
+  const receivedReplyIds = new Set();
+  sessionMessages.forEach(m => {
+    if (m.id) receivedReplyIds.add(m.id);
   });
+
+  /* Utilize tracked chronological cursor timestamp safely */
+  unsubReplies = window.__sgChat.listenReplies(
+    sessionId,
+    replyStartMs || 0,
+    replies => {
+      if (!replies) return;
+      replies.forEach(reply => {
+        if (receivedReplyIds.has(reply.id)) return;
+        receivedReplyIds.add(reply.id);
+
+        if (!reply.content) return;
+
+        hideTyping();
+
+        const statusText = document.getElementById('chatHeaderStatus');
+        if (statusText) statusText.textContent = 'Connected — Human Support';
+
+        addMessage(
+          'agent',
+          reply.content,
+          [],
+          false,
+          false,
+          reply.id // Pass database primary key explicitly
+        );
+
+        /* Update cursor to latest reply timestamp for cross-page continuity */
+        if (reply.timestampMs && reply.timestampMs > replyStartMs) {
+          replyStartMs = reply.timestampMs;
+          persistState();
+        }
+      });
+    }
+  );
 }
 
 function stopReplyListener() {
-  if (unsubReplies) { unsubReplies(); unsubReplies = null; }
+  if (unsubReplies) { 
+    unsubReplies(); 
+    unsubReplies = null; 
+  }
+}
+
+/* ---------- ASYNC LISTENER BINDER FOR NAVIGATIONS ---------- */
+async function ensureReplyListener() {
+  if (!isHumanMode || !sessionId) return;
+  for (let i = 0; i < 40; i++) {
+    if (window.__sgChat) break;
+    await new Promise(r => setTimeout(r, 150));
+  }
+  if (window.__sgChat) {
+    startReplyListener();
+  }
 }
 
 /* ---------- SWITCH BACK TO AI ---------- */
@@ -377,22 +435,33 @@ function switchBackToAI() {
   isHumanMode = false;
   stopReplyListener();
   clearState();
-
-  document.getElementById("chatHeaderAvatar").innerHTML  = '<i class="fa fa-robot"></i>';
-  document.getElementById("chatHeaderAvatar").style.cssText = "";
-  document.getElementById("chatHeaderName").textContent  = "SwiftBot AI";
+  
+  const avatar = document.getElementById("chatHeaderAvatar");
+  if (avatar) {
+    avatar.innerHTML = '<i class="fa fa-robot"></i>';
+    avatar.style.cssText = "";
+  }
+  
+  document.getElementById("chatHeaderName").textContent   = "SwiftBot AI";
   document.getElementById("chatHeaderStatus").textContent = "Online — SwiftGlobal Logistics";
   document.getElementById("chatHumanBanner").style.display = "none";
-  document.getElementById("chatFooterText").textContent  = "Powered by Groq AI";
-  document.getElementById("chatHandoffBar").innerHTML = `
-    <span class="chat-handoff-label">
-      <i class="fa fa-robot"></i> Chatting with AI
-    </span>
-    <button class="chat-handoff-btn" onclick="requestHuman()">
-      <i class="fa fa-user-headset"></i> Talk to a Human
-    </button>`;
-  document.getElementById("chatInput").placeholder = "Ask me anything...";
+  document.getElementById("chatFooterText").textContent   = "Powered by Groq AI";
+  
+  const handoffBar = document.getElementById("chatHandoffBar");
+  if (handoffBar) {
+    handoffBar.innerHTML = `
+      <span class="chat-handoff-label">
+        <i class="fa fa-robot"></i> Chatting with AI
+      </span>
+      <button class="chat-handoff-btn" onclick="requestHuman()">
+        <i class="fa fa-user-headset"></i> Talk to a Human
+      </button>`;
+  }
+  
+  const input = document.getElementById("chatInput");
+  if (input) input.placeholder = "Ask me anything...";
 
+  document.getElementById("chatMessages").innerHTML = "";
   addMessage("bot",
     "🤖 You've been switched back to **SwiftBot AI**. How can I help you?",
     QUICK_REPLIES.general, false, true
@@ -402,8 +471,11 @@ window.switchBackToAI = switchBackToAI;
 
 /* ---------- QUICK REPLY ---------- */
 function sendQuickReply(text) {
-  document.getElementById("chatInput").value = text;
-  sendMessage();
+  const input = document.getElementById("chatInput");
+  if (input) {
+    input.value = text;
+    sendMessage();
+  }
 }
 window.sendQuickReply = sendQuickReply;
 
@@ -411,6 +483,8 @@ window.sendQuickReply = sendQuickReply;
 async function sendMessage() {
   const input   = document.getElementById("chatInput");
   const sendBtn = document.getElementById("chatSendBtn");
+  if (!input || !sendBtn) return;
+
   const text    = input.value.trim();
   if (!text || isTyping) return;
 
@@ -418,7 +492,7 @@ async function sendMessage() {
   input.value        = "";
   input.style.height = "auto";
 
- /* ── HUMAN MODE ── */
+  /* ── HUMAN MODE ── */
   if (isHumanMode && sessionId) {
     const msgObj = {
       role:    'user',
@@ -426,8 +500,6 @@ async function sendMessage() {
       time:    getTime(),
       id:      Date.now() + Math.random(),
     };
-
-    /* Save to Firebase immediately */
     if (window.__sgChat) {
       try {
         await window.__sgChat.appendSessionMessage(sessionId, msgObj);
@@ -440,7 +512,6 @@ async function sendMessage() {
         console.warn('Could not save message:', err);
       }
     }
-
     persistState();
     return;
   }
@@ -463,17 +534,16 @@ async function sendMessage() {
         })),
       }),
     });
-
     if (!response.ok) throw new Error(`API ${response.status}`);
     const data  = await response.json();
     const reply = data.choices?.[0]?.message?.content || "I could not process that request.";
 
     chatHistory.push({ role: "assistant", content: reply });
     if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
-
+    
     const lo = (text + reply).toLowerCase();
     let qr = QUICK_REPLIES.general;
-    if (lo.includes("track"))                                       qr = QUICK_REPLIES.tracking;
+    if (lo.includes("track")) qr = QUICK_REPLIES.tracking;
     else if (lo.includes("quote") || lo.includes("price") || lo.includes("cost")) qr = QUICK_REPLIES.quote;
 
     hideTyping();
@@ -498,20 +568,33 @@ function clearChat() {
   stopReplyListener();
   clearState();
 
-  document.getElementById("chatMessages").innerHTML = "";
+  const msgs = document.getElementById("chatMessages");
+  if (msgs) msgs.innerHTML = "";
+  
   document.getElementById("chatHeaderName").textContent   = "SwiftBot AI";
   document.getElementById("chatHeaderStatus").textContent = "Online — SwiftGlobal Logistics";
   document.getElementById("chatHumanBanner").style.display = "none";
-  document.getElementById("chatHeaderAvatar").innerHTML   = '<i class="fa fa-robot"></i>';
-  document.getElementById("chatHeaderAvatar").style.cssText = "";
-  document.getElementById("chatHandoffBar").innerHTML = `
-    <span class="chat-handoff-label">
-      <i class="fa fa-robot"></i> Chatting with AI
-    </span>
-    <button class="chat-handoff-btn" onclick="requestHuman()">
-      <i class="fa fa-user-headset"></i> Talk to a Human
-    </button>`;
-  document.getElementById("chatInput").placeholder = "Ask me anything...";
+  
+  const avatar = document.getElementById("chatHeaderAvatar");
+  if (avatar) {
+    avatar.innerHTML   = '<i class="fa fa-robot"></i>';
+    avatar.style.cssText = "";
+  }
+  
+  const handoffBar = document.getElementById("chatHandoffBar");
+  if (handoffBar) {
+    handoffBar.innerHTML = `
+      <span class="chat-handoff-label">
+        <i class="fa fa-robot"></i> Chatting with AI
+      </span>
+      <button class="chat-handoff-btn" onclick="requestHuman()">
+        <i class="fa fa-user-headset"></i> Talk to a Human
+      </button>`;
+  }
+  
+  const input = document.getElementById("chatInput");
+  if (input) input.placeholder = "Ask me anything...";
+  
   document.getElementById("chatFooterText").textContent = "Powered by Groq AI";
 
   showWelcomeMessage();
@@ -522,7 +605,7 @@ function showWelcomeMessage() {
   setTimeout(() => {
     addMessage("bot",
       "👋 Hi there! I'm **SwiftBot**, your AI assistant for **SwiftGlobal Logistics**.\n\nI can help you with:\n• Tracking your parcel 📦\n• Getting a freight quote 💰\n• Learning about our services 🚢✈️🚛\n• Customs and warehousing info 📋\n\nOr click **\"Talk to a Human\"** below to chat with our team directly!",
-      QUICK_REPLIES.greeting, false, true /* skipSave — welcome is not a real message */
+      QUICK_REPLIES.greeting, false, true
     );
   }, 600);
 }
@@ -532,6 +615,10 @@ function restoreConversation() {
   if (!sessionMessages.length) return;
 
   const msgs = document.getElementById("chatMessages");
+  if (!msgs) return;
+  
+  msgs.innerHTML = ""; /* Purge node space to prevent background rendering overlaps */
+  
   sessionMessages.forEach(m => {
     const isUser  = m.role === "user";
     const isAgent = m.role === "agent";
@@ -550,12 +637,9 @@ function restoreConversation() {
     msgs.appendChild(msgEl);
   });
 
-  /* Restore human mode UI if needed */
   if (isHumanMode) {
     setHumanUI();
-    startReplyListener();
   }
-
   scrollBottom();
 }
 
@@ -564,11 +648,10 @@ function initChatbot() {
   if (chatInitialized) return;
   chatInitialized = true;
 
-  /* Try to restore previous session */
   const hasHistory = restoreState();
 
   const container = document.createElement("div");
-  container.id    = "swiftbotContainer";
+  container.id = "swiftbotContainer";
   container.innerHTML = buildChatHTML();
   document.body.appendChild(container);
 
@@ -579,6 +662,16 @@ function initChatbot() {
     document.head.appendChild(link);
   }
 
+  /* Structural Fix: Instantiate dialogue structures onto the DOM immediately on page mount */
+  if (hasHistory) {
+    restoreConversation();
+  }
+
+  /* Structural Fix: Activate background listener instantly on page load if session is human */
+  if (isHumanMode && sessionId) {
+    ensureReplyListener();
+  }
+
   const bubbleBtn  = document.getElementById("chatBubbleBtn");
   const chatWindow = document.getElementById("chatWindow");
   const input      = document.getElementById("chatInput");
@@ -587,21 +680,21 @@ function initChatbot() {
   bubbleBtn.addEventListener("click", () => {
     const isOpen = chatWindow.classList.toggle("open");
     bubbleBtn.classList.toggle("open", isOpen);
-    document.getElementById("chatBubbleIcon").className =
-      isOpen ? "fa fa-times" : "fa fa-comment-dots";
+    document.getElementById("chatBubbleIcon").className = isOpen ? "fa fa-times" : "fa fa-comment-dots";
 
     if (isOpen) {
       unreadCount = 0;
-      document.getElementById("chatUnreadBadge").style.display = "none";
+      const badge = document.getElementById("chatUnreadBadge");
+      if (badge) {
+        badge.textContent = "0";
+        badge.style.display = "none";
+      }
 
       const msgs = document.getElementById("chatMessages");
-      if (!msgs.children.length) {
-        if (hasHistory) {
-          restoreConversation();
-        } else {
-          showWelcomeMessage();
-        }
+      if (!msgs.children.length && !hasHistory) {
+        showWelcomeMessage();
       }
+      scrollBottom();
       setTimeout(() => input.focus(), 300);
     }
   });
@@ -622,20 +715,19 @@ function initChatbot() {
   input.addEventListener("input", () => {
     input.style.height = "auto";
     input.style.height = Math.min(input.scrollHeight, 100) + "px";
-    /* Notify Firestore that visitor is typing */
     if (isHumanMode && sessionId && fb()) {
-      fb().updateSession(sessionId, { visitorTyping: Date.now() })
-        .catch(() => {});
+      fb().updateSession(sessionId, { visitorTyping: Date.now() }).catch(() => {});
     }
   });
 
-  /* Auto unread bubble after 15s if chat not opened */
   setTimeout(() => {
-    if (!chatWindow.classList.contains("open")) {
+    if (!chatWindow.classList.contains("open") && !hasHistory) {
       unreadCount = 1;
       const badge = document.getElementById("chatUnreadBadge");
-      badge.textContent   = "1";
-      badge.style.display = "flex";
+      if (badge) {
+        badge.textContent   = "1";
+        badge.style.display = "flex";
+      }
     }
   }, 15000);
 }

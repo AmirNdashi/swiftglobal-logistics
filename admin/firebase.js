@@ -14,6 +14,9 @@ import {
   query, orderBy, where,
   serverTimestamp, increment, arrayUnion,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import {
+  getStorage, ref, uploadBytes, getDownloadURL, deleteObject,
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
 /* ---------- CONFIG ---------- */
 const firebaseConfig = {
@@ -25,9 +28,10 @@ const firebaseConfig = {
   appId:             "1:718647705041:web:5b4976a5944ab48515b4f0",
 };
 
-const app  = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db   = getFirestore(app);
+const app     = initializeApp(firebaseConfig);
+const auth    = getAuth(app);
+const db      = getFirestore(app);
+const storage = getStorage(app);
 
 /* ---------- COLLECTION REFS ---------- */
 const COLS = {
@@ -158,26 +162,54 @@ async function addReply(sessionId, content) {
     content,
     timestamp:   serverTimestamp(),
     timestampMs: Date.now(),
-    read:        false,
   });
 }
-function listenReplies(sessionId, afterMs, cb) {
+function listenReplies(sessionId, replyStartMs, cb) {
+
   const q = query(
     COLS.chatReplies,
     where("sessionId", "==", sessionId),
     orderBy("timestampMs", "asc")
   );
+
   return onSnapshot(q, snap => {
-    const fresh = snap.docs
-      .map(d => ({ id: d.id, ...d.data() }))
-      .filter(r => r.timestampMs > afterMs);
-    if (fresh.length) cb(fresh);
+
+    const all = snap.docs
+      .map(d => ({ id: d.id, ...d.data() }));
+
+    /* Filter by timestamp cursor instead of read flag */
+    /* This ensures replies are delivered even after page navigation */
+    const fresh = all.filter(r => r.timestampMs > (replyStartMs || 0));
+
+    if (!fresh.length) return;
+
+    cb(fresh);
+
   });
+}
+
+/* ── STORAGE (Parcel Images) ───────────── */
+async function uploadParcelImage(file, trackingNumber) {
+  if (!file) return null;
+  const fileName = `${trackingNumber}_${Date.now()}_${file.name}`;
+  const storageRef = ref(storage, `parcel-images/${fileName}`);
+  const snapshot = await uploadBytes(storageRef, file);
+  return getDownloadURL(snapshot.ref);
+}
+
+async function deleteParcelImage(imageUrl) {
+  if (!imageUrl) return;
+  try {
+    const storageRef = ref(storage, imageUrl);
+    await deleteObject(storageRef);
+  } catch (err) {
+    console.error("Error deleting image:", err);
+  }
 }
 
 /* ── EXPORTS ────────────────────────────── */
 export {
-  auth, db,
+  auth, db, storage,
   adminLogin, adminLogout, onAuthReady, currentUser,
   addMessage, setMessageRead, deleteMessage, deleteMessagesBatch,
   listenMessages, listenDeletedCount,
@@ -186,5 +218,6 @@ export {
   saveSession, updateSession, appendSessionMessage,
   deleteSession, clearAllSessions, listenSessions, listenSession,
   addReply, listenReplies,
+  uploadParcelImage, deleteParcelImage,
   serverTimestamp,
 };

@@ -366,6 +366,7 @@ function injectCustomExtras(ship) {
   const dest     = sanitize(ship.route?.destination || "");
   const current  = sanitize(ship.route?.current     || "");
   const stopsRaw = ship.route?.stops || "";
+  const imageUrl = ship.package?.imageUrl || "";
 
   let mapQuery = `${ship.route?.origin || ""} to ${ship.route?.destination || ""}`;
   if (stopsRaw) mapQuery = `${ship.route?.origin || ""} to ${stopsRaw.split("|")[0].trim()} to ${ship.route?.destination || ""}`;
@@ -379,6 +380,16 @@ function injectCustomExtras(ship) {
 
   successEl.insertAdjacentHTML("beforeend", `
     <div id="customShipExtras" data-aos="fade-up" data-aos-delay="200">
+
+      ${imageUrl ? `
+      <div class="tracking-timeline-card" style="padding:0;margin-bottom:24px;">
+        <div class="tracking-card-header"><i class="fa fa-image"></i><h3>Parcel Image</h3></div>
+        <div style="padding:16px 24px;">
+          <div class="parcel-image-display">
+            <img src="${sanitize(imageUrl)}" alt="Parcel image" style="max-width:100%;height:auto;border-radius:8px;" />
+          </div>
+        </div>
+      </div>` : ""}
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;">
         <div class="tracking-timeline-card" style="padding:0;">

@@ -7,6 +7,7 @@ import {
   addShipment, updateShipment,
   deleteShipment as fbDeleteShipment,
   listenShipments, getAllTrackingNumbers,
+  uploadParcelImage, deleteParcelImage,
 } from "./firebase.js";
 
 /* ---------- STATUS CONFIG ---------- */
@@ -25,6 +26,8 @@ let allShipments      = [];
 let editingShipmentId = null;
 let tempEvents        = [];
 let unsubShipments    = null;
+let currentImageFile  = null;
+let existingImageUrl = null;
 
 /* ---------- HELPERS ---------- */
 function escHtmlS(str) {
@@ -88,6 +91,8 @@ function startShipmentsListener() {
 async function openCreateShipment() {
   editingShipmentId = null;
   tempEvents        = [];
+  currentImageFile  = null;
+  existingImageUrl = null;
 
   document.getElementById("shipmentModalTitle").innerHTML =
     '<i class="fa fa-plus"></i> Create New Shipment';
@@ -103,6 +108,7 @@ async function openCreateShipment() {
     "receiverName","receiverPhone","receiverEmail","receiverAddress",
     "shipPkgWeight","shipPkgDimensions","pkgDescription","pkgInstructions",
     "pkgValue","routeOrigin","routeDestination","routeStops","routeCurrent",
+    "parcelImageUrl",
   ].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = "";
@@ -118,6 +124,9 @@ async function openCreateShipment() {
   const eta = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
   document.getElementById("estDelivery").value = eta.toISOString().slice(0, 10);
 
+  /* Reset image preview */
+  resetImagePreview();
+
   switchShipmentTab("details", document.querySelector(".shipment-tab"));
   renderEventsList();
   document.getElementById("shipmentModalOverlay").style.display = "flex";
@@ -130,6 +139,8 @@ function openEditShipment(id) {
 
   editingShipmentId = id;
   tempEvents        = [...(ship.events || [])];
+  currentImageFile  = null;
+  existingImageUrl = ship.package?.imageUrl || null;
 
   document.getElementById("shipmentModalTitle").innerHTML =
     '<i class="fa fa-pen"></i> Edit Shipment';
@@ -160,6 +171,14 @@ function openEditShipment(id) {
   document.getElementById("routeDestination").value  = ship.route?.destination  || "";
   document.getElementById("routeStops").value        = ship.route?.stops        || "";
   document.getElementById("routeCurrent").value      = ship.route?.current      || "";
+  document.getElementById("parcelImageUrl").value    = ship.package?.imageUrl   || "";
+
+  /* Load existing image preview */
+  if (existingImageUrl) {
+    showImagePreview(existingImageUrl);
+  } else {
+    resetImagePreview();
+  }
 
   switchShipmentTab("details", document.querySelector(".shipment-tab"));
   renderEventsList();
@@ -172,6 +191,9 @@ function closeShipmentModal() {
   document.getElementById("mapPreviewContainer").style.display  = "none";
   editingShipmentId = null;
   tempEvents        = [];
+  currentImageFile  = null;
+  existingImageUrl = null;
+  resetImagePreview();
 }
 
 /* ---------- SWITCH TAB ---------- */
@@ -239,6 +261,16 @@ async function saveShipment() {
 
   try {
     const existingShip = editingShipmentId ? allShipments.find(s => s.id === editingShipmentId) : null;
+    let imageUrl = existingImageUrl;
+
+    /* Handle image upload */
+    if (currentImageFile) {
+      imageUrl = await uploadParcelImage(currentImageFile, trackingNumber);
+      /* Delete old image if editing and had a different image */
+      if (editingShipmentId && existingShip?.package?.imageUrl && existingShip.package.imageUrl !== imageUrl) {
+        deleteParcelImage(existingShip.package.imageUrl).catch(() => {});
+      }
+    }
 
     const shipment = {
       id:             editingShipmentId || Date.now().toString(),
@@ -267,6 +299,7 @@ async function saveShipment() {
         type:         document.getElementById("pkgType").value,
         description:  document.getElementById("pkgDescription").value.trim(),
         instructions: document.getElementById("pkgInstructions").value.trim(),
+        imageUrl:     imageUrl || null,
       },
       route: {
         origin:      document.getElementById("routeOrigin").value.trim(),
@@ -504,6 +537,55 @@ function showShipmentToast(msg, type = "success") {
   }, 3500);
 }
 
+/* ---------- IMAGE UPLOAD HELPERS ---------- */
+function previewParcelImage(input) {
+  if (input.files && input.files[0]) {
+    const file = input.files[0];
+    if (file.size > 5 * 1024 * 1024) {
+      alert("Image size must be less than 5MB");
+      input.value = "";
+      return;
+    }
+    currentImageFile = file;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      showImagePreview(e.target.result);
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function showImagePreview(url) {
+  const preview = document.getElementById("parcelImagePreview");
+  const img = document.getElementById("parcelImagePreviewImg");
+  const removeBtn = document.getElementById("removeParcelImageBtn");
+  
+  if (preview && img) {
+    img.src = url;
+    preview.style.display = "flex";
+    if (removeBtn) removeBtn.style.display = "inline-flex";
+  }
+}
+
+function resetImagePreview() {
+  const preview = document.getElementById("parcelImagePreview");
+  const img = document.getElementById("parcelImagePreviewImg");
+  const removeBtn = document.getElementById("removeParcelImageBtn");
+  const input = document.getElementById("parcelImageInput");
+  
+  if (preview) preview.style.display = "none";
+  if (img) img.src = "";
+  if (removeBtn) removeBtn.style.display = "none";
+  if (input) input.value = "";
+  document.getElementById("parcelImageUrl").value = "";
+}
+
+function removeParcelImage() {
+  currentImageFile = null;
+  existingImageUrl = null;
+  resetImagePreview();
+}
+
 /* ---------- EXPOSE GLOBALS ---------- */
 window.openCreateShipment  = openCreateShipment;
 window.openEditShipment    = openEditShipment;
@@ -521,6 +603,8 @@ window.deleteEvent         = deleteEvent;
 window.closeEventModal     = closeEventModal;
 window.previewMap          = previewMap;
 window.copyText            = copyText;
+window.previewParcelImage  = previewParcelImage;
+window.removeParcelImage   = removeParcelImage;
 
 /* ---------- INIT ---------- */
 document.addEventListener("DOMContentLoaded", startShipmentsListener);
