@@ -575,30 +575,54 @@
      SCRIPTS 
        ============================================ -->
 
-           <!-- Our Scripts -->
+     <!-- contact.html bottom scripts -->
+ 
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <!-- AOS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <!-- Main site JS -->
     <script src="js/main.js"></script>
-
-   <!-- Firebase bridge for chatbot -->
+ 
+    <!--
+      Firebase bridge — single clean import block.
+      Sets up both window.__sgAddMessage (contact form)
+      and window.__sgChat (chatbot).
+      NO duplicate imports.
+    -->
     <script type="module">
       import {
-        saveSession, updateSession, appendSessionMessage,
-        listenReplies, addReply
-      } from './admin/firebase.js';
-
+        addMessage,
+        saveSession,
+        updateSession,
+        appendSessionMessage,
+        addReply,
+        listenReplies
+      } from "./admin/firebase.js";
+ 
+      window.__sgAddMessage = addMessage;
       window.__sgChat = {
         saveSession,
         updateSession,
         appendSessionMessage,
-        listenReplies,
         addReply,
+        listenReplies,
       };
-      window.dispatchEvent(new Event('firebaseReady'));
     </script>
+ 
+    <!--
+      form.js — handles the contact form submit.
+      Plain defer script (no imports). Uses window.__sgAddMessage.
+      NOTE: If your file is called form.js, change this to form.js.
+    -->
+    <script src="js/form.js" defer></script>
+ 
+    <!-- chatbot.js — plain defer script, uses window.__sgChat -->
     <script src="js/chatbot.js" defer></script>
-
+ 
     <script>
       document.getElementById("year").textContent = new Date().getFullYear();
-
+ 
       function toggleFaq(btn) {
         const item   = btn.parentElement;
         const isOpen = item.classList.contains("open");
@@ -608,3 +632,4 @@
     </script>
   </body>
 </html>
+ 

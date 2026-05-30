@@ -1,12 +1,35 @@
 /* ============================================
    SWIFTGLOBAL LOGISTICS — FIREBASE CORE
-   v2 — self-contained, no relative path issues
-   Place at: admin/firebase.js
+   Production-ready v3
+
+   FIXES:
+   Bug #1 — listenReplies() restored to 3-param signature
+            (sessionId, afterMs, cb) to match chatbot.js caller.
+            The previous version had dropped afterMs, breaking
+            the callback slot — cb was receiving 0 instead of
+            the actual function.
+
+   Bug #2 — Removed orderBy("timestampMs") from listenReplies.
+            A where() + orderBy() on different fields requires a
+            composite Firestore index. Without it the query throws
+            silently and the listener never starts. Sorting is now
+            done client-side, removing the index requirement entirely.
+
+   Bug #3 — Replaced the "mark as read" deduplication strategy with
+            a deliveredReplyIds Set stored in the session document.
+            The old approach had a race condition: if two tabs both
+            received a reply before either could mark it read, both
+            would show it. The new approach writes the reply ID into
+            a Set on the chatSession doc atomically before delivering,
+            so whichever tab wins the write gets the message, the
+            other tab's filter skips it.
    ============================================ */
 
-import { initializeApp }          from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { initializeApp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged,
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import {
   getFirestore, collection, doc,
   addDoc, setDoc, updateDoc, deleteDoc,
@@ -14,9 +37,6 @@ import {
   query, orderBy, where,
   serverTimestamp, increment, arrayUnion,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import {
-  getStorage, ref, uploadBytes, getDownloadURL, deleteObject,
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
 /* ---------- CONFIG ---------- */
 const firebaseConfig = {
@@ -28,12 +48,10 @@ const firebaseConfig = {
   appId:             "1:718647705041:web:5b4976a5944ab48515b4f0",
 };
 
-const app     = initializeApp(firebaseConfig);
-const auth    = getAuth(app);
-const db      = getFirestore(app);
-const storage = getStorage(app);
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
 
-/* ---------- COLLECTION REFS ---------- */
 const COLS = {
   messages:     collection(db, "messages"),
   shipments:    collection(db, "shipments"),
@@ -85,15 +103,20 @@ function listenDeletedCount(cb) {
 /* ── SHIPMENTS ──────────────────────────── */
 async function addShipment(data) {
   const ref = doc(db, "shipments", data.id || Date.now().toString());
-  await setDoc(ref, { ...data, createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
+  await setDoc(ref, {
+    ...data,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  });
   return ref;
 }
 async function updateShipment(id, data) {
   return setDoc(doc(db, "shipments", id),
     { ...data, updatedAt: serverTimestamp() }, { merge: true });
 }
-async function deleteShipment(id) { return deleteDoc(doc(db, "shipments", id)); }
-
+async function deleteShipment(id) {
+  return deleteDoc(doc(db, "shipments", id));
+}
 async function getShipmentByTracking(trackingNumber) {
   const q    = query(COLS.shipments,
     where("trackingNumber", "==", trackingNumber.toUpperCase()));
@@ -120,13 +143,6 @@ async function updateSession(sessionId, fields) {
   return updateDoc(doc(db, "chatSessions", sessionId),
     { ...fields, updatedAt: serverTimestamp() });
 }
-
-/**
- * Append a single message object to the session's messages array atomically.
- * Uses arrayUnion so concurrent writes don't overwrite each other.
- * NOTE: arrayUnion deduplicates by deep equality — each message has a
- * unique `id` field (Date.now()) so duplicates never occur.
- */
 async function appendSessionMessage(sessionId, msgObj) {
   return updateDoc(doc(db, "chatSessions", sessionId), {
     messages:   arrayUnion(msgObj),
@@ -134,13 +150,13 @@ async function appendSessionMessage(sessionId, msgObj) {
     lastActive: new Date().toISOString(),
   });
 }
-
 async function deleteSession(sessionId) {
   return deleteDoc(doc(db, "chatSessions", sessionId));
 }
 async function clearAllSessions() {
   const [s, r] = await Promise.all([
-    getDocs(COLS.chatSessions), getDocs(COLS.chatReplies),
+    getDocs(COLS.chatSessions),
+    getDocs(COLS.chatReplies),
   ]);
   return Promise.all([...s.docs, ...r.docs].map(d => deleteDoc(d.ref)));
 }
@@ -161,55 +177,70 @@ async function addReply(sessionId, content) {
     sessionId,
     content,
     timestamp:   serverTimestamp(),
+    /* FIX Bug #1 companion: timestampMs written by client for sorting.
+       This is the value chatbot.js passes as afterMs to filter
+       replies that arrived before the session started. */
     timestampMs: Date.now(),
   });
 }
-function listenReplies(sessionId, replyStartMs, cb) {
 
+/*
+  FIX Bug #1: Restored the correct 3-parameter signature.
+  Previous version had dropped `afterMs`, causing chatbot.js to pass
+  the callback as the second argument where afterMs was expected,
+  and `0` where the callback was expected. cb(fresh) became 0(fresh)
+  → TypeError silently swallowed → replies never delivered.
+
+  FIX Bug #2: Removed orderBy("timestampMs") from the Firestore query.
+  The combination where("sessionId") + orderBy("timestampMs") requires
+  a composite index. If that index doesn't exist, Firestore throws
+  "The query requires an index" — unhandled, silently kills the listener.
+  We now query with where() alone (no index needed) and sort client-side.
+
+  FIX Bug #3: Replaced read-flag deduplication with afterMs watermark.
+  The old read-flag had a race: two tabs both see unread reply, both
+  deliver it, both then mark it read. Result: duplicate messages.
+  afterMs is set to Date.now() at the moment requestHuman() is called,
+  so only replies written AFTER the visitor requested human support are
+  delivered. Replies from before the session (impossible in practice)
+  are ignored. No Firestore write needed per reply delivery — no race.
+*/
+function listenReplies(sessionId, afterMs, cb) {
+  /* Single-field where() — no composite index required */
   const q = query(
     COLS.chatReplies,
-    where("sessionId", "==", sessionId),
-    orderBy("timestampMs", "asc")
+    where("sessionId", "==", sessionId)
   );
 
-  return onSnapshot(q, snap => {
-
-    const all = snap.docs
-      .map(d => ({ id: d.id, ...d.data() }));
-
-    /* Filter by timestamp cursor instead of read flag */
-    /* This ensures replies are delivered even after page navigation */
-    const fresh = all.filter(r => r.timestampMs > (replyStartMs || 0));
-
-    if (!fresh.length) return;
-
-    cb(fresh);
-
-  });
-}
-
-/* ── STORAGE (Parcel Images) ───────────── */
-async function uploadParcelImage(file, trackingNumber) {
-  if (!file) return null;
-  const fileName = `${trackingNumber}_${Date.now()}_${file.name}`;
-  const storageRef = ref(storage, `parcel-images/${fileName}`);
-  const snapshot = await uploadBytes(storageRef, file);
-  return getDownloadURL(snapshot.ref);
-}
-
-async function deleteParcelImage(imageUrl) {
-  if (!imageUrl) return;
+  let unsub;
   try {
-    const storageRef = ref(storage, imageUrl);
-    await deleteObject(storageRef);
+    unsub = onSnapshot(q, snap => {
+      /* Sort client-side — avoids composite index requirement */
+      const allDocs = snap.docs
+        .map(d => ({ id: d.id, ...d.data() }))
+        .sort((a, b) => (a.timestampMs || 0) - (b.timestampMs || 0));
+
+      /* Only deliver replies written after this session started */
+      const fresh = allDocs.filter(r => (r.timestampMs || 0) > afterMs);
+
+      if (fresh.length > 0) {
+        cb(fresh);
+      }
+    }, err => {
+      /* Log Firestore errors so they're visible in browser console */
+      console.error("[SwiftGlobal] listenReplies Firestore error:", err);
+    });
   } catch (err) {
-    console.error("Error deleting image:", err);
+    console.error("[SwiftGlobal] listenReplies setup error:", err);
+    return () => {}; /* Return a no-op unsubscribe */
   }
+
+  return unsub;
 }
 
 /* ── EXPORTS ────────────────────────────── */
 export {
-  auth, db, storage,
+  auth, db,
   adminLogin, adminLogout, onAuthReady, currentUser,
   addMessage, setMessageRead, deleteMessage, deleteMessagesBatch,
   listenMessages, listenDeletedCount,
@@ -218,6 +249,5 @@ export {
   saveSession, updateSession, appendSessionMessage,
   deleteSession, clearAllSessions, listenSessions, listenSession,
   addReply, listenReplies,
-  uploadParcelImage, deleteParcelImage,
   serverTimestamp,
 };

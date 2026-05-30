@@ -1229,58 +1229,56 @@
        SCRIPTS
        ============================================ -->
 
-    <!-- AOS Animation Library -->
+    <!-- index.html bottom scripts -->
+ 
+    <!-- AOS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-
-    <!-- Our Scripts -->
+    <!-- Main site JS -->
     <script src="js/main.js"></script>
-
-
-    <!-- Firebase bridge for chatbot -->
+ 
+    <!--
+      Firebase bridge — puts helpers on window for chatbot.js.
+      Single import block, no duplicates.
+    -->
     <script type="module">
       import {
-        saveSession, updateSession, appendSessionMessage,
-        listenReplies, addReply
-      } from './admin/firebase.js';
-
+        saveSession,
+        updateSession,
+        appendSessionMessage,
+        addReply,
+        listenReplies
+      } from "./admin/firebase.js";
+ 
       window.__sgChat = {
         saveSession,
         updateSession,
         appendSessionMessage,
-        listenReplies,
         addReply,
+        listenReplies,
       };
-      window.dispatchEvent(new Event('firebaseReady'));
     </script>
-    <script src="js/chatbot.js" defer></script>
-    
-      <!-- Firebase bridge for tracking page -->
-  <script type="module">
-    import { getShipmentByTracking } from './admin/firebase.js';
-    window.__sgFirebase = { getShipmentByTracking };
-  </script>
+ 
+    <!-- tracking.js is a full ES module (imports firebase.js internally) -->
     <script type="module" src="js/tracking.js"></script>
-
-
+ 
+    <!-- chatbot.js is a plain script — uses window.__sgChat, not imports -->
+    <script src="js/chatbot.js" defer></script>
+ 
     <script>
-      // Set current year in footer
       document.getElementById("year").textContent = new Date().getFullYear();
-
-      // Quick track redirect
+ 
       function quickTrack() {
         const num = document.getElementById("quickTrackInput").value.trim();
         if (num) {
           window.location.href = `tracking.html?number=${encodeURIComponent(num)}`;
         } else {
-          document.getElementById("quickTrackInput").focus();
-          document.getElementById("quickTrackInput").style.borderColor = "var(--error)";
-          setTimeout(() => {
-            document.getElementById("quickTrackInput").style.borderColor = "";
-          }, 2000);
+          const inp = document.getElementById("quickTrackInput");
+          inp.focus();
+          inp.style.borderColor = "var(--error)";
+          setTimeout(() => { inp.style.borderColor = ""; }, 2000);
         }
       }
-
-      document.getElementById("quickTrackInput").addEventListener("keydown", (e) => {
+      document.getElementById("quickTrackInput").addEventListener("keydown", e => {
         if (e.key === "Enter") quickTrack();
       });
     </script>
