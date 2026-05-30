@@ -63,46 +63,86 @@
     </div>
 
     <script type="module">
-    import { adminLogin, onAuthReady } from './firebase.js';
+  import { adminLogin, onAuthReady } from './firebase.js';
 
-    // If already logged in redirect immediately
-    onAuthReady(user => {
-      if (user) window.location.href = 'dashboard.html';
-    });
+  onAuthReady(user => {
+    if (user) window.location.href = 'dashboard.html';
+  });
 
-    document.getElementById('year').textContent = new Date().getFullYear();
+  document.getElementById('year')?.textContent && (
+    document.getElementById('year').textContent = new Date().getFullYear()
+  );
 
-    // Password toggle
-    document.getElementById('passToggle').addEventListener('click', () => {
-      const inp = document.getElementById('adminPass');
-      const ico = document.querySelector('#passToggle i');
-      inp.type  = inp.type === 'password' ? 'text' : 'password';
-      ico.className = inp.type === 'password' ? 'fa fa-eye' : 'fa fa-eye-slash';
-    });
+  /* Password toggle — find the button regardless of ID */
+  document.querySelector('.pass-toggle')?.addEventListener('click', function() {
+    const inp = document.querySelector('#loginForm input[type="password"], #loginForm input[type="text"]');
+    if (!inp) return;
+    inp.type  = inp.type === 'password' ? 'text' : 'password';
+    const ico = this.querySelector('i');
+    if (ico) ico.className = inp.type === 'password' ? 'fa fa-eye' : 'fa fa-eye-slash';
+  });
 
-    // Login form
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email    = document.getElementById('adminUser').value.trim();
-      const password = document.getElementById('adminPass').value.trim();
-      const errorBox = document.getElementById('loginError');
-      const errorMsg = document.getElementById('loginErrorMsg');
-      const btn      = document.getElementById('loginBtn');
+  /* Login form submit */
+  document.getElementById('loginForm')?.addEventListener('submit', async function(e) {
+    e.preventDefault();
 
+    /* Grab inputs by name or position — never by assumed ID */
+    const emailInput = this.querySelector('input[type="email"], input[autocomplete="email"], input[autocomplete="username"]');
+    const passInput  = this.querySelector('input[type="password"], input[type="text"][id*="pass"], input[id*="Pass"]');
+    const errorBox   = document.getElementById('loginError');
+    const errorMsg   = document.getElementById('loginErrorMsg');
+    const btn        = document.getElementById('loginBtn');
+
+    if (!emailInput || !passInput) {
+      console.error('Login inputs not found. Check your HTML input IDs.');
+      return;
+    }
+
+    const email    = emailInput.value.trim();
+    const password = passInput.value.trim();
+
+    if (!email || !password) {
+      if (errorBox) errorBox.style.display = 'flex';
+      if (errorMsg) errorMsg.textContent   = 'Please enter your email and password.';
+      return;
+    }
+
+    if (btn) {
       btn.innerHTML = '<i class="fa fa-circle-notch fa-spin"></i> Verifying...';
       btn.disabled  = true;
+    }
 
-      try {
-        await adminLogin(email, password);
-        window.location.href = 'dashboard.html';
-      } catch (err) {
-        errorBox.style.display = 'flex';
-        errorMsg.textContent   = 'Invalid email or password. Please try again.';
+    if (errorBox) errorBox.style.display = 'none';
+
+    try {
+      await adminLogin(email, password);
+      window.location.href = 'dashboard.html';
+    } catch (err) {
+      console.error('Login error:', err.code, err.message);
+
+      if (errorBox) errorBox.style.display = 'flex';
+      if (errorMsg) {
+        if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' ||
+            err.code === 'auth/invalid-credential') {
+          errorMsg.textContent = 'Invalid email or password. Please try again.';
+        } else if (err.code === 'auth/too-many-requests') {
+          errorMsg.textContent = 'Too many failed attempts. Please wait a few minutes.';
+        } else if (err.code === 'auth/network-request-failed') {
+          errorMsg.textContent = 'Network error. Check your internet connection.';
+        } else {
+          errorMsg.textContent = `Login failed: ${err.message}`;
+        }
+      }
+
+      if (btn) {
         btn.innerHTML = '<i class="fa fa-right-to-bracket"></i> Login to Admin Panel';
         btn.disabled  = false;
-        document.getElementById('adminPass').value = '';
       }
-    });
-  </script>
+
+      passInput.value = '';
+      passInput.focus();
+    }
+  });
+</script>
   </body>
 </html>
