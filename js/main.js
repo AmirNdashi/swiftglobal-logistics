@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const preloader = document.querySelector(".preloader");
   if (preloader) {
     window.addEventListener("load", () => {
-      setTimeout(() => preloader.classList.add("hidden"), 600);
+      preloader.classList.add("hidden");
     });
   }
 

@@ -1235,10 +1235,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <!-- Main site JS -->
     <script src="js/main.js"></script>
- 
+
     <!--
       Firebase bridge — puts helpers on window for chatbot.js.
-      Single import block, no duplicates.
+      Only load on pages that need it (chatbot, tracking).
     -->
     <script type="module">
       import {
@@ -1248,7 +1248,7 @@
         addReply,
         listenReplies
       } from "./admin/firebase.js";
- 
+
       window.__sgChat = {
         saveSession,
         updateSession,
@@ -1257,10 +1257,7 @@
         listenReplies,
       };
     </script>
- 
-    <!-- tracking.js is a full ES module (imports firebase.js internally) -->
-    <script type="module" src="js/tracking.js"></script>
- 
+
     <!-- chatbot.js is a plain script — uses window.__sgChat, not imports -->
     <script src="js/chatbot.js" defer></script>
  

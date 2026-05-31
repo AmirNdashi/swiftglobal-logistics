@@ -52,6 +52,11 @@ const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
 
+/* ---------- CLOUDINARY CONFIG ---------- */
+const CLOUDINARY_CLOUD_NAME = "dtpzcy8nj";
+const CLOUDINARY_UPLOAD_PRESET = "swiftglobal_shipments";
+const CLOUDINARY_FOLDER = "shipments";
+
 const COLS = {
   messages:     collection(db, "messages"),
   shipments:    collection(db, "shipments"),
@@ -132,6 +137,54 @@ function listenShipments(cb) {
 async function getAllTrackingNumbers() {
   const snap = await getDocs(COLS.shipments);
   return new Set(snap.docs.map(d => d.data().trackingNumber));
+}
+
+/* ── CLOUDINARY (PARCEL IMAGES) ───────────── */
+async function uploadParcelImage(file, trackingNumber) {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+  formData.append("folder", CLOUDINARY_FOLDER);
+  formData.append("public_id", `${trackingNumber}_${Date.now()}`);
+
+  const response = await fetch(
+    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+    {
+      method: "POST",
+      body: formData,
+    }
+  );
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(`Cloudinary upload failed: ${error.error?.message || "Unknown error"}`);
+  }
+
+  const data = await response.json();
+  return data.secure_url;
+}
+
+async function deleteParcelImage(imageUrl) {
+  try {
+    // Extract public_id from Cloudinary URL
+    // Format: https://res.cloudinary.com/CLOUD_NAME/image/upload/vTIMESTAMP/FOLDER/PUBLIC_ID.EXT
+    const urlParts = imageUrl.split("/");
+    const versionIndex = urlParts.findIndex(part => part.startsWith("v"));
+    if (versionIndex === -1 || versionIndex + 2 >= urlParts.length) {
+      console.warn("[SwiftGlobal] Could not extract public_id from Cloudinary URL");
+      return;
+    }
+
+    const publicIdWithExt = urlParts.slice(versionIndex + 2).join("/");
+    const publicId = publicIdWithExt.substring(0, publicIdWithExt.lastIndexOf("."));
+
+    // Note: Deleting from Cloudinary requires authentication with API key/secret
+    // Since we're using unsigned upload preset, we cannot delete via client-side
+    // We'll just log a warning - the old image will remain in Cloudinary
+    console.warn("[SwiftGlobal] Cloudinary deletion requires server-side API key/secret. Old image will remain:", imageUrl);
+  } catch (err) {
+    console.error("[SwiftGlobal] Failed to process Cloudinary image deletion:", err);
+  }
 }
 
 /* ── CHAT SESSIONS ──────────────────────── */
@@ -246,6 +299,7 @@ export {
   listenMessages, listenDeletedCount,
   addShipment, updateShipment, deleteShipment,
   getShipmentByTracking, listenShipments, getAllTrackingNumbers,
+  uploadParcelImage, deleteParcelImage,
   saveSession, updateSession, appendSessionMessage,
   deleteSession, clearAllSessions, listenSessions, listenSession,
   addReply, listenReplies,

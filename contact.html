@@ -20,14 +20,13 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"
-    />
+    <!-- Font Awesome Icons — preloaded for speed -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" /></noscript>
+
+    <!-- AOS Animation Library -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" /></noscript>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/animations.css" />
     <link rel="stylesheet" href="css/responsive.css" />
@@ -332,14 +331,15 @@
             <div class="contact-map-wrap">
               <h3>Find Us</h3>
               <div class="contact-map">
-                <iframe src="https://maps.google.com/maps?q=Logistics&t=&z=13&ie=UTF8&iwloc=&output=embed" 
-        width="100%" 
-        height="280" 
-        style="border: 0; border-radius: var(--radius); display: block;" 
-        allowfullscreen="" 
-        loading="lazy" 
-        referrerpolicy="no-referrer-when-downgrade" 
-        title="SwiftGlobal Logistics Office Location">
+                <iframe
+  src="https://www.google.com/maps?q=1015+N+America+Way,+Miami,+FL+33132,+USA&output=embed"
+  width="100%"
+  height="280"
+  style="border:0;border-radius:var(--radius);display:block;"
+  allowfullscreen=""
+  loading="lazy"
+  referrerpolicy="no-referrer-when-downgrade"
+  title="SwiftGlobal Logistics Miami Office Location">
 </iframe>
               </div>
             </div>
