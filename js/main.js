@@ -26,8 +26,29 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ---------- 3. STICKY NAVBAR ---------- */
   const navbar = document.querySelector(".navbar");
   if (navbar) {
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+
     window.addEventListener("scroll", () => {
-      navbar.classList.toggle("scrolled", window.scrollY > 50);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+
+          // Add/remove scrolled class based on scroll position
+          navbar.classList.toggle("scrolled", currentScrollY > 50);
+
+          // Hide navbar when scrolling down, show when scrolling up
+          if (currentScrollY > lastScrollY && currentScrollY > 100) {
+            navbar.classList.add("hidden");
+          } else {
+            navbar.classList.remove("hidden");
+          }
+
+          lastScrollY = currentScrollY;
+          ticking = false;
+        });
+        ticking = true;
+      }
     });
   }
 

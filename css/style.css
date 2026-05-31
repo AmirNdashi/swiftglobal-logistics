@@ -361,6 +361,7 @@ p {
 }
 
 .back-to-top.visible {
+  bottom: 100px;
   opacity: 1;
   visibility: visible;
 }
@@ -627,14 +628,16 @@ p {
 
 /* ---------- NAVBAR ---------- */
 .navbar {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
   background: var(--primary);
   height: var(--nav-height);
   display: flex;
   align-items: center;
-  transition: var(--transition);
+  transition: transform 0.3s ease, background 0.3s ease;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -642,6 +645,10 @@ p {
   background: rgba(10, 35, 66, 0.97);
   backdrop-filter: blur(12px);
   box-shadow: var(--shadow-md);
+}
+
+.navbar.hidden {
+  transform: translateY(-100%);
 }
 
 .nav-logo {
