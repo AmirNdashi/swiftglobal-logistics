@@ -76,6 +76,11 @@ let replyStartMs      = 0;
 let unsubReplies      = null;
 let deliveredReplyIds = new Set(); /* FIX Bug #5 */
 
+/* ---------- SECURITY: RATE LIMITING ---------- */
+let messageTimestamps = [];
+const MAX_MESSAGES_PER_MINUTE = 10;
+const MAX_MESSAGE_LENGTH = 1000;
+
 const QUICK_REPLIES = {
   greeting: ["Track a parcel 📦", "Get a quote 💰", "Sea Freight 🚢", "Air Freight ✈️"],
   tracking: ["Go to tracking page", "Which carriers?", "Tracking not working"],
@@ -148,6 +153,64 @@ function scrollBottom() {
 }
 function genSessionId() {
   return "sess_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9);
+}
+
+/* ---------- SECURITY: RATE LIMITING CHECK ---------- */
+function checkRateLimit() {
+  const now = Date.now();
+  const oneMinuteAgo = now - 60000;
+
+  // Remove timestamps older than 1 minute
+  messageTimestamps = messageTimestamps.filter(ts => ts > oneMinuteAgo);
+
+  // Check if user exceeded rate limit
+  if (messageTimestamps.length >= MAX_MESSAGES_PER_MINUTE) {
+    return false;
+  }
+
+  // Add current timestamp
+  messageTimestamps.push(now);
+  return true;
+}
+
+/* ---------- SECURITY: MESSAGE VALIDATION ---------- */
+function validateMessage(text) {
+  // Check message length
+  if (text.length > MAX_MESSAGE_LENGTH) {
+    return { valid: false, error: "Message too long. Please keep it under 1000 characters." };
+  }
+
+  // Check for empty message
+  if (!text.trim()) {
+    return { valid: false, error: "Message cannot be empty." };
+  }
+
+  // Check for repeated characters (spam pattern)
+  const repeatedCharPattern = /(.)\1{10,}/;
+  if (repeatedCharPattern.test(text)) {
+    return { valid: false, error: "Invalid message format." };
+  }
+
+  // Check for suspicious patterns (URLs, emails, phone numbers in spam format)
+  const suspiciousPatterns = [
+    /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi,
+    /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/gi,
+    /\+?[0-9]{10,}/g,
+  ];
+
+  for (const pattern of suspiciousPatterns) {
+    if (pattern.test(text) && !text.toLowerCase().includes("swiftglobal")) {
+      return { valid: false, error: "Please contact us directly for this request." };
+    }
+  }
+
+  // Check for non-English characters (optional - remove if you want to allow other languages)
+  const nonEnglishPattern = /[\u0600-\u06FF\u0750-\u077F\u0590-\u05FF\u0400-\u04FF]/;
+  if (nonEnglishPattern.test(text)) {
+    return { valid: false, error: "Please use English characters only." };
+  }
+
+  return { valid: true };
 }
 
 /* ---------- BUILD CHAT HTML ---------- */
@@ -507,6 +570,19 @@ async function sendMessage() {
   const sendBtn = document.getElementById("chatSendBtn");
   const text    = input?.value.trim();
   if (!text || isTyping) return;
+
+  /* SECURITY: Rate limiting check */
+  if (!checkRateLimit()) {
+    addMessage("bot", "⚠️ You're sending messages too quickly. Please wait a moment before trying again.", [], false, true);
+    return;
+  }
+
+  /* SECURITY: Message validation */
+  const validation = validateMessage(text);
+  if (!validation.valid) {
+    addMessage("bot", `⚠️ ${validation.error}`, [], false, true);
+    return;
+  }
 
   addMessage("user", text);
   if (input) { input.value = ""; input.style.height = "auto"; }

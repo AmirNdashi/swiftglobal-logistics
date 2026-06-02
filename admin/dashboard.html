@@ -153,7 +153,12 @@
               <option value="all">All Messages</option>
               <option value="unread">Unread Only</option>
               <option value="read">Read Only</option>
+              <option value="spam">⚠️ Spam Only</option>
+              <option value="legit">✓ Legitimate Only</option>
             </select>
+            <button class="admin-btn admin-btn-warning admin-btn-sm" onclick="deleteAllSpam()">
+              <i class="fa fa-shield-halved"></i> Delete Spam
+            </button>
             <button class="admin-btn admin-btn-danger admin-btn-sm" onclick="deleteAllMessages()">
               <i class="fa fa-trash"></i> Clear All
             </button>

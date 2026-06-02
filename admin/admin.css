@@ -2,6 +2,26 @@
    SWIFTGLOBAL LOGISTICS — ADMIN PANEL CSS
    ============================================ */
 
+/* ---------- SPAM INDICATORS ---------- */
+.msg-spam-badge {
+  background: #f59e0b;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  margin-left: 8px;
+  font-weight: 500;
+}
+
+.spam-row {
+  background: #fffbeb;
+  border-left: 3px solid #f59e0b;
+}
+
+.spam-row:hover {
+  background: #fef3c7;
+}
+
 :root {
   --admin-primary: #0a2342;
   --admin-accent: #e8a317;

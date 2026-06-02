@@ -5,6 +5,7 @@
    - Only user + agent messages shown to admin
    - Session unread count correctly reset on open
    - Admin email shown in topbar
+   - Added spam filtering and message validation
    ============================================ */
 
 import {
@@ -24,11 +25,46 @@ let currentSessionId = null;
 let confirmCallback  = null;
 let notifySound      = null;
 let prevSessionIds   = new Set();
+let showSpamOnly     = false;
 
 /* ---------- UNSUB HANDLES ---------- */
 let unsubMessages = null;
 let unsubDeleted  = null;
 let unsubSessions = null;
+
+/* ---------- SECURITY: SPAM DETECTION ---------- */
+function detectSpam(message) {
+  const text = (message.message || "").toLowerCase();
+  const subject = (message.subject || "").toLowerCase();
+  const combined = text + " " + subject;
+
+  // Check for non-English characters (Arabic, Hebrew, Cyrillic)
+  const nonEnglishPattern = /[\u0600-\u06FF\u0750-\u077F\u0590-\u05FF\u0400-\u04FF]/;
+  if (nonEnglishPattern.test(combined)) {
+    return true;
+  }
+
+  // Check for repeated characters (spam pattern)
+  const repeatedCharPattern = /(.)\1{10,}/;
+  if (repeatedCharPattern.test(combined)) {
+    return true;
+  }
+
+  // Check for suspicious patterns
+  const suspiciousPatterns = [
+    /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi,
+    /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/gi,
+    /\+?[0-9]{10,}/g,
+  ];
+
+  for (const pattern of suspiciousPatterns) {
+    if (pattern.test(combined) && !combined.includes("swiftglobal")) {
+      return true;
+    }
+  }
+
+  return false;
+}
 
 /* ============================================
    BOOT
@@ -297,15 +333,17 @@ function buildMessageRow(msg) {
   const unreadDot = !msg.read ? `<div class="unread-dot"></div>` : "";
   const readIcon  = msg.read ? "fa-envelope" : "fa-envelope-open";
   const readTip   = msg.read ? "Mark as Unread" : "Mark as Read";
+  const isSpam    = detectSpam(msg);
+  const spamBadge = isSpam ? `<span class="msg-spam-badge">⚠️ Spam</span>` : "";
 
   return `
-    <div class="message-row ${msg.read ? "" : "unread"}" id="row-${msg.id}"
+    <div class="message-row ${msg.read ? "" : "unread"} ${isSpam ? "spam-row" : ""}" id="row-${msg.id}"
          onclick="openModal('${msg.id}')">
       ${unreadDot}
       <div class="msg-avatar">${escHtml(initials)}</div>
       <div class="msg-body">
         <div class="msg-top">
-          <span class="msg-name">${escHtml(name)}</span>${svc}
+          <span class="msg-name">${escHtml(name)}</span>${svc}${spamBadge}
         </div>
         <div class="msg-subject">${escHtml(msg.subject || "")}</div>
         <div class="msg-preview">${escHtml((msg.message || "").substring(0, 80))}${(msg.message || "").length > 80 ? "…" : ""}</div>
@@ -338,6 +376,8 @@ function renderMessages() {
   let list = [...allMessages];
   if (filter === "unread") list = list.filter(m => !m.read);
   if (filter === "read")   list = list.filter(m =>  m.read);
+  if (filter === "spam")   list = list.filter(m => detectSpam(m));
+  if (filter === "legit")  list = list.filter(m => !detectSpam(m));
   if (search) list = list.filter(m =>
     `${m.firstName} ${m.lastName} ${m.email} ${m.subject} ${m.message}`.toLowerCase().includes(search)
   );
@@ -400,6 +440,17 @@ window.deleteAllQuotes = () => {
   showConfirm("Delete all quote requests?", async () => {
     const ids = allMessages.filter(m => m.service && m.service !== "").map(m => m.id);
     await deleteMessagesBatch(ids);
+  });
+};
+
+window.deleteAllSpam = () => {
+  const spamIds = allMessages.filter(m => detectSpam(m)).map(m => m.id);
+  if (spamIds.length === 0) {
+    alert("No spam messages found.");
+    return;
+  }
+  showConfirm(`Delete ${spamIds.length} spam messages? This cannot be undone.`, async () => {
+    await deleteMessagesBatch(spamIds);
   });
 };
 

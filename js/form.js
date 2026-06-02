@@ -20,6 +20,10 @@ const EMAIL_CONFIG = {
 
 const ADMIN_EMAILS = ["amiridirisu@gmail.com", "info@swiftglobalogistics.com"];
 
+/* ---------- SECURITY: RATE LIMITING ---------- */
+let formTimestamps = [];
+const MAX_FORM_SUBMISSIONS_PER_HOUR = 5;
+
 (function initEmailJS() {
   if (typeof emailjs !== "undefined") {
     emailjs.init(EMAIL_CONFIG.publicKey);
@@ -78,6 +82,53 @@ function validateForm() {
   return valid;
 }
 
+/* ---------- SECURITY: RATE LIMITING CHECK ---------- */
+function checkFormRateLimit() {
+  const now = Date.now();
+  const oneHourAgo = now - 3600000;
+
+  // Remove timestamps older than 1 hour
+  formTimestamps = formTimestamps.filter(ts => ts > oneHourAgo);
+
+  // Check if user exceeded rate limit
+  if (formTimestamps.length >= MAX_FORM_SUBMISSIONS_PER_HOUR) {
+    return false;
+  }
+
+  // Add current timestamp
+  formTimestamps.push(now);
+  return true;
+}
+
+/* ---------- SECURITY: MESSAGE VALIDATION ---------- */
+function validateFormData(data) {
+  // Check message length
+  if (data.message.length > 2000) {
+    return { valid: false, error: "Message too long. Please keep it under 2000 characters." };
+  }
+
+  // Check for repeated characters (spam pattern)
+  const repeatedCharPattern = /(.)\1{15,}/;
+  if (repeatedCharPattern.test(data.message + data.subject)) {
+    return { valid: false, error: "Invalid message format detected." };
+  }
+
+  // Check for non-English characters (optional - remove if you want to allow other languages)
+  const nonEnglishPattern = /[\u0600-\u06FF\u0750-\u077F\u0590-\u05FF\u0400-\u04FF]/;
+  if (nonEnglishPattern.test(data.message + data.subject)) {
+    return { valid: false, error: "Please use English characters only." };
+  }
+
+  // Check for suspicious patterns (excessive URLs, etc.)
+  const urlPattern = /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
+  const urlMatches = (data.message + data.subject).match(urlPattern);
+  if (urlMatches && urlMatches.length > 3) {
+    return { valid: false, error: "Too many URLs in your message. Please contact us directly." };
+  }
+
+  return { valid: true };
+}
+
 /* ---------- SUBMIT ---------- */
 async function submitForm() {
   const btn    = document.getElementById("submitBtn");
@@ -93,6 +144,23 @@ async function submitForm() {
     subject:   document.getElementById("subject")?.value.trim()   || "",
     message:   document.getElementById("message")?.value.trim()   || "",
   };
+
+  /* SECURITY: Rate limiting check */
+  if (!checkFormRateLimit()) {
+    alert("You've submitted too many forms recently. Please wait before trying again.");
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa fa-paper-plane"></i> Send Message';
+    return;
+  }
+
+  /* SECURITY: Message validation */
+  const validation = validateFormData(data);
+  if (!validation.valid) {
+    alert(validation.error);
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa fa-paper-plane"></i> Send Message';
+    return;
+  }
 
   const fromName = `${data.firstName} ${data.lastName}`.trim();
 
