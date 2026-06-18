@@ -609,45 +609,8 @@
       </div>
 
     </div><!-- END .admin-main -->
-
-    <!--
-      IMPORTANT: Both scripts use type="module" so they can import from firebase.js.
-      The order matters — admin.js first, then shipments.js.
-      Both are in the same /admin/ folder as firebase.js.
-    -->
     <script type="module" src="admin.js"></script>
     <script type="module" src="shipments.js"></script>
-
-    <!-- Sync indicator style (tiny addition — add to admin.css if preferred) -->
-    <style>
-      .sync-indicator {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: var(--admin-success);
-        background: rgba(56,161,105,0.1);
-        padding: 4px 10px;
-        border-radius: 50px;
-        border: 1px solid rgba(56,161,105,0.25);
-      }
-      .sync-dot {
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background: var(--admin-success);
-        animation: syncPulse 2s ease-in-out infinite;
-        flex-shrink: 0;
-      }
-      @keyframes syncPulse {
-        0%, 100% { opacity: 1; transform: scale(1); }
-        50%       { opacity: 0.4; transform: scale(0.85); }
-      }
-      @media (max-width: 480px) {
-        .sync-indicator { display: none; }
-      }
-    </style>
 
   </body>
 </html>

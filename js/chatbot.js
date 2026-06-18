@@ -1,25 +1,6 @@
 /* ============================================
    SWIFTGLOBAL LOGISTICS — AI + HUMAN CHATBOT
-   Production-ready v3
 
-   FIXES:
-   Bug #1 — listenReplies called with correct 3 args:
-            (sessionId, replyStartMs, callback)
-            Previously passed (sessionId, 0, callback) but firebase.js
-            had dropped the middle param — the callback was landing
-            in the wrong slot. Now firebase.js and chatbot.js agree.
-
-   Bug #4 — Listener starts immediately on page load when session
-            is restored from sessionStorage, not only when the visitor
-            clicks the chat bubble. If the visitor navigates away while
-            in human mode and returns, they now receive replies that
-            arrived while the bubble was closed.
-
-   Bug #5 — Duplicate prevention via a Set of delivered reply IDs
-            stored in sessionStorage. Even if two tabs are open,
-            the same reply ID is only rendered once per tab.
-            The afterMs watermark prevents replaying old replies
-            when the page reloads.
    ============================================ */
 
 /* ---------- CONFIG ---------- */
@@ -403,9 +384,6 @@ async function requestHuman() {
   visitorName  = name.trim();
   isHumanMode  = true;
   sessionId    = genSessionId();
-  /* FIX Bug #1 companion: replyStartMs is the watermark.
-     Only replies with timestampMs > replyStartMs will be delivered.
-     This prevents replaying any stale replies if session IDs collide. */
   replyStartMs = Date.now();
 
   setHumanUI();
@@ -440,17 +418,6 @@ async function requestHuman() {
 }
 window.requestHuman = requestHuman;
 
-/* ============================================================
-   REPLY LISTENER
-   FIX Bug #1: Called with 3 args (sessionId, replyStartMs, cb)
-               matching the restored firebase.js signature.
-   FIX Bug #4: startReplyListener() is now also called on page
-               load (via restoreAndReconnect) when isHumanMode
-               is true, not only when the bubble is clicked.
-   FIX Bug #5: deliveredReplyIds Set prevents the same reply from
-               being shown twice if two tabs are open or the
-               listener fires multiple times.
-   ============================================================ */
 function startReplyListener() {
   stopReplyListener();
 
@@ -466,8 +433,6 @@ function startReplyListener() {
 
   console.log("[SwiftGlobal] Starting reply listener, afterMs:", replyStartMs);
 
-  /* FIX Bug #1: passing replyStartMs as the second argument.
-     firebase.js listenReplies(sessionId, afterMs, cb) — 3 params. */
   unsubReplies = window.__sgChat.listenReplies(
     sessionId,
     replyStartMs,        /* afterMs watermark */
@@ -731,14 +696,6 @@ function restoreConversation() {
   scrollBottom();
 }
 
-/* ============================================================
-   FIX Bug #4: Reconnect reply listener immediately on page load
-   if the visitor was already in human mode.
-   Previously the listener only started when the bubble was
-   clicked. If the visitor navigated while waiting for a reply,
-   the listener was never established on the new page and replies
-   were silently dropped.
-   ============================================================ */
 function restoreAndReconnect() {
   if (!isHumanMode || !sessionId) return;
 

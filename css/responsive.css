@@ -2,14 +2,6 @@
    SWIFTTGLOBAL LOGISTICS — RESPONSIVE STYLES
    ============================================ */
 
-/* ---------- BREAKPOINTS REFERENCE ----------
-   xl:  1200px and above  → Large desktops
-   lg:  992px  — 1199px   → Desktops / laptops
-   md:  768px  — 991px    → Tablets
-   sm:  576px  — 767px    → Large phones
-   xs:  below  576px      → Small phones
-   ----------------------------------------- */
-
 /* ---- LARGE DESKTOPS (1200px+) ---- */
 @media (min-width: 1200px) {
   .container {

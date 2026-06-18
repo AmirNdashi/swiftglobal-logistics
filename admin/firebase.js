@@ -1,28 +1,5 @@
 /* ============================================
    SWIFTGLOBAL LOGISTICS — FIREBASE CORE
-   Production-ready v3
-
-   FIXES:
-   Bug #1 — listenReplies() restored to 3-param signature
-            (sessionId, afterMs, cb) to match chatbot.js caller.
-            The previous version had dropped afterMs, breaking
-            the callback slot — cb was receiving 0 instead of
-            the actual function.
-
-   Bug #2 — Removed orderBy("timestampMs") from listenReplies.
-            A where() + orderBy() on different fields requires a
-            composite Firestore index. Without it the query throws
-            silently and the listener never starts. Sorting is now
-            done client-side, removing the index requirement entirely.
-
-   Bug #3 — Replaced the "mark as read" deduplication strategy with
-            a deliveredReplyIds Set stored in the session document.
-            The old approach had a race condition: if two tabs both
-            received a reply before either could mark it read, both
-            would show it. The new approach writes the reply ID into
-            a Set on the chatSession doc atomically before delivering,
-            so whichever tab wins the write gets the message, the
-            other tab's filter skips it.
    ============================================ */
 
 import { initializeApp }
@@ -177,10 +154,6 @@ async function deleteParcelImage(imageUrl) {
 
     const publicIdWithExt = urlParts.slice(versionIndex + 2).join("/");
     const publicId = publicIdWithExt.substring(0, publicIdWithExt.lastIndexOf("."));
-
-    // Note: Deleting from Cloudinary requires authentication with API key/secret
-    // Since we're using unsigned upload preset, we cannot delete via client-side
-    // We'll just log a warning - the old image will remain in Cloudinary
     console.warn("[SwiftGlobal] Cloudinary deletion requires server-side API key/secret. Old image will remain:", imageUrl);
   } catch (err) {
     console.error("[SwiftGlobal] Failed to process Cloudinary image deletion:", err);
@@ -230,34 +203,10 @@ async function addReply(sessionId, content) {
     sessionId,
     content,
     timestamp:   serverTimestamp(),
-    /* FIX Bug #1 companion: timestampMs written by client for sorting.
-       This is the value chatbot.js passes as afterMs to filter
-       replies that arrived before the session started. */
     timestampMs: Date.now(),
   });
 }
 
-/*
-  FIX Bug #1: Restored the correct 3-parameter signature.
-  Previous version had dropped `afterMs`, causing chatbot.js to pass
-  the callback as the second argument where afterMs was expected,
-  and `0` where the callback was expected. cb(fresh) became 0(fresh)
-  → TypeError silently swallowed → replies never delivered.
-
-  FIX Bug #2: Removed orderBy("timestampMs") from the Firestore query.
-  The combination where("sessionId") + orderBy("timestampMs") requires
-  a composite index. If that index doesn't exist, Firestore throws
-  "The query requires an index" — unhandled, silently kills the listener.
-  We now query with where() alone (no index needed) and sort client-side.
-
-  FIX Bug #3: Replaced read-flag deduplication with afterMs watermark.
-  The old read-flag had a race: two tabs both see unread reply, both
-  deliver it, both then mark it read. Result: duplicate messages.
-  afterMs is set to Date.now() at the moment requestHuman() is called,
-  so only replies written AFTER the visitor requested human support are
-  delivered. Replies from before the session (impossible in practice)
-  are ignored. No Firestore write needed per reply delivery — no race.
-*/
 function listenReplies(sessionId, afterMs, cb) {
   /* Single-field where() — no composite index required */
   const q = query(

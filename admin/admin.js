@@ -1,12 +1,6 @@
 /* ============================================
    SWIFTGLOBAL LOGISTICS — ADMIN PANEL JS
-   v2 — fixes:
-   - Chat panel no longer shows SwiftBot greeting messages
-   - Only user + agent messages shown to admin
-   - Session unread count correctly reset on open
-   - Admin email shown in topbar
-   - Added spam filtering and message validation
-   ============================================ */
+  ============================================ */
 
 import {
   adminLogout, onAuthReady, currentUser,

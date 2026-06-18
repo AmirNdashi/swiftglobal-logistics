@@ -1,13 +1,5 @@
 /* ============================================
    SWIFTGLOBAL LOGISTICS — CONTACT FORM
-   Production-ready v3
-
-   This file uses NO ES module imports.
-   It relies on window.__sgAddMessage being set
-   by the inline <script type="module"> bridge
-   in the HTML page before this script runs.
-
-   Load as: <script src="js/contact.js" defer></script>
    ============================================ */
 
 /* ---------- EMAILJS CONFIG ---------- */
