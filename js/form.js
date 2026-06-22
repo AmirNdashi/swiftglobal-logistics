@@ -12,6 +12,75 @@ const EMAIL_CONFIG = {
 
 const ADMIN_EMAILS = ["amiridirisu@gmail.com", "info@swiftglobalogistics.com"];
 
+/* ---------- LEAD SCORING SYSTEM ---------- */
+function calculateLeadScore(data) {
+  let score = 0;
+  
+  // Company name indicates business lead
+  if (data.companyName && data.companyName.trim().length > 0) {
+    score += 10;
+  }
+  
+  // Industry shows legitimate business
+  if (data.industry && data.industry !== "") {
+    score += 5;
+  }
+  
+  // Shipping volume - higher volume = higher score
+  const volumeScores = {
+    "1-10": 5,
+    "11-50": 15,
+    "51-100": 25,
+    "100+": 35
+  };
+  if (data.shippingVolume && volumeScores[data.shippingVolume]) {
+    score += volumeScores[data.shippingVolume];
+  }
+  
+  // Urgency - immediate needs get higher score
+  const urgencyScores = {
+    "immediate": 20,
+    "soon": 15,
+    "planning": 10,
+    "future": 5
+  };
+  if (data.urgency && urgencyScores[data.urgency]) {
+    score += urgencyScores[data.urgency];
+  }
+  
+  // Budget range - higher budget = higher score
+  const budgetScores = {
+    "under-1k": 5,
+    "1k-5k": 10,
+    "5k-10k": 15,
+    "10k-25k": 20,
+    "25k-50k": 25,
+    "50k+": 30
+  };
+  if (data.budget && budgetScores[data.budget]) {
+    score += budgetScores[data.budget];
+  }
+  
+  // Premium quote request indicates serious interest
+  if (data.premiumQuote === true) {
+    score += 20;
+  }
+  
+  // Phone number provided (better contactability)
+  if (data.phone && data.phone.trim().length > 0) {
+    score += 5;
+  }
+  
+  return Math.min(score, 100); // Cap at 100
+}
+
+function getLeadQuality(score) {
+  if (score >= 60) return "Hot";
+  if (score >= 40) return "Warm";
+  if (score >= 20) return "Cold";
+  return "Low";
+}
+
 /* ---------- SECURITY: RATE LIMITING ---------- */
 let formTimestamps = [];
 const MAX_FORM_SUBMISSIONS_PER_HOUR = 5;
@@ -128,14 +197,27 @@ async function submitForm() {
   btn.innerHTML = '<i class="fa fa-circle-notch fa-spin"></i> Sending...';
 
   const data = {
-    firstName: document.getElementById("firstName")?.value.trim() || "",
-    lastName:  document.getElementById("lastName")?.value.trim()  || "",
-    email:     document.getElementById("email")?.value.trim()     || "",
-    phone:     document.getElementById("phone")?.value.trim()     || "—",
-    service:   document.getElementById("service")?.value          || "",
-    subject:   document.getElementById("subject")?.value.trim()   || "",
-    message:   document.getElementById("message")?.value.trim()   || "",
+    firstName:     document.getElementById("firstName")?.value.trim() || "",
+    lastName:      document.getElementById("lastName")?.value.trim()  || "",
+    email:         document.getElementById("email")?.value.trim()     || "",
+    phone:         document.getElementById("phone")?.value.trim()     || "—",
+    service:       document.getElementById("service")?.value          || "",
+    subject:       document.getElementById("subject")?.value.trim()   || "",
+    message:       document.getElementById("message")?.value.trim()   || "",
+    // Business qualification fields
+    companyName:   document.getElementById("companyName")?.value.trim()   || "",
+    industry:      document.getElementById("industry")?.value            || "",
+    shippingVolume: document.getElementById("shippingVolume")?.value     || "",
+    urgency:       document.getElementById("urgency")?.value            || "",
+    budget:        document.getElementById("budget")?.value             || "",
+    premiumQuote:  document.getElementById("premiumQuote")?.checked      || false,
   };
+  
+  // Calculate lead score
+  const leadScore = calculateLeadScore(data);
+  const leadQuality = getLeadQuality(leadScore);
+  data.leadScore = leadScore;
+  data.leadQuality = leadQuality;
 
   /* SECURITY: Rate limiting check */
   if (!checkFormRateLimit()) {
@@ -178,22 +260,30 @@ async function submitForm() {
     if (typeof emailjs !== "undefined") {
       for (const adminEmail of ADMIN_EMAILS) {
         await emailjs.send(EMAIL_CONFIG.serviceId, EMAIL_CONFIG.templateContact, {
-          from_name:  fromName,
-          from_email: data.email,
-          phone:      data.phone,
-          service:    data.service || "Not specified",
-          subject:    data.subject,
-          message:    data.message,
-          to_email:   adminEmail,
+          from_name:     fromName,
+          from_email:    data.email,
+          phone:         data.phone,
+          service:       data.service || "Not specified",
+          subject:       data.subject,
+          message:       data.message,
+          company_name:  data.companyName || "Not provided",
+          industry:      data.industry || "Not provided",
+          shipping_vol:  data.shippingVolume || "Not provided",
+          urgency:       data.urgency || "Not provided",
+          budget:        data.budget || "Not provided",
+          premium_quote: data.premiumQuote ? "Yes" : "No",
+          lead_score:    leadScore.toString(),
+          lead_quality:  leadQuality,
+          to_email:      adminEmail,
         });
       }
       /* STEP 3: Auto-reply to sender */
       await emailjs.send(EMAIL_CONFIG.serviceId, EMAIL_CONFIG.templateReply, {
-        from_name:  fromName,
-        from_email: data.email,
-        service:    data.service || "Not specified",
-        subject:    data.subject,
-        message:    data.message,
+        from_name:     fromName,
+        from_email:    data.email,
+        service:       data.service || "Not specified",
+        subject:       data.subject,
+        premium_quote: data.premiumQuote ? "Yes" : "No",
       });
     }
 
@@ -211,7 +301,18 @@ async function submitForm() {
 function showSuccess() {
   const form    = document.getElementById("contactForm");
   const success = document.getElementById("formSuccess");
-  if (success) success.style.display = "flex";
+  const premiumQuote = document.getElementById("premiumQuote")?.checked;
+  
+  // Customize success message based on premium quote request
+  if (success) {
+    if (premiumQuote) {
+      success.innerHTML = '<i class="fa fa-circle-check"></i> <strong>Premium Quote Requested!</strong> Our dedicated specialist will prioritize your request and provide a detailed analysis within 12 hours.';
+    } else {
+      success.innerHTML = '<i class="fa fa-circle-check"></i> Thank you! Your message has been sent. We\'ll get back to you within 24 hours.';
+    }
+    success.style.display = "flex";
+  }
+  
   if (form) {
     form.reset();
     form.querySelectorAll("input, textarea, select").forEach(f => {

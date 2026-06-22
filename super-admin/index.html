@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Super Admin Login — SwiftGlobal Logistics</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="super-admin.css" />
+  </head>
+  <body class="super-admin-login-body">
+
+    <div class="super-admin-login-container">
+      <div class="super-admin-login-box">
+        <div class="super-admin-login-logo">
+          <span>Swift<span>Global</span></span>
+          <div class="super-admin-badge">SUPER ADMIN</div>
+        </div>
+        
+        <h2>Owner Access</h2>
+        <p class="super-admin-login-subtitle">Restricted access for account owner only</p>
+        
+        <form id="superAdminLoginForm" class="super-admin-login-form">
+          <div class="super-admin-form-group">
+            <label for="superAdminEmail">
+              <i class="fa fa-envelope"></i> Email Address
+            </label>
+            <input 
+              type="email" 
+              id="superAdminEmail" 
+              name="email"
+              placeholder="owner@swiftglobalogistics.com"
+              required 
+            />
+          </div>
+          
+          <div class="super-admin-form-group">
+            <label for="superAdminPassword">
+              <i class="fa fa-lock"></i> Password
+            </label>
+            <input 
+              type="password" 
+              id="superAdminPassword" 
+              name="password"
+              placeholder="Enter your password"
+              required 
+            />
+          </div>
+          
+          <div class="super-admin-form-options">
+            <label class="super-admin-checkbox">
+              <input type="checkbox" id="rememberMe" />
+              <span>Remember me for 30 days</span>
+            </label>
+          </div>
+          
+          <button type="submit" class="super-admin-btn super-admin-btn-primary">
+            <i class="fa fa-shield-halved"></i> Access Super Admin
+          </button>
+        </form>
+        
+        <div class="super-admin-login-footer">
+          <a href="../admin/index.html" class="super-admin-back-link">
+            <i class="fa fa-arrow-left"></i> Back to Admin Dashboard
+          </a>
+        </div>
+      </div>
+      
+      <div class="super-admin-login-info">
+        <h3><i class="fa fa-crown"></i> Super Admin Features</h3>
+        <ul class="super-admin-features-list">
+          <li><i class="fa fa-chart-line"></i> Advanced lead scoring & analytics</li>
+          <li><i class="fa fa-fire"></i> Hot/Warm/Cold lead tracking</li>
+          <li><i class="fa fa-money-bill-wave"></i> Revenue monitoring tools</li>
+          <li><i class="fa fa-users-gear"></i> Full system control</li>
+          <li><i class="fa fa-database"></i> Complete data access</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="super-admin-loading-overlay" id="loadingOverlay" style="display:none;">
+      <div class="super-admin-spinner"></div>
+      <p>Authenticating...</p>
+    </div>
+
+    <div class="super-admin-error-toast" id="errorToast" style="display:none;">
+      <i class="fa fa-circle-exclamation"></i>
+      <span id="errorMessage">Login failed. Please try again.</span>
+    </div>
+
+    <script type="module">
+      import { superAdminLogin } from './super-admin-firebase.js';
+
+      document.getElementById('superAdminLoginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const email = document.getElementById('superAdminEmail').value.trim();
+        const password = document.getElementById('superAdminPassword').value;
+        const rememberMe = document.getElementById('rememberMe').checked;
+        
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const errorToast = document.getElementById('errorToast');
+        const errorMessage = document.getElementById('errorMessage');
+        
+        // Show loading
+        loadingOverlay.style.display = 'flex';
+        errorToast.style.display = 'none';
+        
+        try {
+          await superAdminLogin(email, password, rememberMe);
+          // Redirect on success
+          window.location.href = 'dashboard.html';
+        } catch (error) {
+          // Show error
+          loadingOverlay.style.display = 'none';
+          errorMessage.textContent = error.message || 'Login failed. Please check your credentials.';
+          errorToast.style.display = 'flex';
+          
+          // Auto-hide error after 5 seconds
+          setTimeout(() => {
+            errorToast.style.display = 'none';
+          }, 5000);
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -465,6 +465,28 @@ p {
   min-height: 140px;
 }
 
+/* Premium Quote Checkbox Styling */
+.form-group input[type="checkbox"] {
+  width: auto;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.form-group input[type="checkbox"]:checked {
+  accent-color: var(--accent);
+}
+
+/* Business Qualification Section Separator */
+.form-group + .form-row,
+.form-row + .form-group {
+  margin-top: 24px;
+}
+
+/* Enhanced styling for business fields */
+.form-group select option {
+  padding: 10px;
+}
+
 /* ---------- 13. SCROLL PROGRESS BAR ---------- */
 .scroll-progress {
   position: fixed;
